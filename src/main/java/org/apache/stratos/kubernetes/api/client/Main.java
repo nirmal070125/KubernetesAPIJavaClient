@@ -20,6 +20,13 @@
  */
 package org.apache.stratos.kubernetes.api.client;
 
+import org.apache.stratos.kubernetes.api.model.Container;
+import org.apache.stratos.kubernetes.api.model.Label;
+import org.apache.stratos.kubernetes.api.model.Manifest;
+import org.apache.stratos.kubernetes.api.model.Pod;
+import org.apache.stratos.kubernetes.api.model.Port;
+import org.apache.stratos.kubernetes.api.model.State;
+
 public class Main {
 
 	public static void main(String[] args) throws Exception {
@@ -27,8 +34,35 @@ public class Main {
 		final String KUBERNETES_API_ENDPOINT = "http://54.255.46.34:8080/api/v1beta1/";
 
         KubernetesApiClient client = new KubernetesApiClient(KUBERNETES_API_ENDPOINT);
+        
+        // test get pod
         System.out.println(client.getPod("redis-master-2").getCreationTimestamp());
-
+        
+        // test create pod
+        Pod pod = new Pod();
+        pod.setApiVersion("v1beta1");
+        pod.setId("nirmal-test-pod");
+        pod.setKind("Pod");
+        Label l = new Label();
+        l.setName("nirmal");
+        pod.setLabels(l);
+        State desiredState = new State();
+        Manifest m = new Manifest();
+        m.setId("nirmal-test-pod");
+        m.setVersion("v1beta1");
+        Container c = new Container();
+        c.setName("master");
+        c.setImage("dockerfile/redis");
+        Port p = new Port();
+        p.setContainerPort(8379);
+        p.setHostPort(8379);
+        c.setPorts(new Port[]{p});
+        m.setContainers(new Container[]{c});
+        desiredState.setManifest(m);
+        pod.setDesiredState(desiredState);
+        
+        client.createPod(pod);
+        
 	}
 
 }

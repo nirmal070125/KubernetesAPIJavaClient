@@ -20,6 +20,8 @@
  */
 package org.apache.stratos.kubernetes.api.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
@@ -27,6 +29,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * @author nirmal
  *
  */
+@XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Pod {
 

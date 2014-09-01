@@ -46,4 +46,11 @@ public interface KubernetesAPIClientInterface {
 	 * @throws KubernetesClientException
 	 */
 	public void createPod(Pod pod) throws KubernetesClientException;
+	
+	/**
+	 * Delete a Pod
+	 * @param podId Id of the Pod to be deleted
+	 * @throws KubernetesClientException
+	 */
+	public void deletePod(String podId) throws KubernetesClientException;
 }

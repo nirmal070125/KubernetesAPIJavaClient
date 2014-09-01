@@ -99,4 +99,23 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
+	@Override
+	public void deletePod(String podId) throws KubernetesClientException {
+
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"pods/{podId}");
+			ClientResponse<?> res = request.pathParameter("podId", podId).delete();
+			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED) {
+				String msg = "Pod ["+podId+"] deletion failed. Error: "+
+								res.getResponseStatus().getReasonPhrase();
+				log.error(msg);
+				throw new KubernetesClientException(msg);
+			}
+		} catch (Exception e) {
+			String msg = "Error while retrieving Pod info with Pod ID: "+podId;
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+		}
+	}
+
 }

@@ -60,14 +60,16 @@ public class Main {
         m.setContainers(new Container[]{c});
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
-//      Uncomment following line to create a Pod  
-//        client.createPod(pod);
+        
+        client.createPod(pod);
         
         // test get all Pods
         Pod[] pods = client.getAllPods();
         for (Pod pod2 : pods) {
 			System.out.println("Pod : "+pod2.getId());
 		}
+        
+        client.deletePod("nirmal-test-pod");
         
 	}
 

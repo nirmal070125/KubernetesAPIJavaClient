@@ -20,6 +20,9 @@
  */
 package org.apache.stratos.kubernetes.api.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Label {
 
 	private String name;

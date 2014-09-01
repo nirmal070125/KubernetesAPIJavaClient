@@ -10,16 +10,17 @@ import org.jboss.resteasy.client.ClientResponse;
 
 public class KubernetesApiClient implements KubernetesAPIClientInterface {
 	
-	private ClientRequest request;
+	private String endpointUrl;
 	private static final Log log = LogFactory.getLog(KubernetesApiClient.class);
 	
 	public KubernetesApiClient(String endpointUrl) {
-		request = new ClientRequest(endpointUrl);
+		this.endpointUrl = endpointUrl;
 	}
 
 	@Override
 	public Pod getPod(String podId) throws KubernetesClientException{
 		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"pods/{podId}");
 			ClientResponse<Pod> res = request.pathParameter("podId", podId).get(Pod.class);
 			if (res == null ) {
 				String msg = "Pod ["+podId+"] doesn't exist.";

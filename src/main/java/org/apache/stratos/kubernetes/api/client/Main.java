@@ -24,7 +24,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		final String KUBERNETES_API_ENDPOINT = "http://54.255.46.34:8080/api/v1beta1/pods/{podId}";
+		final String KUBERNETES_API_ENDPOINT = "http://54.255.46.34:8080/api/v1beta1/";
 
         KubernetesApiClient client = new KubernetesApiClient(KUBERNETES_API_ENDPOINT);
         System.out.println(client.getPod("redis-master-2").getCreationTimestamp());

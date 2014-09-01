@@ -20,7 +20,9 @@
  */
 package org.apache.stratos.kubernetes.api.model;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class State {
 
 	private Manifest manifest;

@@ -18,29 +18,37 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.exceptions;
+package org.apache.stratos.kubernetes.api.model;
 
-public class KubernetesClientException extends Exception {
+import javax.xml.bind.annotation.XmlRootElement;
 
-	private static final long serialVersionUID = -7521673271244696906L;
-    private String message;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-    public KubernetesClientException(String message, Exception exception){
-        super(message, exception);
-        this.message = message;
-    }
+@XmlRootElement
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class PodList {
 
-    public KubernetesClientException(Exception exception){
-        super(exception);
-    }
-    
-    public KubernetesClientException(String msg){
-        super(msg);
-        this.message = msg;
-    }
-    
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
+	private String kind;
+	private String apiVersion;
+	private Pod[] items;
+	
+	public String getKind() {
+		return kind;
+	}
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+	public String getApiVersion() {
+		return apiVersion;
+	}
+	public void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
+	}
+	public Pod[] getItems() {
+		return items;
+	}
+	public void setItems(Pod[] items) {
+		this.items = items;
+	}
+	
 }

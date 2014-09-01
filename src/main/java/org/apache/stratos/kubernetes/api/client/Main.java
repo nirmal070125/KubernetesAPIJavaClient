@@ -19,22 +19,15 @@
  *
  */
 package org.apache.stratos.kubernetes.api.client;
-import org.apache.stratos.kubernetes.api.model.Pod;
-import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientResponse;
-
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
 		final String KUBERNETES_API_ENDPOINT = "http://54.255.46.34:8080/api/v1beta1/pods/{podId}";
-		ClientRequest req = new ClientRequest(KUBERNETES_API_ENDPOINT);
- 
-        ClientResponse<Pod> res = req.pathParameter("podId","redis-master-2").get(Pod.class);
-        System.out.println(res.getEntity().getKind());
 
-
+        KubernetesApiClient client = new KubernetesApiClient(KUBERNETES_API_ENDPOINT);
+        System.out.println(client.getPod("redis-master-2").getCreationTimestamp());
 
 	}
 

@@ -37,9 +37,11 @@ public class Main {
         KubernetesApiClient client = new KubernetesApiClient(KUBERNETES_API_ENDPOINT);
         
         // test get pod
+        System.out.println("Test GET POD");
         System.out.println(client.getPod("redis-master-2"));
         
         // test create pod
+        System.out.println("Test POST POD");
         Pod pod = new Pod();
         pod.setApiVersion("v1beta1");
         pod.setId("nirmal-test-pod");
@@ -64,16 +66,28 @@ public class Main {
         client.createPod(pod);
         
         // test get all Pods
+        System.out.println("Test GET PODS");
         Pod[] pods = client.getAllPods();
         for (Pod pod2 : pods) {
 			System.out.println("Pod : "+pod2.getId());
 		}
         
+        // test delete Pod
+        System.out.println("Test DELETE POD");
         client.deletePod("nirmal-test-pod");
         
         /* Replication Controllers */
+        // test get controller
+        System.out.println("Test GET ReplicationController");
         ReplicationController controller = client.getReplicationController("frontendController");
         System.out.println(controller);
+        
+        // test get all controllers
+        System.out.println("Test GET ReplicationControllers");
+        ReplicationController[] controllers = client.getAllReplicationControllers();
+        for (ReplicationController replicationController : controllers) {
+			System.out.println("Replication Controller: "+replicationController.getId());
+		}
         
 	}
 

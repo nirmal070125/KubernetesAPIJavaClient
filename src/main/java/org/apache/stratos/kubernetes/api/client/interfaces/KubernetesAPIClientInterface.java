@@ -23,6 +23,7 @@ package org.apache.stratos.kubernetes.api.client.interfaces;
 import org.apache.stratos.kubernetes.api.exceptions.KubernetesClientException;
 import org.apache.stratos.kubernetes.api.model.Pod;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
+import org.apache.stratos.kubernetes.api.model.ReplicationControllerList;
 
 public interface KubernetesAPIClientInterface {
 	
@@ -67,5 +68,11 @@ public interface KubernetesAPIClientInterface {
 	 */
 	public ReplicationController getReplicationController(String controllerId) throws KubernetesClientException;
 	
+	/**
+	 * Get all Replication Controllers.
+	 * @return {@link ReplicationController}s
+	 * @throws KubernetesClientException
+	 */
+	public ReplicationController[] getAllReplicationControllers() throws KubernetesClientException;
 	
 }

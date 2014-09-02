@@ -28,6 +28,7 @@ import org.apache.stratos.kubernetes.api.exceptions.KubernetesClientException;
 import org.apache.stratos.kubernetes.api.model.Pod;
 import org.apache.stratos.kubernetes.api.model.PodList;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
+import org.apache.stratos.kubernetes.api.model.ReplicationControllerList;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
@@ -130,6 +131,24 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			return res.getEntity();
 		} catch (Exception e) {
 			String msg = "Error while retrieving Replication Controller info with ID: "+controllerId;
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+		}
+	}
+
+	@Override
+	public ReplicationController[] getAllReplicationControllers()
+			throws KubernetesClientException {
+		
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"replicationControllers/");
+			ClientResponse<ReplicationControllerList> res = request.get(ReplicationControllerList.class);
+			if (res.getEntity() == null ) {
+				return new ReplicationController[0];
+			}
+			return res.getEntity().getItems();
+		} catch (Exception e) {
+			String msg = "Error while retrieving Replication Controllers.";
 			log.error(msg, e);
 			throw new KubernetesClientException(msg, e);
 		}

@@ -20,42 +20,24 @@
  */
 package org.apache.stratos.kubernetes.api.model;
 
-import java.util.Arrays;
+/**
+ * @author nirmal
+ *
+ */
+public class Selector {
 
-import javax.xml.bind.annotation.XmlRootElement;
+	private String name;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+	public String getName() {
+		return name;
+	}
 
-@XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class PodList {
+	public void setName(String name) {
+		this.name = name;
+	}
 
-	private String kind;
-	private String apiVersion;
-	private Pod[] items;
-	
-	public String getKind() {
-		return kind;
-	}
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
-	public String getApiVersion() {
-		return apiVersion;
-	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
-	}
-	public Pod[] getItems() {
-		return items;
-	}
-	public void setItems(Pod[] items) {
-		this.items = items;
-	}
 	@Override
 	public String toString() {
-		return "PodList [kind=" + kind + ", apiVersion=" + apiVersion
-				+ ", items=" + Arrays.toString(items) + "]";
+		return "Selector [name=" + name + "]";
 	}
-	
 }

@@ -47,6 +47,11 @@ public class VolumeMount {
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
+	@Override
+	public String toString() {
+		return "VolumeMount [name=" + name + ", mountPath=" + mountPath
+				+ ", readOnly=" + readOnly + "]";
+	}
 	
 	
 }

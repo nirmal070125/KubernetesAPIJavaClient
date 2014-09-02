@@ -22,8 +22,11 @@ package org.apache.stratos.kubernetes.api.client.interfaces;
 
 import org.apache.stratos.kubernetes.api.exceptions.KubernetesClientException;
 import org.apache.stratos.kubernetes.api.model.Pod;
+import org.apache.stratos.kubernetes.api.model.ReplicationController;
 
 public interface KubernetesAPIClientInterface {
+	
+	/* Pod API */
 
 	/**
 	 * Get information of a Pod given the PodID
@@ -53,4 +56,16 @@ public interface KubernetesAPIClientInterface {
 	 * @throws KubernetesClientException
 	 */
 	public void deletePod(String podId) throws KubernetesClientException;
+	
+	/* Replication Controller API */
+	
+	/**
+	 * Get a Replication Controller Info
+	 * @param controllerId id of the Replication Controller
+	 * @return {@link ReplicationController}
+	 * @throws KubernetesClientException
+	 */
+	public ReplicationController getReplicationController(String controllerId) throws KubernetesClientException;
+	
+	
 }

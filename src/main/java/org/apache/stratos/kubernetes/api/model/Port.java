@@ -54,6 +54,12 @@ public class Port {
 	public void setHostPort(int hostPort) {
 		this.hostPort = hostPort;
 	}
+	@Override
+	public String toString() {
+		return "Port [name=" + name + ", protocol=" + protocol
+				+ ", containerPort=" + containerPort + ", hostPort=" + hostPort
+				+ "]";
+	}
 	
 	
 }

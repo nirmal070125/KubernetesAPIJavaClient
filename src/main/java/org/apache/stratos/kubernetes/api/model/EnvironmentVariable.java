@@ -38,5 +38,10 @@ public class EnvironmentVariable {
 		this.value = value;
 	}
 	
+	@Override
+	public String toString() {
+		return "EnvironmentVariable [name=" + name + ", value=" + value + "]";
+	}
+	
 	
 }

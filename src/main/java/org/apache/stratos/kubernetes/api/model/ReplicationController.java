@@ -20,19 +20,24 @@
  */
 package org.apache.stratos.kubernetes.api.model;
 
-import java.util.Arrays;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+/**
+ * @author nirmal
+ *
+ */
 @XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PodList {
+public class ReplicationController {
 
 	private String kind;
-	private String apiVersion;
-	private Pod[] items;
+	private String id;
+	private String creationTimestamp;
+	private String selfLink;
+	private Label labels;
+	private State desiredState;
 	
 	public String getKind() {
 		return kind;
@@ -40,22 +45,43 @@ public class PodList {
 	public void setKind(String kind) {
 		this.kind = kind;
 	}
-	public String getApiVersion() {
-		return apiVersion;
+	public String getId() {
+		return id;
 	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public Pod[] getItems() {
-		return items;
+	public String getCreationTimestamp() {
+		return creationTimestamp;
 	}
-	public void setItems(Pod[] items) {
-		this.items = items;
+	public void setCreationTimestamp(String creationTimestamp) {
+		this.creationTimestamp = creationTimestamp;
 	}
+	public String getSelfLink() {
+		return selfLink;
+	}
+	public void setSelfLink(String selfLink) {
+		this.selfLink = selfLink;
+	}
+	public Label getLabels() {
+		return labels;
+	}
+	public void setLabels(Label labels) {
+		this.labels = labels;
+	}
+	public State getDesiredState() {
+		return desiredState;
+	}
+	public void setDesiredState(State desiredState) {
+		this.desiredState = desiredState;
+	}
+	
 	@Override
 	public String toString() {
-		return "PodList [kind=" + kind + ", apiVersion=" + apiVersion
-				+ ", items=" + Arrays.toString(items) + "]";
+		return "ReplicationController [kind=" + kind + ", id=" + id
+				+ ", creationTimestamp=" + creationTimestamp + ", selfLink="
+				+ selfLink + ", labels=" + labels + ", desiredState="
+				+ desiredState + "]";
 	}
 	
 }

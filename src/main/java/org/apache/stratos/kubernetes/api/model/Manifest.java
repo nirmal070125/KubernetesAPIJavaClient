@@ -20,6 +20,8 @@
  */
 package org.apache.stratos.kubernetes.api.model;
 
+import java.util.Arrays;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
@@ -58,6 +60,12 @@ public class Manifest {
 	}
 	public void setVolumes(Volume[] volumes) {
 		this.volumes = volumes;
+	}
+	@Override
+	public String toString() {
+		return "Manifest [version=" + version + ", id=" + id + ", containers="
+				+ Arrays.toString(containers) + ", volumes="
+				+ Arrays.toString(volumes) + "]";
 	}
 	
 }

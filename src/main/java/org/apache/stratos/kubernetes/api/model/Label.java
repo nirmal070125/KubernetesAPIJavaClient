@@ -34,5 +34,10 @@ public class Label {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return "Label [name=" + name + "]";
+	}
 	
 }

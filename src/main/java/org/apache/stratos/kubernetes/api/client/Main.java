@@ -25,6 +25,7 @@ import org.apache.stratos.kubernetes.api.model.Label;
 import org.apache.stratos.kubernetes.api.model.Manifest;
 import org.apache.stratos.kubernetes.api.model.Pod;
 import org.apache.stratos.kubernetes.api.model.Port;
+import org.apache.stratos.kubernetes.api.model.ReplicationController;
 import org.apache.stratos.kubernetes.api.model.State;
 
 public class Main {
@@ -36,7 +37,7 @@ public class Main {
         KubernetesApiClient client = new KubernetesApiClient(KUBERNETES_API_ENDPOINT);
         
         // test get pod
-        System.out.println(client.getPod("redis-master-2").getCreationTimestamp());
+        System.out.println(client.getPod("redis-master-2"));
         
         // test create pod
         Pod pod = new Pod();
@@ -60,7 +61,6 @@ public class Main {
         m.setContainers(new Container[]{c});
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
-        
         client.createPod(pod);
         
         // test get all Pods
@@ -70,6 +70,10 @@ public class Main {
 		}
         
         client.deletePod("nirmal-test-pod");
+        
+        /* Replication Controllers */
+        ReplicationController controller = client.getReplicationController("frontendController");
+        System.out.println(controller);
         
 	}
 

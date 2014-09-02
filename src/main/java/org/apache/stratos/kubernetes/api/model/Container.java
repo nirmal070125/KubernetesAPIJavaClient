@@ -20,6 +20,8 @@
  */
 package org.apache.stratos.kubernetes.api.model;
 
+import java.util.Arrays;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -74,6 +76,14 @@ public class Container {
 	}
 	public void setEnv(EnvironmentVariable[] env) {
 		this.env = env;
+	}
+	@Override
+	public String toString() {
+		return "Container [name=" + name + ", image=" + image + ", workingDir="
+				+ workingDir + ", command=" + Arrays.toString(command)
+				+ ", volumeMounts=" + Arrays.toString(volumeMounts)
+				+ ", ports=" + Arrays.toString(ports) + ", env="
+				+ Arrays.toString(env) + "]";
 	}
 	
 	

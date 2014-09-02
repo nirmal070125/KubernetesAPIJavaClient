@@ -118,6 +118,16 @@ public class Pod {
 	public void setCode(String code) {
 		this.code = code;
 	}
+	@Override
+	public String toString() {
+		return "Pod [kind=" + kind + ", id=" + id + ", creationTimestamp="
+				+ creationTimestamp + ", selfLink=" + selfLink
+				+ ", resourceVersion=" + resourceVersion + ", apiVersion="
+				+ apiVersion + ", desiredState=" + desiredState
+				+ ", currentState=" + currentState + ", status=" + status
+				+ ", message=" + message + ", code=" + code + ", labels="
+				+ labels + "]";
+	}
 	
 	
 }

@@ -90,6 +90,8 @@ public interface KubernetesAPIClientInterface {
 	 */
 	public void deleteReplicationController(String controllerId) throws KubernetesClientException;
 	
+	/* Services API */
+	
 	/**
 	 * Get the Service with the given id.
 	 * @param serviceId id of the service.

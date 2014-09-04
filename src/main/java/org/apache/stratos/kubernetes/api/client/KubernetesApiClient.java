@@ -29,6 +29,7 @@ import org.apache.stratos.kubernetes.api.model.Pod;
 import org.apache.stratos.kubernetes.api.model.PodList;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
 import org.apache.stratos.kubernetes.api.model.ReplicationControllerList;
+import org.apache.stratos.kubernetes.api.model.Service;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
@@ -195,6 +196,25 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			}
 		} catch (Exception e) {
 			String msg = "Error while retrieving Replication Controller info of Controller ID: "+controllerId;
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+		}
+	}
+
+	@Override
+	public Service getService(String serviceId)
+			throws KubernetesClientException {
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"services/{serviceId}");
+			ClientResponse<Service> res = request.pathParameter("serviceId", serviceId).get(Service.class);
+			if (res.getEntity() == null ) {
+				String msg = "Service ["+serviceId+"] doesn't exist.";
+				log.error(msg);
+				throw new KubernetesClientException(msg);
+			}
+			return res.getEntity();
+		} catch (Exception e) {
+			String msg = "Error while retrieving Service info with Service ID: "+serviceId;
 			log.error(msg, e);
 			throw new KubernetesClientException(msg, e);
 		}

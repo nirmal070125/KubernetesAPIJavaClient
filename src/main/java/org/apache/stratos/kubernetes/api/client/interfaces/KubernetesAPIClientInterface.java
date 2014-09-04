@@ -24,6 +24,7 @@ import org.apache.stratos.kubernetes.api.exceptions.KubernetesClientException;
 import org.apache.stratos.kubernetes.api.model.Pod;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
 import org.apache.stratos.kubernetes.api.model.ReplicationControllerList;
+import org.apache.stratos.kubernetes.api.model.Service;
 
 public interface KubernetesAPIClientInterface {
 	
@@ -88,4 +89,12 @@ public interface KubernetesAPIClientInterface {
 	 * @throws KubernetesClientException
 	 */
 	public void deleteReplicationController(String controllerId) throws KubernetesClientException;
+	
+	/**
+	 * Get the Service with the given id.
+	 * @param serviceId id of the service.
+	 * @return {@link Service}
+	 * @throws KubernetesClientException
+	 */
+	public Service getService(String serviceId) throws KubernetesClientException;
 }

@@ -133,6 +133,10 @@ public class Main {
         System.out.println("Test DELETE ReplicationController");
         client.deleteReplicationController("nirmalController");
         
+        // test get service
+        System.out.println("Test GET Service");
+        System.out.println(client.getService("redisslave"));
+        
 	}
 
 }

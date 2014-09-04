@@ -36,6 +36,7 @@ public class ReplicationController {
 	private String id;
 	private String creationTimestamp;
 	private String selfLink;
+	private String apiVersion;
 	private Label labels;
 	private State desiredState;
 	
@@ -82,6 +83,12 @@ public class ReplicationController {
 				+ ", creationTimestamp=" + creationTimestamp + ", selfLink="
 				+ selfLink + ", labels=" + labels + ", desiredState="
 				+ desiredState + "]";
+	}
+	public String getApiVersion() {
+		return apiVersion;
+	}
+	public void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
 	}
 	
 }

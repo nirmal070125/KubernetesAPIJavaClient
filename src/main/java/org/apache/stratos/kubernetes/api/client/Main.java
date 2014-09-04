@@ -26,6 +26,7 @@ import org.apache.stratos.kubernetes.api.model.Manifest;
 import org.apache.stratos.kubernetes.api.model.Pod;
 import org.apache.stratos.kubernetes.api.model.Port;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
+import org.apache.stratos.kubernetes.api.model.Selector;
 import org.apache.stratos.kubernetes.api.model.State;
 
 public class Main {
@@ -88,6 +89,49 @@ public class Main {
         for (ReplicationController replicationController : controllers) {
 			System.out.println("Replication Controller: "+replicationController.getId());
 		}
+        
+        // test create controller
+        System.out.println("Test POST ReplicationController");
+        ReplicationController contr = new ReplicationController();
+        contr.setId("nirmalController");
+        contr.setKind("ReplicationController");
+        contr.setApiVersion("v1beta1");
+        desiredState = new State();
+        desiredState.setReplicas(3);
+        Selector selector = new Selector();
+        selector.setName("frontend");
+        desiredState.setReplicaSelector(selector);
+        
+        Pod podTemplate = new Pod();
+        State podState = new State();
+        Manifest manifest = new Manifest();
+        manifest.setVersion("v1beta1");
+        manifest.setId("nirmalfrontendController");
+        Container container = new Container();
+        container.setName("nirmal-php-redis");
+        container.setImage("brendanburns/php-redis");
+        p = new Port();
+        p.setContainerPort(81);
+        p.setHostPort(8001);
+        container.setPorts(new Port[]{p});
+        manifest.setContainers(new Container[]{container});
+        podState.setManifest(manifest);
+        podTemplate.setDesiredState(podState);
+        Label l1 = new  Label();
+        l1.setName("frontend");
+        podTemplate.setLabels(l1);
+        
+        desiredState.setPodTemplate(podTemplate);
+        contr.setDesiredState(desiredState);
+        Label l2 = new Label();
+        l2.setName("frontend");
+        contr.setLabels(l2);
+        
+        client.createReplicationController(contr);
+        
+        // Test delete controller
+        System.out.println("Test DELETE ReplicationController");
+        client.deleteReplicationController("nirmalController");
         
 	}
 

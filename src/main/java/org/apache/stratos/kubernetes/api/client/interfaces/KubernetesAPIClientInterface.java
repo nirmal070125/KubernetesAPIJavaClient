@@ -75,4 +75,17 @@ public interface KubernetesAPIClientInterface {
 	 */
 	public ReplicationController[] getAllReplicationControllers() throws KubernetesClientException;
 	
+	/**
+	 * Create a new Replication Controller
+	 * @param controller controller to be created
+	 * @throws KubernetesClientException
+	 */
+	public void createReplicationController(ReplicationController controller) throws KubernetesClientException;
+	
+	/**
+	 * Delete a Replication Controller.
+	 * @param replication controller id controller id to be deleted.
+	 * @throws KubernetesClientException
+	 */
+	public void deleteReplicationController(String controllerId) throws KubernetesClientException;
 }

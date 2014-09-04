@@ -109,7 +109,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 				throw new KubernetesClientException(msg);
 			}
 		} catch (Exception e) {
-			String msg = "Error while retrieving Pod info with Pod ID: "+podId;
+			String msg = "Error while retrieving Pod info of Pod ID: "+podId;
 			log.error(msg, e);
 			throw new KubernetesClientException(msg, e);
 		}
@@ -149,6 +149,52 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			return res.getEntity().getItems();
 		} catch (Exception e) {
 			String msg = "Error while retrieving Replication Controllers.";
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+		}
+	}
+
+	@Override
+	public void createReplicationController(ReplicationController controller)
+			throws KubernetesClientException {
+
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl
+					+ "replicationControllers/");
+			ClientResponse<?> res = request
+					.body("application/json", controller).post();
+
+			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED) {
+				String msg = "Replication Controller [" + controller
+						+ "] creation failed. Error: "
+						+ res.getResponseStatus().getReasonPhrase();
+				log.error(msg);
+				throw new KubernetesClientException(msg);
+			}
+		} catch (Exception e) {
+			String msg = "Error while creating Replication Controller: "
+					+ controller;
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+
+		}
+	}
+
+	@Override
+	public void deleteReplicationController(String controllerId)
+			throws KubernetesClientException {
+		
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"replicationControllers/{controllerId}");
+			ClientResponse<?> res = request.pathParameter("controllerId", controllerId).delete();
+			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED) {
+				String msg = "Replication Controller ["+controllerId+"] deletion failed. Error: "+
+								res.getResponseStatus().getReasonPhrase();
+				log.error(msg);
+				throw new KubernetesClientException(msg);
+			}
+		} catch (Exception e) {
+			String msg = "Error while retrieving Replication Controller info of Controller ID: "+controllerId;
 			log.error(msg, e);
 			throw new KubernetesClientException(msg, e);
 		}

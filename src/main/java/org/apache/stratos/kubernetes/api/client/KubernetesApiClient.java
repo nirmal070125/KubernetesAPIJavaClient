@@ -30,6 +30,7 @@ import org.apache.stratos.kubernetes.api.model.PodList;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
 import org.apache.stratos.kubernetes.api.model.ReplicationControllerList;
 import org.apache.stratos.kubernetes.api.model.Service;
+import org.apache.stratos.kubernetes.api.model.ServiceList;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
@@ -215,6 +216,62 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			return res.getEntity();
 		} catch (Exception e) {
 			String msg = "Error while retrieving Service info with Service ID: "+serviceId;
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+		}
+	}
+
+	@Override
+	public Service[] getAllServices() throws KubernetesClientException {
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"services/");
+			ClientResponse<ServiceList> res = request.get(ServiceList.class);
+			if (res.getEntity() == null ) {
+				return new Service[0];
+			}
+			return res.getEntity().getItems();
+		} catch (Exception e) {
+			String msg = "Error while retrieving Services.";
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+		}
+	}
+
+	@Override
+	public void createService(Service service) throws KubernetesClientException {
+
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"services/");
+			ClientResponse<?> res = request.body("application/json", service).post();
+			
+			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED) {
+				String msg = "Service ["+service+"] creation failed. Error: "+
+								res.getResponseStatus().getReasonPhrase();
+				log.error(msg);
+				throw new KubernetesClientException(msg);
+			}
+		} catch (Exception e) {
+			String msg = "Error while creating the Service: "+service;
+			log.error(msg, e);
+			throw new KubernetesClientException(msg, e);
+		}
+	}
+
+	@Override
+	public void deleteService(String serviceId)
+			throws KubernetesClientException {
+
+		try {
+			ClientRequest request = new ClientRequest(endpointUrl+"services/{serviceId}");
+			ClientResponse<?> res = request.pathParameter("serviceId", serviceId).delete();
+			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED) {
+				String msg = "Service ["+serviceId+"] deletion failed. Error: "+
+								res.getResponseStatus().getReasonPhrase();
+				log.error(msg);
+				throw new KubernetesClientException(msg);
+			}
+		} catch (Exception e) {
+			String msg = "Error while retrieving Service info of Service ID: "+serviceId;
 			log.error(msg, e);
 			throw new KubernetesClientException(msg, e);
 		}

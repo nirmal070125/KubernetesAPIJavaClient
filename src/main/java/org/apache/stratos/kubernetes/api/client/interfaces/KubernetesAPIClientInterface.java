@@ -97,4 +97,25 @@ public interface KubernetesAPIClientInterface {
 	 * @throws KubernetesClientException
 	 */
 	public Service getService(String serviceId) throws KubernetesClientException;
+	
+	/**
+	 * Get all the services.
+	 * @return array of {@link Service}s
+	 * @throws KubernetesClientException
+	 */
+	public Service[] getAllServices() throws KubernetesClientException;
+	
+	/**
+	 * Create a new Kubernetes service.
+	 * @param service service to be created.
+	 * @throws KubernetesClientException
+	 */
+	public void createService(Service service) throws KubernetesClientException;
+	
+	/**
+	 * Delete a Service.
+	 * @param serviceId service id to be deleted.
+ 	 * @throws KubernetesClientException
+	 */
+	public void deleteService(String serviceId) throws KubernetesClientException;
 }

@@ -27,6 +27,7 @@ import org.apache.stratos.kubernetes.api.model.Pod;
 import org.apache.stratos.kubernetes.api.model.Port;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
 import org.apache.stratos.kubernetes.api.model.Selector;
+import org.apache.stratos.kubernetes.api.model.Service;
 import org.apache.stratos.kubernetes.api.model.State;
 
 public class Main {
@@ -40,6 +41,11 @@ public class Main {
         // test get pod
         System.out.println("Test GET POD");
         System.out.println(client.getPod("redis-master-2"));
+        
+        // test get all Pods
+        System.out.println("Test GET PODS");
+        Pod[] pods = client.getAllPods();
+        printPods(pods);
         
         // test create pod
         System.out.println("Test POST POD");
@@ -66,16 +72,15 @@ public class Main {
         pod.setDesiredState(desiredState);
         client.createPod(pod);
         
-        // test get all Pods
-        System.out.println("Test GET PODS");
-        Pod[] pods = client.getAllPods();
-        for (Pod pod2 : pods) {
-			System.out.println("Pod : "+pod2.getId());
-		}
+        pods = client.getAllPods();
+        printPods(pods);
         
         // test delete Pod
         System.out.println("Test DELETE POD");
         client.deletePod("nirmal-test-pod");
+        
+        pods = client.getAllPods();
+        printPods(pods);
         
         /* Replication Controllers */
         // test get controller
@@ -86,9 +91,7 @@ public class Main {
         // test get all controllers
         System.out.println("Test GET ReplicationControllers");
         ReplicationController[] controllers = client.getAllReplicationControllers();
-        for (ReplicationController replicationController : controllers) {
-			System.out.println("Replication Controller: "+replicationController.getId());
-		}
+        printControllers(controllers);
         
         // test create controller
         System.out.println("Test POST ReplicationController");
@@ -129,14 +132,67 @@ public class Main {
         
         client.createReplicationController(contr);
         
+        controllers = client.getAllReplicationControllers();
+        printControllers(controllers);
+        
         // Test delete controller
         System.out.println("Test DELETE ReplicationController");
         client.deleteReplicationController("nirmalController");
+        
+        controllers = client.getAllReplicationControllers();
+        printControllers(controllers);
         
         // test get service
         System.out.println("Test GET Service");
         System.out.println(client.getService("redisslave"));
         
+        // test get all services
+        System.out.println("Test GET All Services");
+        Service[] services = client.getAllServices();
+        printServices(services);
+        
+        // test create service
+        System.out.println("Test POST Service");
+        Service service = new Service();
+        service.setApiVersion("v1beta1");
+        service.setId("nirmalfrontend");
+        service.setKind("Service");
+        service.setPort(9999);
+        selector = new Selector();
+        selector.setName("frontend");
+        service.setSelector(selector);
+        
+        client.createService(service);
+        
+        services = client.getAllServices();
+        printServices(services);
+        
+        // Test delete Service
+        System.out.println("Test DELETE Service");
+        client.deleteService("nirmalfrontend");
+        
+        services = client.getAllServices();
+        printServices(services);
+        
+	}
+
+	private static void printControllers(ReplicationController[] controllers) {
+		for (ReplicationController replicationController : controllers) {
+			System.out.println("Replication Controller: "+replicationController.getId());
+		}
+	}
+
+	private static void printPods(Pod[] pods) {
+		for (Pod pod2 : pods) {
+			System.out.println("Pod : "+pod2.getId());
+		}
+	}
+
+	private static void printServices(Service[] services) {
+		for (Service service : services) {
+			
+        	System.out.println("Service : "+service.getId());
+		}
 	}
 
 }

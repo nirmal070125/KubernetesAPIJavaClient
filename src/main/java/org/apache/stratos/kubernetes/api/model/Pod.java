@@ -23,6 +23,8 @@ package org.apache.stratos.kubernetes.api.model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 
 /**
  * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/pod-schema.json
@@ -34,6 +36,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class Pod {
 
 	private String kind;
+	@JsonProperty
 	private String id;
 	private String creationTimestamp;
 	private String selfLink;

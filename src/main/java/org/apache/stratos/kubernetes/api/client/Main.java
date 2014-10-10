@@ -24,10 +24,12 @@ import org.apache.stratos.kubernetes.api.model.Container;
 import org.apache.stratos.kubernetes.api.model.Label;
 import org.apache.stratos.kubernetes.api.model.Manifest;
 import org.apache.stratos.kubernetes.api.model.Pod;
+import org.apache.stratos.kubernetes.api.model.PodList;
 import org.apache.stratos.kubernetes.api.model.Port;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
 import org.apache.stratos.kubernetes.api.model.Selector;
 import org.apache.stratos.kubernetes.api.model.Service;
+import org.apache.stratos.kubernetes.api.model.ServiceList;
 import org.apache.stratos.kubernetes.api.model.State;
 
 public class Main {
@@ -44,8 +46,8 @@ public class Main {
         
         // test get all Pods
         System.out.println("Test GET PODS");
-        Pod[] pods = client.getAllPods();
-        printPods(pods);
+        PodList podList = client.getAllPods();
+        printPods(podList);
         
         // test create pod
         System.out.println("Test POST POD");
@@ -72,15 +74,15 @@ public class Main {
         pod.setDesiredState(desiredState);
         client.createPod(pod);
         
-        pods = client.getAllPods();
-        printPods(pods);
+        podList = client.getAllPods();
+        printPods(podList);
         
         // test delete Pod
         System.out.println("Test DELETE POD");
         client.deletePod("nirmal-test-pod");
         
-        pods = client.getAllPods();
-        printPods(pods);
+        podList = client.getAllPods();
+        printPods(podList);
         
         /* Replication Controllers */
         // test get controller
@@ -148,7 +150,7 @@ public class Main {
         
         // test get all services
         System.out.println("Test GET All Services");
-        Service[] services = client.getAllServices();
+        ServiceList services = client.getAllServices();
         printServices(services);
         
         // test create service
@@ -182,14 +184,14 @@ public class Main {
 		}
 	}
 
-	private static void printPods(Pod[] pods) {
-		for (Pod pod2 : pods) {
+	private static void printPods(PodList podList) {
+		for (Pod pod2 : podList.getItems()) {
 			System.out.println("Pod : "+pod2.getId());
 		}
 	}
 
-	private static void printServices(Service[] services) {
-		for (Service service : services) {
+	private static void printServices(ServiceList services) {
+		for (Service service : services.getItems()) {
 			
         	System.out.println("Service : "+service.getId());
 		}

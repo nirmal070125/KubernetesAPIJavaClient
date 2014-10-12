@@ -29,6 +29,7 @@ public class Container {
 
 	private String name;
 	private String image;
+	private String imagePullPolicy;
 	private String workingDir;
 	private String[] command;
 	private VolumeMount[] volumeMounts;
@@ -46,6 +47,12 @@ public class Container {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public String getImagePullPolicy() {
+		return imagePullPolicy;
+	}
+	public void setImagePullPolicy(String pullPolicy) {
+		this.imagePullPolicy = pullPolicy;
 	}
 	public String getWorkingDir() {
 		return workingDir;

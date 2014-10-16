@@ -168,7 +168,8 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			ClientResponse<?> res = request
 					.body("application/json", controller).post();
 
-			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED) {
+			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_OK || 
+					res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED ) {
 				String msg = "Replication Controller [" + controller
 						+ "] creation failed. Error: "
 						+ res.getResponseStatus().getReasonPhrase();

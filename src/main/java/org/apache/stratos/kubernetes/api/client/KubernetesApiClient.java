@@ -62,15 +62,17 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 	}
 	
 	@Override
-	public Pod[] getAllPods() throws KubernetesClientException {
+	public PodList getAllPods() throws KubernetesClientException {
 		
 		try {
 			ClientRequest request = new ClientRequest(endpointUrl+"pods/");
 			ClientResponse<PodList> res = request.get(PodList.class);
 			if (res.getEntity() == null ) {
-				return new Pod[0];
+				return new PodList();
 			}
-			return res.getEntity().getItems();
+			PodList podList = new PodList();
+			podList.setItems(res.getEntity().getItems());
+			return podList;
 		} catch (Exception e) {
 			String msg = "Error while retrieving Pods.";
 			log.error(msg, e);
@@ -222,14 +224,16 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 	}
 
 	@Override
-	public Service[] getAllServices() throws KubernetesClientException {
+	public ServiceList getAllServices() throws KubernetesClientException {
 		try {
 			ClientRequest request = new ClientRequest(endpointUrl+"services/");
 			ClientResponse<ServiceList> res = request.get(ServiceList.class);
 			if (res.getEntity() == null ) {
-				return new Service[0];
+				return new ServiceList();
 			}
-			return res.getEntity().getItems();
+			ServiceList serviceList = new ServiceList();
+			serviceList.setItems(res.getEntity().getItems());
+			return serviceList;
 		} catch (Exception e) {
 			String msg = "Error while retrieving Services.";
 			log.error(msg, e);

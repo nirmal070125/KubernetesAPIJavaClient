@@ -20,11 +20,21 @@
  */
 package org.apache.stratos.kubernetes.api.client.interfaces;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.apache.stratos.kubernetes.api.exceptions.KubernetesClientException;
 import org.apache.stratos.kubernetes.api.model.Pod;
+import org.apache.stratos.kubernetes.api.model.PodList;
 import org.apache.stratos.kubernetes.api.model.ReplicationController;
-import org.apache.stratos.kubernetes.api.model.ReplicationControllerList;
 import org.apache.stratos.kubernetes.api.model.Service;
+import org.apache.stratos.kubernetes.api.model.ServiceList;
 
 public interface KubernetesAPIClientInterface {
 	
@@ -36,20 +46,32 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link Pod}
 	 * @throws KubernetesClientException
 	 */
-	public Pod getPod(String podId) throws KubernetesClientException;
+	@GET 
+	@Path("/pods/{podId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)	
+	public Pod getPod(@PathParam("podId") String podId) throws KubernetesClientException;
 	
 	/**
 	 * Get all Pods
 	 * @return Pods
 	 * @throws KubernetesClientException
 	 */
-	public Pod[] getAllPods() throws KubernetesClientException;
+	@GET 
+	@Path("/pods")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)		
+	public PodList getAllPods() throws KubernetesClientException;
 	
 	/**
 	 * Create a new Pod
 	 * @param pod Pod to be created
 	 * @throws KubernetesClientException
 	 */
+	@POST
+	@Path("/pods")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)		
 	public void createPod(Pod pod) throws KubernetesClientException;
 	
 	/**
@@ -57,6 +79,8 @@ public interface KubernetesAPIClientInterface {
 	 * @param podId Id of the Pod to be deleted
 	 * @throws KubernetesClientException
 	 */
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void deletePod(String podId) throws KubernetesClientException;
 	
 	/* Replication Controller API */
@@ -67,6 +91,8 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link ReplicationController}
 	 * @throws KubernetesClientException
 	 */
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
 	public ReplicationController getReplicationController(String controllerId) throws KubernetesClientException;
 	
 	/**
@@ -74,6 +100,8 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link ReplicationController}s
 	 * @throws KubernetesClientException
 	 */
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
 	public ReplicationController[] getAllReplicationControllers() throws KubernetesClientException;
 	
 	/**
@@ -81,6 +109,8 @@ public interface KubernetesAPIClientInterface {
 	 * @param controller controller to be created
 	 * @throws KubernetesClientException
 	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void createReplicationController(ReplicationController controller) throws KubernetesClientException;
 	
 	/**
@@ -88,6 +118,8 @@ public interface KubernetesAPIClientInterface {
 	 * @param replication controller id controller id to be deleted.
 	 * @throws KubernetesClientException
 	 */
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void deleteReplicationController(String controllerId) throws KubernetesClientException;
 	
 	/* Services API */
@@ -98,20 +130,29 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link Service}
 	 * @throws KubernetesClientException
 	 */
-	public Service getService(String serviceId) throws KubernetesClientException;
+	@GET
+	@Path("/services/{serviceId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Service getService(@PathParam("serviceId") String serviceId) throws KubernetesClientException;
 	
 	/**
 	 * Get all the services.
 	 * @return array of {@link Service}s
 	 * @throws KubernetesClientException
 	 */
-	public Service[] getAllServices() throws KubernetesClientException;
+	@GET
+	@Path("/services")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ServiceList getAllServices() throws KubernetesClientException;
 	
 	/**
 	 * Create a new Kubernetes service.
 	 * @param service service to be created.
 	 * @throws KubernetesClientException
 	 */
+	@POST
+	@Path("/services")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void createService(Service service) throws KubernetesClientException;
 	
 	/**
@@ -119,5 +160,7 @@ public interface KubernetesAPIClientInterface {
 	 * @param serviceId service id to be deleted.
  	 * @throws KubernetesClientException
 	 */
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void deleteService(String serviceId) throws KubernetesClientException;
 }

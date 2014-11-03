@@ -43,7 +43,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		this.endpointUrl = endpointUrl;
 	}
 
-	@Override
+	
 	public Pod getPod(String podId) throws KubernetesClientException{
 		try {
 			ClientRequest request = new ClientRequest(endpointUrl+"pods/{podId}");
@@ -61,7 +61,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 	
-	@Override
+	
 	public PodList getAllPods() throws KubernetesClientException {
 		
 		try {
@@ -80,7 +80,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public void createPod(Pod pod) throws KubernetesClientException {
 
 		try {
@@ -100,7 +100,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public void deletePod(String podId) throws KubernetesClientException {
 
 		try {
@@ -119,7 +119,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public ReplicationController getReplicationController(String controllerId)
 			throws KubernetesClientException {
 
@@ -140,7 +140,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public ReplicationController[] getAllReplicationControllers()
 			throws KubernetesClientException {
 		
@@ -158,7 +158,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public void createReplicationController(ReplicationController controller)
 			throws KubernetesClientException {
 
@@ -185,7 +185,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public void deleteReplicationController(String controllerId)
 			throws KubernetesClientException {
 		
@@ -205,7 +205,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public Service getService(String serviceId)
 			throws KubernetesClientException {
 		try {
@@ -224,7 +224,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public ServiceList getAllServices() throws KubernetesClientException {
 		try {
 			ClientRequest request = new ClientRequest(endpointUrl+"services/");
@@ -242,7 +242,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public void createService(Service service) throws KubernetesClientException {
 
 		try {
@@ -262,7 +262,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 		}
 	}
 
-	@Override
+	
 	public void deleteService(String serviceId)
 			throws KubernetesClientException {
 

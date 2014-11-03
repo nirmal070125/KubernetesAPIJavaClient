@@ -4,6 +4,12 @@
   <artifactId>KubernetesAPIJavaClient</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>KubernetesAPIJavaClient</name>
+
+  <scm>
+	<developerConnection>scm:git:https://github.com/nirmal070125/KubernetesAPIJavaClient</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
   <dependencies>
   	<dependency>
 		<groupId>org.jboss.resteasy</groupId>
@@ -60,8 +66,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source/>
-          <target/>
+          <source />
+          <target />
         </configuration>
       </plugin>
     </plugins>

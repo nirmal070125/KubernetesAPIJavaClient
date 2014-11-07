@@ -18,29 +18,40 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.exceptions;
+package com.nirmal.kubernetes.java.client.model;
 
-public class KubernetesClientException extends Exception {
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-	private static final long serialVersionUID = -7521673271244696906L;
-    private String message;
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class VolumeMount {
 
-    public KubernetesClientException(String message, Exception exception){
-        super(message, exception);
-        this.message = message;
-    }
-
-    public KubernetesClientException(Exception exception){
-        super(exception);
-    }
-    
-    public KubernetesClientException(String msg){
-        super(msg);
-        this.message = msg;
-    }
-    
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
+	private String name;
+	private String mountPath;
+	private boolean readOnly;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getMountPath() {
+		return mountPath;
+	}
+	public void setMountPath(String mountPath) {
+		this.mountPath = mountPath;
+	}
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
+	@Override
+	public String toString() {
+		return "VolumeMount [name=" + name + ", mountPath=" + mountPath
+				+ ", readOnly=" + readOnly + "]";
+	}
+	
+	
 }

@@ -1,15 +1,16 @@
-package org.apache.stratos.kubernetes.api.client.v2;
+package com.nirmal.kubernetes.java.client.v2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.apache.stratos.kubernetes.api.client.interfaces.KubernetesAPIClientInterface;
-import org.apache.stratos.kubernetes.api.exceptions.KubernetesClientException;
-import org.apache.stratos.kubernetes.api.model.Pod;
-import org.apache.stratos.kubernetes.api.model.PodList;
-import org.apache.stratos.kubernetes.api.model.ReplicationController;
-import org.apache.stratos.kubernetes.api.model.Service;
-import org.apache.stratos.kubernetes.api.model.ServiceList;
+import com.nirmal.kubernetes.java.client.exceptions.KubernetesClientException;
+import com.nirmal.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
+import com.nirmal.kubernetes.java.client.model.Label;
+import com.nirmal.kubernetes.java.client.model.Pod;
+import com.nirmal.kubernetes.java.client.model.PodList;
+import com.nirmal.kubernetes.java.client.model.ReplicationController;
+import com.nirmal.kubernetes.java.client.model.Service;
+import com.nirmal.kubernetes.java.client.model.ServiceList;
 
 public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
@@ -100,6 +101,16 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
         } catch (Exception e) {
             throw new KubernetesClientException(e);
         }
+    }
+
+    public void updateReplicationController(String controllerId, int replicas) throws KubernetesClientException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public PodList getSelectedPods(Label[] label) throws KubernetesClientException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

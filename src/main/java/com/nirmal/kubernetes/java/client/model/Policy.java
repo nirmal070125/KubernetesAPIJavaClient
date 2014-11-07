@@ -18,26 +18,25 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
-/**
- * @author nirmal
- *
- */
-public class Selector {
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-	private String name;
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class Policy {
 
-	public String getName() {
-		return name;
+	private String type;
+
+	public String getType() {
+		return type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Override
 	public String toString() {
-		return "Selector [name=" + name + "]";
+		return "Policy [type=" + type + "]";
 	}
 }

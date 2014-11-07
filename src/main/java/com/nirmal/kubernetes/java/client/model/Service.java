@@ -18,27 +18,31 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
+ * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/service-schema.json
  * @author nirmal
  *
  */
 @XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReplicationController {
+public class Service {
 
 	private String kind;
 	private String id;
 	private String creationTimestamp;
 	private String selfLink;
+	private String name;
+	private int port;
+	private String containerPort;
+	private Selector selector;
 	private String apiVersion;
 	private Label labels;
-	private State desiredState;
 	
 	public String getKind() {
 		return kind;
@@ -64,31 +68,49 @@ public class ReplicationController {
 	public void setSelfLink(String selfLink) {
 		this.selfLink = selfLink;
 	}
+	public String getApiVersion() {
+		return apiVersion;
+	}
+	public void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
+	}
 	public Label getLabels() {
 		return labels;
 	}
 	public void setLabels(Label labels) {
 		this.labels = labels;
 	}
-	public State getDesiredState() {
-		return desiredState;
+	public String getName() {
+		return name;
 	}
-	public void setDesiredState(State desiredState) {
-		this.desiredState = desiredState;
+	public void setName(String name) {
+		this.name = name;
 	}
-	
+	public int getPort() {
+		return port;
+	}
+	public void setPort(int port) {
+		this.port = port;
+	}
+	public String getContainerPort() {
+		return containerPort;
+	}
+	public void setContainerPort(String containerPort) {
+		this.containerPort = containerPort;
+	}
+	public Selector getSelector() {
+		return selector;
+	}
+	public void setSelector(Selector selector) {
+		this.selector = selector;
+	}
 	@Override
 	public String toString() {
-		return "ReplicationController [kind=" + kind + ", id=" + id
-				+ ", creationTimestamp=" + creationTimestamp + ", selfLink="
-				+ selfLink + ", labels=" + labels + ", desiredState="
-				+ desiredState + "]";
-	}
-	public String getApiVersion() {
-		return apiVersion;
-	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
+		return "Service [kind=" + kind + ", id=" + id + ", creationTimestamp="
+				+ creationTimestamp + ", selfLink=" + selfLink + ", name="
+				+ name + ", port=" + port + ", containerPort=" + containerPort
+				+ ", selector=" + selector + ", apiVersion=" + apiVersion
+				+ ", labels=" + labels + "]";
 	}
 	
 }

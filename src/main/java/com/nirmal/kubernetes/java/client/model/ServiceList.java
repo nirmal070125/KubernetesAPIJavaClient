@@ -18,27 +18,44 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
+
+import java.util.Arrays;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+@XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Volume {
+public class ServiceList {
 
-	private String name;
-
-	public String getName() {
-		return name;
+	private String kind;
+	private String apiVersion;
+	private Service[] items;
+	
+	public String getKind() {
+		return kind;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
-
+	public String getApiVersion() {
+		return apiVersion;
+	}
+	public void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
+	}
+	public Service[] getItems() {
+		return items;
+	}
+	public void setItems(Service[] items) {
+		this.items = items;
+	}
 	@Override
 	public String toString() {
-		return "Volume [name=" + name + "]";
+		return "ServiceList [kind=" + kind + ", apiVersion=" + apiVersion
+				+ ", items=" + Arrays.toString(items) + "]";
 	}
-	
 	
 }

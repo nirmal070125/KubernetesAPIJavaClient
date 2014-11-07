@@ -18,23 +18,25 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.client.interfaces;
+package com.nirmal.kubernetes.java.client.interfaces;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.stratos.kubernetes.api.exceptions.KubernetesClientException;
-import org.apache.stratos.kubernetes.api.model.Pod;
-import org.apache.stratos.kubernetes.api.model.PodList;
-import org.apache.stratos.kubernetes.api.model.ReplicationController;
-import org.apache.stratos.kubernetes.api.model.Service;
-import org.apache.stratos.kubernetes.api.model.ServiceList;
+import com.nirmal.kubernetes.java.client.exceptions.KubernetesClientException;
+import com.nirmal.kubernetes.java.client.model.Label;
+import com.nirmal.kubernetes.java.client.model.Pod;
+import com.nirmal.kubernetes.java.client.model.PodList;
+import com.nirmal.kubernetes.java.client.model.ReplicationController;
+import com.nirmal.kubernetes.java.client.model.Service;
+import com.nirmal.kubernetes.java.client.model.ServiceList;
 
 public interface KubernetesAPIClientInterface {
 	
@@ -114,6 +116,16 @@ public interface KubernetesAPIClientInterface {
 	public void createReplicationController(ReplicationController controller) throws KubernetesClientException;
 	
 	/**
+     * Update a Replication Controller (update the number of replicas).
+     * @param controllerId id of the controller to be updated
+     * @param replicas update the replicas count of the current controller.
+     * @throws KubernetesClientException
+     */
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+    public void updateReplicationController(String controllerId, int replicas) throws KubernetesClientException;
+	
+	/**
 	 * Delete a Replication Controller.
 	 * @param replication controller id controller id to be deleted.
 	 * @throws KubernetesClientException
@@ -163,4 +175,15 @@ public interface KubernetesAPIClientInterface {
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void deleteService(String serviceId) throws KubernetesClientException;
+	
+	/**
+     * Run a label query and retrieve a sub set of Pods.
+     * @param label of labels for the label query
+     * @return Pods selected Pods by executing the label query.
+     * @throws KubernetesClientException
+     */
+	@GET
+	@Path("/pods")
+	@Consumes(MediaType.APPLICATION_JSON)
+    public PodList getSelectedPods(Label[] label) throws KubernetesClientException;
 }

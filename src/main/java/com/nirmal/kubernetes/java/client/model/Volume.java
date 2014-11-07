@@ -18,29 +18,26 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
-public class EnvironmentVariable {
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class Volume {
 
 	private String name;
-	private String value;
-		
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
+
 	@Override
 	public String toString() {
-		return "EnvironmentVariable [name=" + name + ", value=" + value + "]";
+		return "Volume [name=" + name + "]";
 	}
 	
 	

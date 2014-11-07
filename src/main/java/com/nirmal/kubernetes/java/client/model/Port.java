@@ -18,16 +18,17 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class VolumeMount {
+public class Port {
 
 	private String name;
-	private String mountPath;
-	private boolean readOnly;
+	private String protocol;
+	private int containerPort;
+	private int hostPort;
 	
 	public String getName() {
 		return name;
@@ -35,22 +36,29 @@ public class VolumeMount {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getMountPath() {
-		return mountPath;
+	public String getProtocol() {
+		return protocol;
 	}
-	public void setMountPath(String mountPath) {
-		this.mountPath = mountPath;
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
 	}
-	public boolean isReadOnly() {
-		return readOnly;
+	public int getContainerPort() {
+		return containerPort;
 	}
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
+	public void setContainerPort(int containerPort) {
+		this.containerPort = containerPort;
+	}
+	public int getHostPort() {
+		return hostPort;
+	}
+	public void setHostPort(int hostPort) {
+		this.hostPort = hostPort;
 	}
 	@Override
 	public String toString() {
-		return "VolumeMount [name=" + name + ", mountPath=" + mountPath
-				+ ", readOnly=" + readOnly + "]";
+		return "Port [name=" + name + ", protocol=" + protocol
+				+ ", containerPort=" + containerPort + ", hostPort=" + hostPort
+				+ "]";
 	}
 	
 	

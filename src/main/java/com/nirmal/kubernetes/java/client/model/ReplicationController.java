@@ -18,36 +18,28 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-
 
 /**
- * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/pod-schema.json
  * @author nirmal
  *
  */
 @XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Pod {
+public class ReplicationController {
 
-	private String kind;
-	@JsonProperty
-	private String id;
-	private String creationTimestamp;
-	private String selfLink;
-	private String resourceVersion;
-	private String apiVersion;
-	private State desiredState;
-	private State currentState;
-	private String status;
-	private String message;
-	private String code;
-	private Label labels;
+    private String kind;
+    private String id;
+    private int resourceVersion;
+    private String creationTimestamp;
+    private String selfLink;
+    private String apiVersion;
+    private Label labels;
+    private State desiredState;
 	
 	public String getKind() {
 		return kind;
@@ -73,23 +65,25 @@ public class Pod {
 	public void setSelfLink(String selfLink) {
 		this.selfLink = selfLink;
 	}
+	public Label getLabels() {
+		return labels;
+	}
+	public void setLabels(Label labels) {
+		this.labels = labels;
+	}
 	public State getDesiredState() {
 		return desiredState;
 	}
 	public void setDesiredState(State desiredState) {
 		this.desiredState = desiredState;
 	}
-	public State getCurrentState() {
-		return currentState;
-	}
-	public void setCurrentState(State currentState) {
-		this.currentState = currentState;
-	}
-	public String getResourceVersion() {
-		return resourceVersion;
-	}
-	public void setResourceVersion(String resourceVersion) {
-		this.resourceVersion = resourceVersion;
+	
+	@Override
+	public String toString() {
+		return "ReplicationController [kind=" + kind + ", id=" + id
+				+ ", creationTimestamp=" + creationTimestamp + ", selfLink="
+				+ selfLink + ", labels=" + labels + ", desiredState="
+				+ desiredState + "]";
 	}
 	public String getApiVersion() {
 		return apiVersion;
@@ -97,40 +91,11 @@ public class Pod {
 	public void setApiVersion(String apiVersion) {
 		this.apiVersion = apiVersion;
 	}
-	public Label getLabels() {
-		return labels;
-	}
-	public void setLabels(Label labels) {
-		this.labels = labels;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	@Override
-	public String toString() {
-		return "Pod [kind=" + kind + ", id=" + id + ", creationTimestamp="
-				+ creationTimestamp + ", selfLink=" + selfLink
-				+ ", resourceVersion=" + resourceVersion + ", apiVersion="
-				+ apiVersion + ", desiredState=" + desiredState
-				+ ", currentState=" + currentState + ", status=" + status
-				+ ", message=" + message + ", code=" + code + ", labels="
-				+ labels + "]";
-	}
-	
+    public int getResourceVersion() {
+        return resourceVersion;
+    }
+    public void setResourceVersion(int resourceVersion) {
+        this.resourceVersion = resourceVersion;
+    }
 	
 }

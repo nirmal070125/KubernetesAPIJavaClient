@@ -18,19 +18,19 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.client;
+package com.nirmal.kubernetes.java.client;
 
-import org.apache.stratos.kubernetes.api.model.Container;
-import org.apache.stratos.kubernetes.api.model.Label;
-import org.apache.stratos.kubernetes.api.model.Manifest;
-import org.apache.stratos.kubernetes.api.model.Pod;
-import org.apache.stratos.kubernetes.api.model.PodList;
-import org.apache.stratos.kubernetes.api.model.Port;
-import org.apache.stratos.kubernetes.api.model.ReplicationController;
-import org.apache.stratos.kubernetes.api.model.Selector;
-import org.apache.stratos.kubernetes.api.model.Service;
-import org.apache.stratos.kubernetes.api.model.ServiceList;
-import org.apache.stratos.kubernetes.api.model.State;
+import com.nirmal.kubernetes.java.client.model.Container;
+import com.nirmal.kubernetes.java.client.model.Label;
+import com.nirmal.kubernetes.java.client.model.Manifest;
+import com.nirmal.kubernetes.java.client.model.Pod;
+import com.nirmal.kubernetes.java.client.model.PodList;
+import com.nirmal.kubernetes.java.client.model.Port;
+import com.nirmal.kubernetes.java.client.model.ReplicationController;
+import com.nirmal.kubernetes.java.client.model.Selector;
+import com.nirmal.kubernetes.java.client.model.Service;
+import com.nirmal.kubernetes.java.client.model.ServiceList;
+import com.nirmal.kubernetes.java.client.model.State;
 
 public class Main {
 

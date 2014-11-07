@@ -18,44 +18,54 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
 import java.util.Arrays;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@XmlRootElement
+/**
+ * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/manifest-schema.json
+ * @author nirmal
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ServiceList {
+public class Manifest {
 
-	private String kind;
-	private String apiVersion;
-	private Service[] items;
+	private String version;
+	private String id;
+	private Container[] containers;
+	private Volume[] volumes;
 	
-	public String getKind() {
-		return kind;
+	public String getVersion() {
+		return version;
 	}
-	public void setKind(String kind) {
-		this.kind = kind;
+	public void setVersion(String version) {
+		this.version = version;
 	}
-	public String getApiVersion() {
-		return apiVersion;
+	public String getId() {
+		return id;
 	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public Service[] getItems() {
-		return items;
+	public Container[] getContainers() {
+		return containers;
 	}
-	public void setItems(Service[] items) {
-		this.items = items;
+	public void setContainers(Container[] containers) {
+		this.containers = containers;
+	}
+	public Volume[] getVolumes() {
+		return volumes;
+	}
+	public void setVolumes(Volume[] volumes) {
+		this.volumes = volumes;
 	}
 	@Override
 	public String toString() {
-		return "ServiceList [kind=" + kind + ", apiVersion=" + apiVersion
-				+ ", items=" + Arrays.toString(items) + "]";
+		return "Manifest [version=" + version + ", id=" + id + ", containers="
+				+ Arrays.toString(containers) + ", volumes="
+				+ Arrays.toString(volumes) + "]";
 	}
 	
 }

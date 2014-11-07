@@ -18,25 +18,44 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
+
+import java.util.Arrays;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+@XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Policy {
+public class ReplicationControllerList {
 
-	private String type;
-
-	public String getType() {
-		return type;
+	private String kind;
+	private String apiVersion;
+	private ReplicationController[] items;
+	
+	public String getKind() {
+		return kind;
 	}
-
-	public void setType(String type) {
-		this.type = type;
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
-
+	public String getApiVersion() {
+		return apiVersion;
+	}
+	public void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
+	}
+	public ReplicationController[] getItems() {
+		return items;
+	}
+	public void setItems(ReplicationController[] items) {
+		this.items = items;
+	}
 	@Override
 	public String toString() {
-		return "Policy [type=" + type + "]";
+		return "ReplicationControllerList [kind=" + kind + ", apiVersion="
+				+ apiVersion + ", items=" + Arrays.toString(items) + "]";
 	}
+	
 }

@@ -1,4 +1,4 @@
-package org.apache.stratos.kubernetes.api.client.v2;
+package com.nirmal.kubernetes.java.client.v2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -7,11 +7,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.stratos.kubernetes.api.client.interfaces.KubernetesAPIClientInterface;
 import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine;
+
+import com.nirmal.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
 
 public class RestFactory {
 

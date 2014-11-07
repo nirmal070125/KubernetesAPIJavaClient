@@ -18,12 +18,13 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class Label {
+/**
+ * @author nirmal
+ *
+ */
+public class Selector {
 
 	private String name;
 
@@ -37,7 +38,6 @@ public class Label {
 
 	@Override
 	public String toString() {
-		return "Label [name=" + name + "]";
+		return "Selector [name=" + name + "]";
 	}
-	
 }

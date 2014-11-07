@@ -18,44 +18,30 @@
  * under the License.
  *
  */
-package org.apache.stratos.kubernetes.api.model;
+package com.nirmal.kubernetes.java.client.model;
 
-import java.util.Arrays;
+public class EnvironmentVariable {
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class PodList {
-
-	private String kind;
-	private String apiVersion;
-	private Pod[] items;
+	private String name;
+	private String value;
+		
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
 	
-	public String getKind() {
-		return kind;
-	}
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
-	public String getApiVersion() {
-		return apiVersion;
-	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
-	}
-	public Pod[] getItems() {
-		return items;
-	}
-	public void setItems(Pod[] items) {
-		this.items = items;
-	}
 	@Override
 	public String toString() {
-		return "PodList [kind=" + kind + ", apiVersion=" + apiVersion
-				+ ", items=" + Arrays.toString(items) + "]";
+		return "EnvironmentVariable [name=" + name + ", value=" + value + "]";
 	}
+	
 	
 }

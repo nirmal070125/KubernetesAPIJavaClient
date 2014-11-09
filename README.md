@@ -5,7 +5,7 @@ Java REST API client for Google's Kubernetes API (https://github.com/GoogleCloud
 
 You can use this library to call a Kubernetes API hosted in a Kubernetes master node using Java programming language.
 
-Current client interface can be found at https://github.com/nirmal070125/KubernetesAPIJavaClient/blob/master/src/main/java/com/nirmal/kubernetes/java/client/interfaces/KubernetesAPIClientInterface.java
+Current client interface can be found at https://github.com/nirmal070125/KubernetesAPIJavaClient/blob/master/src/main/java/com/github/kubernetes/java/client/interfaces/KubernetesAPIClientInterface.java
 
 Running Live Tests
 ==================

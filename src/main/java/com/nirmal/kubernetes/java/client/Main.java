@@ -32,11 +32,15 @@ import com.nirmal.kubernetes.java.client.model.Service;
 import com.nirmal.kubernetes.java.client.model.ServiceList;
 import com.nirmal.kubernetes.java.client.model.State;
 
+/**
+ * This class is deprecated, please refer to the test cases in src/test folder.
+ */
+@Deprecated
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		final String KUBERNETES_API_ENDPOINT = "http://54.255.46.34:8080/api/v1beta1/";
+		final String KUBERNETES_API_ENDPOINT = "http://192.168.1.100:8080/api/v1beta1/";
 
         KubernetesApiClient client = new KubernetesApiClient(KUBERNETES_API_ENDPOINT);
         
@@ -64,7 +68,7 @@ public class Main {
         m.setVersion("v1beta1");
         Container c = new Container();
         c.setName("master");
-        c.setImage("dockerfile/redis");
+        c.setImage("gurpartap/redis");
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
@@ -114,7 +118,7 @@ public class Main {
         manifest.setId("nirmalfrontendController");
         Container container = new Container();
         container.setName("nirmal-php-redis");
-        container.setImage("brendanburns/php-redis");
+        container.setImage("gurpartap/redis");
         p = new Port();
         p.setContainerPort(81);
         p.setHostPort(8001);

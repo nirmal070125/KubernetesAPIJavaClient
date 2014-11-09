@@ -21,6 +21,7 @@
 package com.nirmal.kubernetes.java.client.model;
 
 import java.util.Arrays;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -50,7 +51,7 @@ public class ServiceList {
 		return items;
 	}
 	public void setItems(Service[] items) {
-		this.items = items;
+		this.items = ArrayUtils.clone(items);
 	}
 	@Override
 	public String toString() {

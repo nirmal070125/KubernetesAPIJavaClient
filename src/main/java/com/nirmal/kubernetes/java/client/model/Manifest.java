@@ -21,6 +21,7 @@
 package com.nirmal.kubernetes.java.client.model;
 
 import java.util.Arrays;
+import org.apache.commons.lang3.ArrayUtils;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -53,13 +54,13 @@ public class Manifest {
 		return containers;
 	}
 	public void setContainers(Container[] containers) {
-		this.containers = containers;
+		this.containers = ArrayUtils.clone(containers);
 	}
 	public Volume[] getVolumes() {
 		return volumes;
 	}
 	public void setVolumes(Volume[] volumes) {
-		this.volumes = volumes;
+		this.volumes = ArrayUtils.clone(volumes);
 	}
 	@Override
 	public String toString() {

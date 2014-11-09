@@ -22,9 +22,6 @@ package com.nirmal.kubernetes.java.client;
 
 import java.util.Arrays;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
@@ -58,7 +55,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			
 			handleNullResponse("Pod ["+podId+"] retrieval failed.", res);
 			
-			if (res.getEntity() == null ) {
+			if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
 				String msg = "Pod ["+podId+"] doesn't exist.";
 				log.error(msg);
 				throw new KubernetesClientException(msg);
@@ -80,7 +77,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			ClientRequest request = new ClientRequest(endpointUrl+"pods/");
 			ClientResponse<PodList> res = request.get(PodList.class);
 			handleNullResponse("Pod retrieval failed.", res);
-			if (res.getEntity() == null ) {
+			if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
 				return new PodList();
 			}
 			PodList podList = new PodList();
@@ -165,7 +162,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			
 			handleNullResponse("Replication Controller ["+controllerId+"] retrieval failed.", res);
 			
-			if (res.getEntity() == null ) {
+			if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
 				String msg = "Replication Controller ["+controllerId+"] doesn't exist.";
 				log.error(msg);
 				throw new KubernetesClientException(msg);
@@ -190,7 +187,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			
 			handleNullResponse("Replication Controller retrieval failed.", res);
 			
-			if (res.getEntity() == null ) {
+			if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
 				return new ReplicationController[0];
 			}
 			return res.getEntity().getItems();
@@ -218,7 +215,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
                 return;
             }
 
-			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_OK && 
+			if (res.getResponseStatus().getStatusCode() != HttpStatus.SC_ACCEPTED && 
                     res.getResponseStatus().getStatusCode() != HttpStatus.SC_OK ) {
 				String msg = "Replication Controller [" + controller
 						+ "] creation failed. Error: "
@@ -316,7 +313,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			
 			handleNullResponse("Service ["+serviceId+"] retrieval failed.", res);
 			
-			if (res.getEntity() == null ) {
+			if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
 				String msg = "Service ["+serviceId+"] doesn't exist.";
 				log.error(msg);
 				throw new KubernetesClientException(msg);
@@ -339,7 +336,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			
 			handleNullResponse("Service retrieval failed.", res);
 			
-			if (res.getEntity() == null ) {
+			if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
 				return new ServiceList();
 			}
 			ServiceList serviceList = new ServiceList();
@@ -423,7 +420,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
             
             handleNullResponse("Pod retrieval failed.", res);
             
-            if (res.getEntity() == null ) {
+            if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
                 return new PodList();
             }
             PodList podList = new PodList();

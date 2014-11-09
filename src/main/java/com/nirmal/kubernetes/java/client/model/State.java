@@ -33,8 +33,7 @@ public class State {
 	private int replicas;
 	private Selector replicaSelector;
 	private Pod podTemplate;
-	private Policy restartpolicy;
-	@JsonIgnore
+	private Policy restartPolicy;
 	private Object info;
 	
 	public Manifest getManifest() {
@@ -61,11 +60,11 @@ public class State {
 	public void setHostIP(String hostIP) {
 		this.hostIP = hostIP;
 	}
-	public Policy getRestartpolicy() {
-		return restartpolicy;
+	public Policy getRestartPolicy() {
+		return restartPolicy;
 	}
-	public void setRestartpolicy(Policy restartpolicy) {
-		this.restartpolicy = restartpolicy;
+	public void setRestartPolicy(Policy restartPolicy) {
+		this.restartPolicy = restartPolicy;
 	}
 	public String getPodIP() {
 		return podIP;
@@ -104,7 +103,7 @@ public class State {
 				+ host + ", hostIP=" + hostIP + ", podIP=" + podIP
 				+ ", replicas=" + replicas + ", replicaSelector="
 				+ replicaSelector + ", podTemplate=" + podTemplate
-				+ ", restartpolicy=" + restartpolicy + ", info=" + info + "]";
+				+ ", restartPolicy=" + restartPolicy + ", info=" + info + "]";
 	}
 	
 	

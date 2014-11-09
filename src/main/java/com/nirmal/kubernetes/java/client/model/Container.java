@@ -21,6 +21,7 @@
 package com.nirmal.kubernetes.java.client.model;
 
 import java.util.Arrays;
+import org.apache.commons.lang3.ArrayUtils;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -64,25 +65,25 @@ public class Container {
 		return command;
 	}
 	public void setCommand(String[] command) {
-		this.command = command;
+		this.command = ArrayUtils.clone(command);
 	}
 	public VolumeMount[] getVolumeMounts() {
 		return volumeMounts;
 	}
 	public void setVolumeMounts(VolumeMount[] volumeMounts) {
-		this.volumeMounts = volumeMounts;
+		this.volumeMounts = ArrayUtils.clone(volumeMounts);
 	}
 	public Port[] getPorts() {
 		return ports;
 	}
 	public void setPorts(Port[] ports) {
-		this.ports = ports;
+		this.ports = ArrayUtils.clone(ports);
 	}
 	public EnvironmentVariable[] getEnv() {
 		return env;
 	}
 	public void setEnv(EnvironmentVariable[] env) {
-		this.env = env;
+		this.env = ArrayUtils.clone(env);
 	}
 	@Override
 	public String toString() {

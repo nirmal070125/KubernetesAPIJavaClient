@@ -1,15 +1,47 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.nirmal.kubernetes</groupId>
-	<artifactId>com.nirmal.kubernetes.java.client</artifactId>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>9</version>
+	</parent>
+
+	<groupId>com.github.kubernetes</groupId>
+	<artifactId>com.github.kubernetes.java.client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>KubernetesAPIJavaClient</name>
+	<url>https://github.com/nirmal070125/KubernetesAPIJavaClient</url>
+	<description>Java API Client for Google Kubernetes</description>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<scm>
-		<developerConnection>scm:git:https://github.com/nirmal070125/KubernetesAPIJavaClient</developerConnection>
+		<connection>scm:git:git@github.com:nirmal070125/KubernetesAPIJavaClient.git</connection>
+		<url>git@github.com:nirmal070125/KubernetesAPIJavaClient.git</url>
+		<developerConnection>scm:git:git@github.com:nirmal070125/KubernetesAPIJavaClient.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+
+	<developers>
+		<developer>
+			<id>nirmal070125</id>
+			<name>Nirmal Fernando</name>
+			<email>nirmal070125@gmail.com</email>
+		</developer>
+	</developers>
+
+	<properties>
+	    <kubernetes.api.endpoint>http://localhost:8080/api/v1beta1/</kubernetes.api.endpoint>
+	    <docker.image>gurpartap/redis</docker.image>
+  	</properties>
 
 	<dependencies>
 		<dependency>
@@ -67,8 +99,42 @@
 		</dependency>
 	</dependencies>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
+		 	<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.2</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy nexus-staging:release</goals>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -92,7 +158,7 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<configuration>
-							<groups>com.nirmal.kubernetes.java.client.UnitTests</groups>
+							<groups>com.github.kubernetes.java.client.UnitTests</groups>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -106,12 +172,60 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<configuration>
-							<groups>com.nirmal.kubernetes.java.client.LiveTests</groups>
+							<groups>com.github.kubernetes.java.client.LiveTests</groups>
 							<systemPropertyVariables>
 								<kubernetes.api.endpoint>${kubernetes.api.endpoint}</kubernetes.api.endpoint>
 								<docker.image>${docker.image}</docker.image>
 							</systemPropertyVariables>
 						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.2.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.9.1</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>

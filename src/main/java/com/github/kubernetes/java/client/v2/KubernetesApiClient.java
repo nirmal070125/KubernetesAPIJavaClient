@@ -17,13 +17,13 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
     private URI endpointURI;
     private KubernetesAPIClientInterface api;
 
-    public KubernetesApiClient(String endpointUrl) {
+    public KubernetesApiClient(String endpointUrl, String username, String password) {
         try {
             endpointURI = new URI(endpointUrl);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        api = RestFactory.createAPI(endpointURI, null, null);
+        api = RestFactory.createAPI(endpointURI, username, password);
     }
 
     public Pod getPod(String podId) throws KubernetesClientException {

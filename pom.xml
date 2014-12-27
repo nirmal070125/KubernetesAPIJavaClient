@@ -40,7 +40,9 @@
 
 	<properties>
 	    <kubernetes.api.endpoint>http://localhost:8080/api/v1beta1/</kubernetes.api.endpoint>
-	    <docker.image>gurpartap/redis</docker.image>
+	    <kubernetes.api.username>vagrant</kubernetes.api.username>
+	    <kubernetes.api.password>vagrant</kubernetes.api.password>
+	    <docker.image>busybox</docker.image>
   	</properties>
 
 	<dependencies>

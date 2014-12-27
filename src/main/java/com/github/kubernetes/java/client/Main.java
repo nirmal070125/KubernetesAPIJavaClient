@@ -68,7 +68,7 @@ public class Main {
         m.setVersion("v1beta1");
         Container c = new Container();
         c.setName("master");
-        c.setImage("gurpartap/redis");
+        c.setImage("busybox");
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
@@ -118,7 +118,7 @@ public class Main {
         manifest.setId("githubfrontendController");
         Container container = new Container();
         container.setName("github-php-redis");
-        container.setImage("gurpartap/redis");
+        container.setImage("busybox");
         p = new Port();
         p.setContainerPort(81);
         p.setHostPort(8001);

@@ -18,26 +18,27 @@
  * under the License.
  *
  */
-package com.github.kubernetes.java.client.live;
+package com.github.kubernetes.java.client.v2.live;
 
-import com.github.kubernetes.java.client.KubernetesApiClient;
-import com.github.kubernetes.java.client.exceptions.KubernetesClientException;
+import org.junit.experimental.categories.Category;
+
 import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
+import com.github.kubernetes.java.client.live.AbstractKubernetesApiClientLiveTest;
+import com.github.kubernetes.java.client.v2.KubernetesApiClient;
 
-//@Category( com.github.kubernetes.java.client.LiveTests.class )
+@Category( com.github.kubernetes.java.client.LiveTests.class )
 public class KubernetesApiClientLiveTest
     extends AbstractKubernetesApiClientLiveTest
 {
 
-    private KubernetesApiClient client;
+    private KubernetesAPIClientInterface client;
 
     @Override
     protected KubernetesAPIClientInterface getClient()
     {
         if ( client == null )
         {
-            // TODO username and password
-            client = new KubernetesApiClient( endpoint );
+            client = new KubernetesApiClient( endpoint, username, password );
         }
         return client;
     }

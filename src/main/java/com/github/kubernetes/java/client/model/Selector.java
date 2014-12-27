@@ -20,13 +20,18 @@
  */
 package com.github.kubernetes.java.client.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * @author github
  *
  */
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Selector {
 
 	private String name;
+    private String component;
+    private String provider;
 
 	public String getName() {
 		return name;
@@ -36,8 +41,28 @@ public class Selector {
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		return "Selector [name=" + name + "]";
-	}
+    public String getComponent()
+    {
+        return component;
+    }
+
+    public void setComponent( String component )
+    {
+        this.component = component;
+    }
+
+    public String getProvider()
+    {
+        return provider;
+    }
+
+    public void setProvider( String provider )
+    {
+        this.provider = provider;
+    }
+
+    @Override
+    public String toString() {
+        return "Selector [name=" + name + "]";
+    }
 }

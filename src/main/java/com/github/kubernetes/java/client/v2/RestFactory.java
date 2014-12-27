@@ -26,7 +26,7 @@ public class RestFactory {
         this.classLoader = classLoader;
     }
 
-	public KubernetesAPIClientInterface createAPI(URI uri, String userName, String password) {
+	public KubernetesAPI createAPI(URI uri, String userName, String password) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         httpClient.getCredentialsProvider().setCredentials( new AuthScope( uri.getHost(), uri.getPort() ),
                                                             new UsernamePasswordCredentials( userName, password ) );
@@ -34,14 +34,14 @@ public class RestFactory {
 		ApacheHttpClient4Engine engine = new ApacheHttpClient4Engine(httpClient);
         ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
 		client.register(JacksonJaxbJsonProvider.class);
-		ProxyBuilder<KubernetesAPIClientInterface> proxyBuilder = client.target(uri).proxyBuilder(KubernetesAPIClientInterface.class);
+		ProxyBuilder<KubernetesAPI> proxyBuilder = client.target(uri).proxyBuilder(KubernetesAPI.class);
 		if (classLoader != null) {
 		    proxyBuilder = proxyBuilder.classloader(classLoader);
 		}
 		return proxyBuilder.build();
 	}
 
-    public KubernetesAPIClientInterface createAPI(String url, String userName, String password) throws URISyntaxException {
+    public KubernetesAPI createAPI(String url, String userName, String password) throws URISyntaxException {
 		URI uri = new URI(url);
 		return createAPI(uri, userName, password);
 	}

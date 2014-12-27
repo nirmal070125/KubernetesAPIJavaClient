@@ -33,7 +33,7 @@ public class ServiceList {
 
 	private String kind;
 	private String apiVersion;
-	private Service[] items;
+	private Service[] items = new Service[0];
 	
 	public String getKind() {
 		return kind;

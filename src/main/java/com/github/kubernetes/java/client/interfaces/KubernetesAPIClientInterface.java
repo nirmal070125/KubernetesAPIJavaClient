@@ -35,6 +35,7 @@ import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Pod;
 import com.github.kubernetes.java.client.model.PodList;
 import com.github.kubernetes.java.client.model.ReplicationController;
+import com.github.kubernetes.java.client.model.ReplicationControllerList;
 import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
 
@@ -104,7 +105,7 @@ public interface KubernetesAPIClientInterface {
 	 */
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ReplicationController[] getAllReplicationControllers() throws KubernetesClientException;
+	public ReplicationControllerList getAllReplicationControllers() throws KubernetesClientException;
 	
 	/**
 	 * Create a new Replication Controller

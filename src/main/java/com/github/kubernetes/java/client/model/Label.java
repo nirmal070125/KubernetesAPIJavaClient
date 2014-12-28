@@ -22,22 +22,29 @@ package com.github.kubernetes.java.client.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Label {
 
-	private String name;
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    public Label() {
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Label(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		return "Label [name=" + name + "]";
-	}
-	
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Label [name=" + name + "]";
+    }
+
 }

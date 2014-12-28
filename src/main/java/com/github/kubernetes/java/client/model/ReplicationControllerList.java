@@ -33,7 +33,7 @@ public class ReplicationControllerList {
 
 	private String kind;
 	private String apiVersion;
-	private ReplicationController[] items;
+	private ReplicationController[] items = new ReplicationController[0];
 	
 	public String getKind() {
 		return kind;

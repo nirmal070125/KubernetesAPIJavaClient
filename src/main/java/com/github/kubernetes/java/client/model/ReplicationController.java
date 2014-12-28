@@ -40,6 +40,7 @@ public class ReplicationController {
     private String apiVersion;
     private Label labels;
     private State desiredState;
+    private State currentState;
 	
 	public String getKind() {
 		return kind;
@@ -77,6 +78,9 @@ public class ReplicationController {
 	public void setDesiredState(State desiredState) {
 		this.desiredState = desiredState;
 	}
+    public State getCurrentState() {
+        return currentState;
+    }
 	
 	@Override
 	public String toString() {

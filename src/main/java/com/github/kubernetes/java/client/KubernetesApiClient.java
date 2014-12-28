@@ -178,7 +178,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 	}
 
 	
-	public ReplicationController[] getAllReplicationControllers()
+	public ReplicationControllerList getAllReplicationControllers()
 			throws KubernetesClientException {
 		
 		try {
@@ -188,9 +188,11 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 			handleNullResponse("Replication Controller retrieval failed.", res);
 			
 			if (res.getResponseStatus().getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-				return new ReplicationController[0];
+				return new ReplicationControllerList();
 			}
-			return res.getEntity().getItems();
+			ReplicationControllerList replicationControllerList = new ReplicationControllerList();
+			replicationControllerList.setItems(res.getEntity().getItems());
+            return replicationControllerList;
 		} catch (Exception e) {
 			String msg = "Error while retrieving Replication Controllers.";
 			log.error(msg, e);

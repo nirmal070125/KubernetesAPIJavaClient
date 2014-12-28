@@ -18,33 +18,28 @@
  * under the License.
  *
  */
-package com.github.kubernetes.java.client.model;
+package com.github.kubernetes.java.client.v2.live;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.junit.experimental.categories.Category;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Label {
+import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
+import com.github.kubernetes.java.client.live.AbstractKubernetesApiClientLiveTest;
+import com.github.kubernetes.java.client.v2.KubernetesApiClient;
 
-    private String name;
+@Category( com.github.kubernetes.java.client.LiveTests.class )
+public class KubernetesApiClientLiveTest
+    extends AbstractKubernetesApiClientLiveTest
+{
 
-    public Label() {
-    }
-
-    public Label(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private KubernetesAPIClientInterface client;
 
     @Override
-    public String toString() {
-        return "Label [name=" + name + "]";
+    protected KubernetesAPIClientInterface getClient()
+    {
+        if ( client == null )
+        {
+            client = new KubernetesApiClient( endpoint, username, password );
+        }
+        return client;
     }
-
 }

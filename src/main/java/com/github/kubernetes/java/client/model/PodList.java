@@ -33,7 +33,7 @@ public class PodList {
 
 	private String kind;
 	private String apiVersion;
-	private Pod[] items;
+	private Pod[] items = new Pod[0];
 	
 	public String getKind() {
 		return kind;

@@ -18,7 +18,18 @@
  * under the License.
  *
  */
-package com.github.kubernetes.java.client.interfaces;
+package com.github.kubernetes.java.client.v2;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import com.github.kubernetes.java.client.exceptions.KubernetesClientException;
 import com.github.kubernetes.java.client.model.Label;
@@ -29,7 +40,7 @@ import com.github.kubernetes.java.client.model.ReplicationControllerList;
 import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
 
-public interface KubernetesAPIClientInterface {
+public interface KubernetesAPI {
 	
 	/* Pod API */
 
@@ -39,13 +50,21 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link Pod}
 	 * @throws KubernetesClientException
 	 */
-	public Pod getPod(String podId) throws KubernetesClientException;
+	@GET 
+	@Path("/pods/{podId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)	
+	public Pod getPod(@PathParam("podId") String podId) throws KubernetesClientException;
 	
 	/**
 	 * Get all Pods
 	 * @return Pods
 	 * @throws KubernetesClientException
 	 */
+	@GET 
+	@Path("/pods")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)		
 	public PodList getAllPods() throws KubernetesClientException;
 	
 	/**
@@ -53,6 +72,10 @@ public interface KubernetesAPIClientInterface {
 	 * @param pod Pod to be created
 	 * @throws KubernetesClientException
 	 */
+	@POST
+	@Path("/pods")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)		
 	public void createPod(Pod pod) throws KubernetesClientException;
 	
 	/**
@@ -60,7 +83,10 @@ public interface KubernetesAPIClientInterface {
 	 * @param podId Id of the Pod to be deleted
 	 * @throws KubernetesClientException
 	 */
-	public void deletePod(String podId) throws KubernetesClientException;
+	@DELETE
+    @Path("/pods/{podId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deletePod(@PathParam("podId") String podId) throws KubernetesClientException;
 	
 	/* Replication Controller API */
 	
@@ -70,13 +96,19 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link ReplicationController}
 	 * @throws KubernetesClientException
 	 */
-	public ReplicationController getReplicationController(String controllerId) throws KubernetesClientException;
+	@GET
+    @Path("/replicationControllers/{controllerId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+	public ReplicationController getReplicationController(@PathParam("controllerId") String controllerId) throws KubernetesClientException;
 	
 	/**
 	 * Get all Replication Controllers.
 	 * @return {@link ReplicationController}s
 	 * @throws KubernetesClientException
 	 */
+	@GET
+    @Path("/replicationControllers")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public ReplicationControllerList getAllReplicationControllers() throws KubernetesClientException;
 	
 	/**
@@ -84,22 +116,42 @@ public interface KubernetesAPIClientInterface {
 	 * @param controller controller to be created
 	 * @throws KubernetesClientException
 	 */
+	@POST
+    @Path("/replicationControllers")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void createReplicationController(ReplicationController controller) throws KubernetesClientException;
 	
 	/**
-     * Update a Replication Controller (update the number of replicas).
+     * Convenience method to update the number of replicas in a Replication Controller.
      * @param controllerId id of the controller to be updated
      * @param replicas update the replicas count of the current controller.
      * @throws KubernetesClientException
      */
-    public void updateReplicationController(String controllerId, int replicas) throws KubernetesClientException;
+    @PUT
+    @Path("/replicationControllers/{controllerId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateReplicationController(@PathParam("controllerId") String controllerId, int replicas) throws KubernetesClientException;
 	
+    /**
+     * Update a Replication Controller
+     * @param controllerId id of the controller to be updated
+     * @param controller controller to update (only the number of replicas can be updated).
+     * @throws KubernetesClientException
+     */
+    @PUT
+    @Path("/replicationControllers/{controllerId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateReplicationController(@PathParam("controllerId") String controllerId, ReplicationController replicationController) throws KubernetesClientException;
+    
 	/**
 	 * Delete a Replication Controller.
 	 * @param replication controller id controller id to be deleted.
 	 * @throws KubernetesClientException
 	 */
-	public void deleteReplicationController(String controllerId) throws KubernetesClientException;
+	@DELETE
+    @Path("/replicationControllers/{controllerId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteReplicationController(@PathParam("controllerId") String controllerId) throws KubernetesClientException;
 	
 	/* Services API */
 	
@@ -109,13 +161,19 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link Service}
 	 * @throws KubernetesClientException
 	 */
-	public Service getService(String serviceId) throws KubernetesClientException;
+	@GET
+	@Path("/services/{serviceId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Service getService(@PathParam("serviceId") String serviceId) throws KubernetesClientException;
 	
 	/**
 	 * Get all the services.
 	 * @return array of {@link Service}s
 	 * @throws KubernetesClientException
 	 */
+	@GET
+	@Path("/services")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public ServiceList getAllServices() throws KubernetesClientException;
 	
 	/**
@@ -123,6 +181,9 @@ public interface KubernetesAPIClientInterface {
 	 * @param service service to be created.
 	 * @throws KubernetesClientException
 	 */
+	@POST
+	@Path("/services")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void createService(Service service) throws KubernetesClientException;
 	
 	/**
@@ -130,13 +191,19 @@ public interface KubernetesAPIClientInterface {
 	 * @param serviceId service id to be deleted.
  	 * @throws KubernetesClientException
 	 */
-	public void deleteService(String serviceId) throws KubernetesClientException;
+	@DELETE
+    @Path("/services/{serviceId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteService(@PathParam("serviceId") String serviceId) throws KubernetesClientException;
 	
 	/**
      * Run a label query and retrieve a sub set of Pods.
-     * @param label of labels for the label query
+     * @param labels parameter label=label1,label2,label3
      * @return Pods selected Pods by executing the label query.
      * @throws KubernetesClientException
      */
-    public PodList getSelectedPods(Label[] label) throws KubernetesClientException;
+	@GET
+	@Path("/pods")
+	@Consumes(MediaType.APPLICATION_JSON)
+    public PodList getSelectedPods(@QueryParam("labels") String labels) throws KubernetesClientException;
 }

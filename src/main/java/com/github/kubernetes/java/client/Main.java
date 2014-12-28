@@ -27,6 +27,7 @@ import com.github.kubernetes.java.client.model.Pod;
 import com.github.kubernetes.java.client.model.PodList;
 import com.github.kubernetes.java.client.model.Port;
 import com.github.kubernetes.java.client.model.ReplicationController;
+import com.github.kubernetes.java.client.model.ReplicationControllerList;
 import com.github.kubernetes.java.client.model.Selector;
 import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
@@ -68,7 +69,7 @@ public class Main {
         m.setVersion("v1beta1");
         Container c = new Container();
         c.setName("master");
-        c.setImage("gurpartap/redis");
+        c.setImage("busybox");
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
@@ -96,7 +97,7 @@ public class Main {
         
         // test get all controllers
         System.out.println("Test GET ReplicationControllers");
-        ReplicationController[] controllers = client.getAllReplicationControllers();
+        ReplicationControllerList controllers = client.getAllReplicationControllers();
         printControllers(controllers);
         
         // test create controller
@@ -118,7 +119,7 @@ public class Main {
         manifest.setId("githubfrontendController");
         Container container = new Container();
         container.setName("github-php-redis");
-        container.setImage("gurpartap/redis");
+        container.setImage("busybox");
         p = new Port();
         p.setContainerPort(81);
         p.setHostPort(8001);
@@ -182,8 +183,8 @@ public class Main {
         
 	}
 
-	private static void printControllers(ReplicationController[] controllers) {
-		for (ReplicationController replicationController : controllers) {
+	private static void printControllers(ReplicationControllerList controllers) {
+		for (ReplicationController replicationController : controllers.getItems()) {
 			System.out.println("Replication Controller: "+replicationController.getId());
 		}
 	}

@@ -44,8 +44,7 @@ import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
 import com.github.kubernetes.java.client.model.State;
 
-
-public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
+public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
     private static final Log log = LogFactory.getLog(AbstractKubernetesApiClientLiveTest.class);
     private String dockerImage;
@@ -59,25 +58,21 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
 
     protected abstract KubernetesAPIClientInterface getClient();
 
-    protected Class getExceptionClass()
-    {
+    protected Class getExceptionClass() {
         return KubernetesClientException.class;
     }
 
     @Before
-	public void setUp() {
+    public void setUp() {
         endpoint = System.getProperty("kubernetes.api.endpoint", "http://192.168.1.100:8080/api/v1beta1/");
         username = System.getProperty("kubernetes.api.username", "vagrant");
-	    password = System.getProperty("kubernetes.api.password", "vagrant");
-        log.info("Provided Kubernetes endpoint using system property [kubernetes.api.endpoint] : " +endpoint);
-	    
-	    // image should be pre-downloaded for ease of testing.
-	    dockerImage = System.getProperty("docker.image");
-	    if (dockerImage == null) {
-	        dockerImage = "busybox";
-	    }
+        password = System.getProperty("kubernetes.api.password", "vagrant");
+        log.info("Provided Kubernetes endpoint using system property [kubernetes.api.endpoint] : " + endpoint);
 
-	    pod = getPod();
+        // image should be pre-downloaded for ease of testing.
+        dockerImage = System.getProperty("docker.image", "busybox");
+
+        pod = getPod();
         contr = getReplicationController();
         serv = getService();
 
@@ -86,69 +81,58 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
     }
 
     @After
-    private void cleanup()
-    {
-        try
-        {
+    private void cleanup() {
+        try {
             getClient().deletePod(pod.getId());
-        }
-        catch ( Exception e )
-        {
+        } catch (Exception e) {
             // do nothing
         }
-        try
-        {
+        try {
             getClient().deleteReplicationController(contr.getId());
-        }
-        catch ( Exception e )
-        {
+        } catch (Exception e) {
             // do nothing
         }
-        try
-        {
+        try {
             getClient().deleteService(serv.getId());
-        }
-        catch ( Exception e )
-        {
+        } catch (Exception e) {
             // do nothing
         }
     }
 
     private Pod getPod() {
         Pod pod = new Pod();
-        pod.setApiVersion( "v1beta1" );
-        pod.setId( "github-test-pod" );
-        pod.setKind( "Pod" );
-        Label l = new Label();
-        l.setName( "github" );
-        pod.setLabels( l );
+        pod.setApiVersion("v1beta1");
+        pod.setId("github-test-pod");
+        pod.setKind("Pod");
+        pod.setLabels(new Label("test-pod"));
         State desiredState = new State();
         Manifest m = new Manifest();
-        m.setId( pod.getId() );
-        m.setVersion( "v1beta1" );
+        m.setId(pod.getId());
+        m.setVersion("v1beta1");
         Container c = new Container();
-        c.setName( "master" );
-        c.setImage( dockerImage );
+        c.setName("master");
+        c.setImage(dockerImage);
+        c.setCommand(new String[] { "tail -f /dev/null" });
         Port p = new Port();
-        p.setContainerPort( 8379 );
-        p.setHostPort( 8379 );
-        c.setPorts( new Port[] { p } );
-        m.setContainers( new Container[] { c } );
-        desiredState.setManifest( m );
-        pod.setDesiredState( desiredState );
+        p.setContainerPort(8379);
+        p.setHostPort(8379);
+        c.setPorts(new Port[] { p });
+        m.setContainers(new Container[] { c });
+        desiredState.setManifest(m);
+        pod.setDesiredState(desiredState);
         return pod;
     }
 
-    private ReplicationController getReplicationController()
-    {
-	    ReplicationController contr = new ReplicationController();
+    private ReplicationController getReplicationController() {
+        ReplicationController contr = new ReplicationController();
         contr.setId("githubController");
         contr.setKind("ReplicationController");
         contr.setApiVersion("v1beta1");
         State desiredState = new State();
         desiredState.setReplicas(2);
+
         Selector selector = new Selector();
-        selector.setName("github");
+        selector.setName("test-replicationController");
         desiredState.setReplicaSelector(selector);
 
         Pod podTemplate = new Pod();
@@ -162,18 +146,15 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
         Port p = new Port();
         p.setContainerPort(80);
         container.setPorts(new Port[] { p });
+        container.setCommand(new String[] {"tail -f /dev/null"});
         manifest.setContainers(new Container[] { container });
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);
-        Label l1 = new Label();
-        l1.setName("github");
-        podTemplate.setLabels(l1);
+        podTemplate.setLabels(new Label(selector.getName()));
 
         desiredState.setPodTemplate(podTemplate);
         contr.setDesiredState(desiredState);
-        Label l2 = new Label();
-        l2.setName("github");
-        contr.setLabels(l2);
+        contr.setLabels(podTemplate.getLabels());
         return contr;
     }
 
@@ -185,175 +166,154 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
         serv.setPort(5000);
         serv.setId(serviceId);
         serv.setKind("Service");
-        
-        Label l = new Label();
-        l.setName("github");
-        
-        serv.setLabels(l);
+        serv.setLabels(new Label("test-service"));
         serv.setName("github-service");
         Selector selector = new Selector();
-        selector.setName(l.getName());
+        selector.setName(serv.getLabels().getName());
         serv.setSelector(selector);
         return serv;
     }
 
     @Test
-	public void testCreatePod() throws Exception {
-	    log.info("Testing Pods ....");
+    public void testCreatePod() throws Exception {
+        log.info("Testing Pods ....");
 
         if (log.isDebugEnabled()) {
-            log.debug("Creating a Pod "+pod);
+            log.debug("Creating a Pod " + pod);
         }
         getClient().createPod(pod);
-	    assertNotNull(getClient().getPod(pod.getId()));
-	    
-	    // give 2s to download the image
-	    Thread.sleep(2000);
-	    
-	    // test recreation from same id
-	    try
-        {
+        assertNotNull(getClient().getPod(pod.getId()));
+
+        // give 2s to download the image
+        Thread.sleep(2000);
+
+        // test recreation from same id
+        try {
             getClient().createPod(pod);
             fail("Should have thrown exception");
-        }
-        catch ( Exception e )
-        {
+        } catch (Exception e) {
             // ignore
         }
-	    assertNotNull(getClient().getPod(pod.getId()));
+        assertNotNull(getClient().getPod(pod.getId()));
     }
 
     @Test
     public void testGetNonExistantPod() throws Exception {
-	    String bogusPodId = "github";
-	    // create an invalid Pod
-	    Pod pod3 = new Pod();
-	    pod3.setId(bogusPodId);
-	    try {
-	        getClient().createPod(pod3);
-	        fail("Expected exception");
-	    } catch (Exception e) {
-	        assertThat(e, instanceOf(getExceptionClass()));
-	    }
-	    
-	    try {
-	        getClient().getPod(bogusPodId);
-	    } catch (Exception e) {
-	        assertThat(e, instanceOf(getExceptionClass()));
-	        assertEquals("Pod ["+bogusPodId+"] doesn't exist.", e.getMessage());
-	    }
-    }	    
+        String bogusPodId = "non-existant";
+        try {
+            getClient().getPod(bogusPodId);
+        } catch (Exception e) {
+            assertThat(e, instanceOf(getExceptionClass()));
+            assertEquals("Pod [" + bogusPodId + "] doesn't exist.", e.getMessage());
+        }
+    }
 
     @Test
     public void testGetAllPods() throws Exception {
-	    if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Get all Pods ");
         }
-        getClient().createPod( pod );
-	    PodList podList = getClient().getAllPods();
-	    assertNotNull(podList);
-	    Pod[] currentPods;
-	    assertNotNull(currentPods = podList.getItems());
-	    boolean match = false;
-	    for (Pod pod2 : currentPods) {
+        getClient().createPod(pod);
+        PodList podList = getClient().getAllPods();
+        assertNotNull(podList);
+        Pod[] currentPods;
+        assertNotNull(currentPods = podList.getItems());
+        boolean match = false;
+        for (Pod pod2 : currentPods) {
             if (pod.getId().equals(pod2.getId())) {
                 match = true;
                 break;
             }
         }
-	    assertEquals(true, match);
+        assertEquals(true, match);
     }
-	    
+
     @Test
     public void testGetSelectedPods() throws Exception {
-        getClient().createPod( pod );
-	    PodList selectedPods = getClient().getSelectedPods(new Label[]{pod.getLabels()});
-	    assertNotNull(selectedPods);
-	    assertNotNull(selectedPods.getItems());
-	    assertEquals(1, selectedPods.getItems().length);
+        getClient().createPod(pod);
+        PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels() });
+        assertNotNull(selectedPods);
+        assertNotNull(selectedPods.getItems());
+        assertEquals(1, selectedPods.getItems().length);
     }
 
     @Test
     public void testGetSelectedPodsWithNonExistantLabel() throws Exception {
-        Label ll = new Label();
-        ll.setName("github2");
-        PodList selectedPods = getClient().getSelectedPods(new Label[]{pod.getLabels(), ll});
+        PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels(), new Label("no-match") });
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(0, selectedPods.getItems().length);
     }
 
-    
     @Test
     public void testGetSelectedPodsWithEmptyLabel() throws Exception {
-        PodList selectedPods = getClient().getSelectedPods(new Label[]{});
+        PodList selectedPods = getClient().getSelectedPods(new Label[] {});
+        PodList allPods = getClient().getAllPods();
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
-        assertEquals(0, selectedPods.getItems().length);
+        assertEquals(allPods.getItems().length, selectedPods.getItems().length);
     }
 
     @Test
     public void testDeletePod() throws Exception {
-	    if (log.isDebugEnabled()) {
-	        log.debug("Deleting a Pod "+pod);
-	    }
-	    getClient().createPod(pod);
-	    getClient().deletePod(pod.getId());
-	    try {
-	        getClient().getPod(pod.getId());
-	    } catch(Exception e) {
-	        assertThat(e, instanceOf(getExceptionClass()));
-	    }
+        if (log.isDebugEnabled()) {
+            log.debug("Deleting a Pod " + pod);
+        }
+        getClient().createPod(pod);
+        getClient().deletePod(pod.getId());
+        try {
+            getClient().getPod(pod.getId());
+        } catch (Exception e) {
+            assertThat(e, instanceOf(getExceptionClass()));
+        }
     }
-	    
+
     @Test
     public void testDeleteNonExistantPod() throws Exception {
-	    // delete a non-existing pod
-	    try {
-	        getClient().deletePod("xxxxxx");
-	    } catch (Exception e) {
-	        assertThat(e, instanceOf(getExceptionClass()));
-	    }
-	    
-	    PodList selectedPods = getClient().getSelectedPods(new Label[]{pod.getLabels()});
-	    assertNotNull(selectedPods);
+        // delete a non-existing pod
+        try {
+            getClient().deletePod("xxxxxx");
+        } catch (Exception e) {
+            assertThat(e, instanceOf(getExceptionClass()));
+        }
+
+        PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels() });
+        assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(0, selectedPods.getItems().length);
-	}
-	
-	@Test
+    }
+
+    @Test
     public void testCreateReplicationController() throws Exception {
         if (log.isDebugEnabled()) {
-            log.debug("Creating a Replication Controller: "+contr);
+            log.debug("Creating a Replication Controller: " + contr);
         }
         getClient().createReplicationController(contr);
         assertNotNull(getClient().getReplicationController(contr.getId()));
-        
+
         // wait 10s for Pods to be created
         Thread.sleep(10000);
-        
+
         // test recreation using same id
         try {
             getClient().createReplicationController(contr);
             fail("Should have thrown exception");
-        }
-        catch ( Exception e )
-        {
+        } catch (Exception e) {
             // ignore
         }
         assertNotNull(getClient().getReplicationController(contr.getId()));
 
-        PodList podList = getClient().getSelectedPods(new Label[]{contr.getLabels()});
+        PodList podList = getClient().getSelectedPods(new Label[] { contr.getLabels() });
         assertNotNull(podList);
         assertNotNull(podList.getItems());
         assertEquals(contr.getDesiredState().getReplicas(), podList.getItems().length);
-	}
-        
+    }
+
     @Test
     public void testGetAllReplicationControllers() throws Exception {
         getClient().createReplicationController(contr);
-        assertThat(getClient().getAllReplicationControllers().getItems().length, greaterThan( 0 ));
-    }        
+        assertThat(getClient().getAllReplicationControllers().getItems().length, greaterThan(0));
+    }
 
     @Test
     public void testUpdateReplicationControllerWithBadCount() throws Exception {
@@ -365,16 +325,16 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
             assertThat(e, instanceOf(getExceptionClass()));
             assertEquals(true, e.getMessage().contains("update failed"));
         }
-    }        
+    }
 
     @Test
     public void testUpdateReplicationControllerToZero() throws Exception {
         getClient().createReplicationController(contr);
         getClient().updateReplicationController(contr.getId(), 0);
-        
+
         Thread.sleep(10000);
-        
-        PodList podList = getClient().getSelectedPods(new Label[]{contr.getLabels()});
+
+        PodList podList = getClient().getSelectedPods(new Label[] { contr.getLabels() });
         assertNotNull(podList);
         assertNotNull(podList.getItems());
         assertEquals(0, podList.getItems().length);
@@ -402,61 +362,59 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
         } catch (Exception e) {
             assertThat(e, instanceOf(getExceptionClass()));
         }
-        
+
         try {
             getClient().getReplicationController(bogusContrId);
         } catch (Exception e) {
             assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Replication Controller ["+bogusContrId+"] doesn't exist.", e.getMessage());
+            assertEquals("Replication Controller [" + bogusContrId + "] doesn't exist.", e.getMessage());
         }
-        
+
         try {
             getClient().updateReplicationController(bogusContrId, 3);
         } catch (Exception e) {
             assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Replication Controller ["+bogusContrId+"] doesn't exist.", e.getMessage());
+            assertEquals("Replication Controller [" + bogusContrId + "] doesn't exist.", e.getMessage());
         }
-        
+
         try {
             getClient().deleteReplicationController(bogusContrId);
         } catch (Exception e) {
             assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Replication Controller ["+bogusContrId+"] doesn't exist.", e.getMessage());
+            assertEquals("Replication Controller [" + bogusContrId + "] doesn't exist.", e.getMessage());
         }
-	}
-	
-	@Test
-    public void testCreateService() throws Exception { 
-	    if (log.isDebugEnabled()) {
-            log.debug("Creating a Service Proxy: "+serv);
+    }
+
+    @Test
+    public void testCreateService() throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("Creating a Service Proxy: " + serv);
         }
         getClient().createService(serv);
         assertNotNull(getClient().getService(serv.getId()));
-        
+
         // test recreation using same id
         try {
             getClient().createService(serv);
             fail("Should have thrown exception");
-        }
-        catch ( Exception e )
-        {
+        } catch (Exception e) {
             // ignore
         }
 
         assertNotNull(getClient().getService(serv.getId()));
-	}
+    }
 
     @Test
-    public void testGetAllServices() throws Exception { 
+    public void testGetAllServices() throws Exception {
         getClient().createService(serv);
         ServiceList serviceList = getClient().getAllServices();
         assertNotNull(serviceList);
         assertNotNull(serviceList.getItems());
         assertThat(serviceList.getItems().length, greaterThan(0));
-    }        
+    }
 
     @Test
-    public void testDeleteService() throws Exception { 
+    public void testDeleteService() throws Exception {
         getClient().createService(serv);
         getClient().deleteService(serv.getId());
         try {
@@ -467,7 +425,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
     }
 
     @Test
-    public void testCreateInvalidService() throws Exception { 
+    public void testCreateInvalidService() throws Exception {
         String bogusServId = "github";
         // create an invalid Service
         Service bogusServ = new Service();
@@ -477,19 +435,19 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase{
         } catch (Exception e) {
             assertThat(e, instanceOf(getExceptionClass()));
         }
-        
+
         try {
             getClient().getService(bogusServId);
         } catch (Exception e) {
             assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Service ["+bogusServId+"] doesn't exist.", e.getMessage());
+            assertEquals("Service [" + bogusServId + "] doesn't exist.", e.getMessage());
         }
-        
+
         try {
             getClient().deleteService(bogusServId);
         } catch (Exception e) {
             assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Service ["+bogusServId+"] doesn't exist.", e.getMessage());
+            assertEquals("Service [" + bogusServId + "] doesn't exist.", e.getMessage());
         }
-	}
+    }
 }

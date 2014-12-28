@@ -20,8 +20,6 @@
  */
 package com.github.kubernetes.java.client.interfaces;
 
-import javax.ws.rs.PathParam;
-
 import com.github.kubernetes.java.client.exceptions.KubernetesClientException;
 import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Pod;
@@ -41,7 +39,7 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link Pod}
 	 * @throws KubernetesClientException
 	 */
-	public Pod getPod(@PathParam("podId") String podId) throws KubernetesClientException;
+	public Pod getPod(String podId) throws KubernetesClientException;
 	
 	/**
 	 * Get all Pods
@@ -111,7 +109,7 @@ public interface KubernetesAPIClientInterface {
 	 * @return {@link Service}
 	 * @throws KubernetesClientException
 	 */
-	public Service getService(@PathParam("serviceId") String serviceId) throws KubernetesClientException;
+	public Service getService(String serviceId) throws KubernetesClientException;
 	
 	/**
 	 * Get all the services.

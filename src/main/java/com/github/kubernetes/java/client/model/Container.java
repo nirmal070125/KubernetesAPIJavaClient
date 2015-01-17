@@ -20,9 +20,11 @@
  */
 package com.github.kubernetes.java.client.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -75,6 +77,11 @@ public class Container {
 
     public void setCommand(List<String> command) {
         this.command = command;
+    }
+
+    @JsonIgnore
+    public void setCommand(String... command) {
+        this.command = Arrays.asList(command);
     }
 
     public List<VolumeMount> getVolumeMounts() {

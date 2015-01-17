@@ -63,7 +63,7 @@ public class PodUnitTest extends TestCase{
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
-        c.setPorts(new Port[] { p });
+        c.setPorts(Collections.singletonList(p));
         m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);

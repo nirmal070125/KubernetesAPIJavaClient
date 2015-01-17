@@ -72,7 +72,7 @@ public class Main {
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
-        c.setPorts(new Port[]{p});
+        c.setPorts(Collections.singletonList(p));
         m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
@@ -120,7 +120,7 @@ public class Main {
         p = new Port();
         p.setContainerPort(81);
         p.setHostPort(8001);
-        container.setPorts(new Port[]{p});
+        container.setPorts(Collections.singletonList(p));
         manifest.setContainers(Collections.singletonList(container));
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);

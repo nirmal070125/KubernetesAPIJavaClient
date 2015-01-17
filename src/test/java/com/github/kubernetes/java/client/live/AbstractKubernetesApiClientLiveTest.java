@@ -114,11 +114,11 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         Container c = new Container();
         c.setName("master");
         c.setImage(dockerImage);
-        c.setCommand(new String[] { "tail -f /dev/null" });
+        c.setCommand(Collections.singletonList("tail -f /dev/null" ));
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
-        c.setPorts(new Port[] { p });
+        c.setPorts(Collections.singletonList(p));
         m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
@@ -145,8 +145,8 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         container.setImage(dockerImage);
         Port p = new Port();
         p.setContainerPort(80);
-        container.setPorts(new Port[] { p });
-        container.setCommand(new String[] {"tail -f /dev/null"});
+        container.setPorts(Collections.singletonList(p));
+        container.setCommand(Collections.singletonList("tail -f /dev/null"));
         manifest.setContainers(Collections.singletonList(container));
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);

@@ -170,6 +170,12 @@
 								<kubernetes.api.username>${kubernetes.api.username}</kubernetes.api.username>
 								<kubernetes.api.password>${kubernetes.api.password}</kubernetes.api.password>
 								<docker.image>${docker.image}</docker.image>
+
+								<!-- enable for debugging http requests and responses
+								<org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+								<org.apache.commons.logging.simplelog.showdatetime>true</org.apache.commons.logging.simplelog.showdatetime>
+								<org.apache.commons.logging.simplelog.log.org.apache.http>DEBUG</org.apache.commons.logging.simplelog.log.org.apache.http>
+								-->
 							</systemPropertyVariables>
 						</configuration>
 					</plugin>

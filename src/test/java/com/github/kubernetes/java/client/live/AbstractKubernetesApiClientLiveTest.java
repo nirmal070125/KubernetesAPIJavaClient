@@ -23,6 +23,7 @@ package com.github.kubernetes.java.client.live;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
+import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -118,7 +119,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         p.setContainerPort(8379);
         p.setHostPort(8379);
         c.setPorts(new Port[] { p });
-        m.setContainers(new Container[] { c });
+        m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
         return pod;
@@ -146,7 +147,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         p.setContainerPort(80);
         container.setPorts(new Port[] { p });
         container.setCommand(new String[] {"tail -f /dev/null"});
-        manifest.setContainers(new Container[] { container });
+        manifest.setContainers(Collections.singletonList(container));
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);
         podTemplate.setLabels(new Label(selector.getName()));

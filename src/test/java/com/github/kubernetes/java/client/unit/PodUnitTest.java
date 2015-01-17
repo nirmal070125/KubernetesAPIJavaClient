@@ -20,6 +20,8 @@
  */
 package com.github.kubernetes.java.client.unit;
 
+import java.util.Collections;
+
 import junit.framework.TestCase;
 
 import org.junit.Before;
@@ -62,7 +64,7 @@ public class PodUnitTest extends TestCase{
         p.setContainerPort(8379);
         p.setHostPort(8379);
         c.setPorts(new Port[] { p });
-        m.setContainers(new Container[] { c });
+        m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
         State currentState = desiredState;

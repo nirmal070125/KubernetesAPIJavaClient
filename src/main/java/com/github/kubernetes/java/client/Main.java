@@ -20,6 +20,8 @@
  */
 package com.github.kubernetes.java.client;
 
+import java.util.Collections;
+
 import com.github.kubernetes.java.client.model.Container;
 import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Manifest;
@@ -71,7 +73,7 @@ public class Main {
         p.setContainerPort(8379);
         p.setHostPort(8379);
         c.setPorts(new Port[]{p});
-        m.setContainers(new Container[]{c});
+        m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
         client.createPod(pod);
@@ -119,7 +121,7 @@ public class Main {
         p.setContainerPort(81);
         p.setHostPort(8001);
         container.setPorts(new Port[]{p});
-        manifest.setContainers(new Container[]{container});
+        manifest.setContainers(Collections.singletonList(container));
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);
         Label l1 = new  Label();

@@ -47,6 +47,7 @@ import com.github.kubernetes.java.client.model.Selector;
 import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
 import com.github.kubernetes.java.client.model.State;
+import com.google.common.collect.ImmutableList;
 
 public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
@@ -228,7 +229,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     @Test
     public void testGetSelectedPods() throws Exception {
         getClient().createPod(pod);
-        PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels() });
+        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels()));
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(1, selectedPods.getItems().size());
@@ -236,7 +237,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
     @Test
     public void testGetSelectedPodsWithNonExistantLabel() throws Exception {
-        PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels(), new Label("no-match") });
+        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels(), new Label("no-match")));
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(0, selectedPods.getItems().size());
@@ -244,7 +245,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
     @Test
     public void testGetSelectedPodsWithEmptyLabel() throws Exception {
-        PodList selectedPods = getClient().getSelectedPods(new Label[] {});
+        PodList selectedPods = getClient().getSelectedPods(Collections.<Label>emptyList());
         PodList allPods = getClient().getAllPods();
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
@@ -274,7 +275,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
             assertThat(e, instanceOf(getExceptionClass()));
         }
 
-        PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels() });
+        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels()));
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(0, selectedPods.getItems().size());
@@ -300,7 +301,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         }
         assertNotNull(getClient().getReplicationController(contr.getId()));
 
-        PodList podList = getClient().getSelectedPods(new Label[] { contr.getLabels() });
+        PodList podList = getClient().getSelectedPods(ImmutableList.of(contr.getLabels()));
         assertNotNull(podList);
         assertNotNull(podList.getItems());
         assertEquals(contr.getDesiredState().getReplicas(), podList.getItems().size());
@@ -331,7 +332,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
         Thread.sleep(10000);
 
-        PodList podList = getClient().getSelectedPods(new Label[] { contr.getLabels() });
+        PodList podList = getClient().getSelectedPods(ImmutableList.of(contr.getLabels()));
         assertNotNull(podList);
         assertNotNull(podList.getItems());
         assertEquals(0, podList.getItems().size());

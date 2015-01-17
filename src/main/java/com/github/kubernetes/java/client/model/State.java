@@ -35,7 +35,14 @@ public class State {
 	private Pod podTemplate;
 	private Policy restartPolicy;
 	private Object info;
-	
+
+	public State() {
+	}
+
+	public State(Manifest manifest) {
+            this.manifest = manifest;
+        }
+
 	public Manifest getManifest() {
 		return manifest;
 	}

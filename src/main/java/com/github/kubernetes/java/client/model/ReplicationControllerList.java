@@ -20,43 +20,15 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import java.util.Arrays;
-import org.apache.commons.lang3.ArrayUtils;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class ReplicationControllerList {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ReplicationControllerList extends AbstractKubernetesModelList<ReplicationController> {
 
-	private String kind;
-	private String apiVersion;
-	private ReplicationController[] items = new ReplicationController[0];
-	
-	public String getKind() {
-		return kind;
-	}
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
-	public String getApiVersion() {
-		return apiVersion;
-	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
-	}
-	public ReplicationController[] getItems() {
-		return items;
-	}
-	public void setItems(ReplicationController[] items) {
-		this.items = ArrayUtils.clone(items);
-	}
-	@Override
-	public String toString() {
-		return "ReplicationControllerList [kind=" + kind + ", apiVersion="
-				+ apiVersion + ", items=" + Arrays.toString(items) + "]";
-	}
-	
+    public ReplicationControllerList() {
+        super("ReplicationControllerList");
+    }
 }

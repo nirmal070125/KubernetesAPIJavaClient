@@ -20,43 +20,16 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import java.util.Arrays;
-import org.apache.commons.lang3.ArrayUtils;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class ServiceList {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ServiceList extends AbstractKubernetesModelList<Service> {
 
-	private String kind;
-	private String apiVersion;
-	private Service[] items = new Service[0];
-	
-	public String getKind() {
-		return kind;
-	}
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
-	public String getApiVersion() {
-		return apiVersion;
-	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
-	}
-	public Service[] getItems() {
-		return items;
-	}
-	public void setItems(Service[] items) {
-		this.items = ArrayUtils.clone(items);
-	}
-	@Override
-	public String toString() {
-		return "ServiceList [kind=" + kind + ", apiVersion=" + apiVersion
-				+ ", items=" + Arrays.toString(items) + "]";
-	}
-	
+    public ServiceList() {
+        super("ServiceList");
+    }
+
 }

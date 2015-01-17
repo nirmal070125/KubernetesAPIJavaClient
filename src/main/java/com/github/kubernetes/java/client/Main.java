@@ -57,16 +57,13 @@ public class Main {
         // test create pod
         System.out.println("Test POST POD");
         Pod pod = new Pod();
-        pod.setApiVersion("v1beta1");
         pod.setId("github-test-pod");
-        pod.setKind("Pod");
         Label l = new Label();
         l.setName("github");
         pod.setLabels(l);
         State desiredState = new State();
         Manifest m = new Manifest();
         m.setId("github-test-pod");
-        m.setVersion("v1beta1");
         Container c = new Container();
         c.setName("master");
         c.setImage("busybox");
@@ -104,8 +101,6 @@ public class Main {
         System.out.println("Test POST ReplicationController");
         ReplicationController contr = new ReplicationController();
         contr.setId("githubController");
-        contr.setKind("ReplicationController");
-        contr.setApiVersion("v1beta1");
         desiredState = new State();
         desiredState.setReplicas(3);
         Selector selector = new Selector();
@@ -161,9 +156,7 @@ public class Main {
         // test create service
         System.out.println("Test POST Service");
         Service service = new Service();
-        service.setApiVersion("v1beta1");
         service.setId("githubfrontend");
-        service.setKind("Service");
         service.setPort(9999);
         selector = new Selector();
         selector.setName("frontend");

@@ -46,21 +46,15 @@ public class PodUnitTest extends TestCase{
 	    String time = "2014/11/02";
 	    String selfLink = "link";
         Pod pod = new Pod();
-        String apiVersion = "v1beta1";
-        pod.setApiVersion(apiVersion);
         pod.setId(podId);
         pod.setCreationTimestamp(time);
         pod.setSelfLink(selfLink);
-        pod.setResourceVersion(apiVersion);
-        String kind = "Pod";
-        pod.setKind(kind);
         Label l = new Label();
         l.setName("github");
         pod.setLabels(l);
         State desiredState = new State();
         Manifest m = new Manifest();
         m.setId(podId);
-        m.setVersion(apiVersion);
         Container c = new Container();
         c.setName("master");
         c.setImage("image");
@@ -75,9 +69,7 @@ public class PodUnitTest extends TestCase{
         pod.setCurrentState(currentState);
         
         assertEquals(podId, pod.getId());
-        assertEquals(apiVersion, pod.getApiVersion());
-        assertEquals(apiVersion, pod.getResourceVersion());
-        assertEquals(kind, pod.getKind());
+        assertEquals("Pod", pod.getKind());
         assertEquals(l, pod.getLabels());
         assertEquals(currentState, pod.getCurrentState());
         assertEquals(selfLink, pod.getSelfLink());

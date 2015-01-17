@@ -22,6 +22,9 @@ package com.github.kubernetes.java.client.live;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
@@ -101,9 +104,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
     private Pod getPod() {
         Pod pod = new Pod();
-        pod.setApiVersion("v1beta1");
         pod.setId("github-test-pod");
-        pod.setKind("Pod");
         pod.setLabels(new Label("test-pod"));
         State desiredState = new State();
         Manifest m = new Manifest();
@@ -126,8 +127,6 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     private ReplicationController getReplicationController() {
         ReplicationController contr = new ReplicationController();
         contr.setId("githubController");
-        contr.setKind("ReplicationController");
-        contr.setApiVersion("v1beta1");
         State desiredState = new State();
         desiredState.setReplicas(2);
 
@@ -161,11 +160,9 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     private Service getService() {
         String serviceId = "github-service";
         Service serv = new Service();
-        serv.setApiVersion("v1beta1");
         serv.setContainerPort("8379");
         serv.setPort(5000);
         serv.setId(serviceId);
-        serv.setKind("Service");
         serv.setLabels(new Label("test-service"));
         serv.setName("github-service");
         Selector selector = new Selector();
@@ -216,7 +213,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         getClient().createPod(pod);
         PodList podList = getClient().getAllPods();
         assertNotNull(podList);
-        Pod[] currentPods;
+        List<Pod> currentPods;
         assertNotNull(currentPods = podList.getItems());
         boolean match = false;
         for (Pod pod2 : currentPods) {
@@ -234,7 +231,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels() });
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
-        assertEquals(1, selectedPods.getItems().length);
+        assertEquals(1, selectedPods.getItems().size());
     }
 
     @Test
@@ -242,7 +239,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels(), new Label("no-match") });
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
-        assertEquals(0, selectedPods.getItems().length);
+        assertEquals(0, selectedPods.getItems().size());
     }
 
     @Test
@@ -251,7 +248,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         PodList allPods = getClient().getAllPods();
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
-        assertEquals(allPods.getItems().length, selectedPods.getItems().length);
+        assertEquals(allPods.getItems().size(), selectedPods.getItems().size());
     }
 
     @Test
@@ -280,7 +277,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         PodList selectedPods = getClient().getSelectedPods(new Label[] { pod.getLabels() });
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
-        assertEquals(0, selectedPods.getItems().length);
+        assertEquals(0, selectedPods.getItems().size());
     }
 
     @Test
@@ -306,13 +303,13 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         PodList podList = getClient().getSelectedPods(new Label[] { contr.getLabels() });
         assertNotNull(podList);
         assertNotNull(podList.getItems());
-        assertEquals(contr.getDesiredState().getReplicas(), podList.getItems().length);
+        assertEquals(contr.getDesiredState().getReplicas(), podList.getItems().size());
     }
 
     @Test
     public void testGetAllReplicationControllers() throws Exception {
         getClient().createReplicationController(contr);
-        assertThat(getClient().getAllReplicationControllers().getItems().length, greaterThan(0));
+        assertThat(getClient().getAllReplicationControllers().getItems().size(), greaterThan(0));
     }
 
     @Test
@@ -337,7 +334,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         PodList podList = getClient().getSelectedPods(new Label[] { contr.getLabels() });
         assertNotNull(podList);
         assertNotNull(podList.getItems());
-        assertEquals(0, podList.getItems().length);
+        assertEquals(0, podList.getItems().size());
     }
 
     @Test
@@ -410,7 +407,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         ServiceList serviceList = getClient().getAllServices();
         assertNotNull(serviceList);
         assertNotNull(serviceList.getItems());
-        assertThat(serviceList.getItems().length, greaterThan(0));
+        assertThat(serviceList.getItems().size(), greaterThan(0));
     }
 
     @Test

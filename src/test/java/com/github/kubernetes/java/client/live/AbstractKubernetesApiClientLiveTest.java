@@ -68,7 +68,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
     @Before
     public void setUp() {
-        endpoint = System.getProperty("kubernetes.api.endpoint", "http://192.168.1.100:8080/api/v1beta1/");
+        endpoint = System.getProperty("kubernetes.api.endpoint", "http://192.168.1.100:8080/api/" + KubernetesAPIClientInterface.VERSION + "/");
         username = System.getProperty("kubernetes.api.username", "vagrant");
         password = System.getProperty("kubernetes.api.password", "vagrant");
         log.info("Provided Kubernetes endpoint using system property [kubernetes.api.endpoint] : " + endpoint);
@@ -110,7 +110,6 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         State desiredState = new State();
         Manifest m = new Manifest();
         m.setId(pod.getId());
-        m.setVersion("v1beta1");
         Container c = new Container();
         c.setName("master");
         c.setImage(dockerImage);

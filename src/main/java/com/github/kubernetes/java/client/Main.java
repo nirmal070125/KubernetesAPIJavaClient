@@ -20,6 +20,8 @@
  */
 package com.github.kubernetes.java.client;
 
+import java.util.Collections;
+
 import com.github.kubernetes.java.client.model.Container;
 import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Manifest;
@@ -57,24 +59,21 @@ public class Main {
         // test create pod
         System.out.println("Test POST POD");
         Pod pod = new Pod();
-        pod.setApiVersion("v1beta1");
         pod.setId("github-test-pod");
-        pod.setKind("Pod");
         Label l = new Label();
         l.setName("github");
         pod.setLabels(l);
         State desiredState = new State();
         Manifest m = new Manifest();
         m.setId("github-test-pod");
-        m.setVersion("v1beta1");
         Container c = new Container();
         c.setName("master");
         c.setImage("busybox");
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
-        c.setPorts(new Port[]{p});
-        m.setContainers(new Container[]{c});
+        c.setPorts(Collections.singletonList(p));
+        m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
         pod.setDesiredState(desiredState);
         client.createPod(pod);
@@ -104,8 +103,6 @@ public class Main {
         System.out.println("Test POST ReplicationController");
         ReplicationController contr = new ReplicationController();
         contr.setId("githubController");
-        contr.setKind("ReplicationController");
-        contr.setApiVersion("v1beta1");
         desiredState = new State();
         desiredState.setReplicas(3);
         Selector selector = new Selector();
@@ -115,7 +112,6 @@ public class Main {
         Pod podTemplate = new Pod();
         State podState = new State();
         Manifest manifest = new Manifest();
-        manifest.setVersion("v1beta1");
         manifest.setId("githubfrontendController");
         Container container = new Container();
         container.setName("github-php-redis");
@@ -123,8 +119,8 @@ public class Main {
         p = new Port();
         p.setContainerPort(81);
         p.setHostPort(8001);
-        container.setPorts(new Port[]{p});
-        manifest.setContainers(new Container[]{container});
+        container.setPorts(Collections.singletonList(p));
+        manifest.setContainers(Collections.singletonList(container));
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);
         Label l1 = new  Label();
@@ -161,9 +157,7 @@ public class Main {
         // test create service
         System.out.println("Test POST Service");
         Service service = new Service();
-        service.setApiVersion("v1beta1");
         service.setId("githubfrontend");
-        service.setKind("Service");
         service.setPort(9999);
         selector = new Selector();
         selector.setName("frontend");

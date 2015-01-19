@@ -41,7 +41,7 @@ import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
 
 public interface KubernetesAPI {
-	
+
 	/* Pod API */
 
 	/**

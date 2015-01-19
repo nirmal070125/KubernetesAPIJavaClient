@@ -20,8 +20,9 @@
  */
 package com.github.kubernetes.java.client;
 
-import java.util.Arrays;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
@@ -414,7 +415,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 	}
 
 
-    public PodList getSelectedPods(Label[] label) throws KubernetesClientException {
+    public PodList getSelectedPods(List<Label> label) throws KubernetesClientException {
         try {
             String labelQuery = getLabelQuery(label);
             ClientRequest request = new ClientRequest(endpointUrl+"pods");
@@ -429,13 +430,13 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
             podList.setItems(res.getEntity().getItems());
             return podList;
         } catch (Exception e) {
-            String msg = "Error while selecting pods for : "+Arrays.toString(label);
+            String msg = "Error while selecting pods for : "+StringUtils.join(label, ",");
             log.error(msg, e);
             throw new KubernetesClientException(msg, e);
         }
     }
     
-    private String getLabelQuery(Label[] label) {
+    private String getLabelQuery(List<Label> label) {
         String query = "";
         for (Label l : label) {
             query = query.concat("name="+l.getName()+",");

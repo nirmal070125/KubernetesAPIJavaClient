@@ -20,10 +20,12 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import java.util.Arrays;
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
 
 /**
  * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/manifest-schema.json
@@ -33,12 +35,20 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Manifest {
 
-	private String version;
+	private String version = KubernetesAPIClientInterface.VERSION;
 	private String id;
-	private Container[] containers;
-	private Volume[] volumes;
-	
-	public String getVersion() {
+	private List<Container> containers;
+	private List<Volume> volumes;
+
+	public Manifest() {
+	}
+
+	public Manifest(List<Container> containers, List<Volume> volumes) {
+            this.containers = containers;
+            this.volumes = volumes;
+        }
+
+        public String getVersion() {
 		return version;
 	}
 	public void setVersion(String version) {
@@ -50,23 +60,23 @@ public class Manifest {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public Container[] getContainers() {
+	public List<Container> getContainers() {
 		return containers;
 	}
-	public void setContainers(Container[] containers) {
-		this.containers = ArrayUtils.clone(containers);
+	public void setContainers(List<Container> containers) {
+		this.containers = containers;
 	}
-	public Volume[] getVolumes() {
+	public List<Volume> getVolumes() {
 		return volumes;
 	}
-	public void setVolumes(Volume[] volumes) {
-		this.volumes = ArrayUtils.clone(volumes);
+	public void setVolumes(List<Volume> volumes) {
+		this.volumes = volumes;
 	}
 	@Override
 	public String toString() {
 		return "Manifest [version=" + version + ", id=" + id + ", containers="
-				+ Arrays.toString(containers) + ", volumes="
-				+ Arrays.toString(volumes) + "]";
+				+ StringUtils.join(containers, ",") + ", volumes="
+				+ StringUtils.join(volumes, ",") + "]";
 	}
 	
 }

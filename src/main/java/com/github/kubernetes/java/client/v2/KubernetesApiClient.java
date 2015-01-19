@@ -2,7 +2,7 @@ package com.github.kubernetes.java.client.v2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.NotFoundException;
@@ -58,7 +58,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
         }
     }
 
-    public PodList getSelectedPods(Label[] labels) throws KubernetesClientException {
+    public PodList getSelectedPods(List<Label> labels) throws KubernetesClientException {
         Function<Label, String> f = new Function<Label, String>()
         {
             public String apply( Label l )
@@ -66,7 +66,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
                 return "name=" + l.getName();
             }
         };
-        String param = Joiner.on( ',' ).join( Lists.transform( Arrays.asList( labels ), f ) );
+        String param = Joiner.on(',').join(Lists.transform(labels, f));
 
         try {
             return api.getSelectedPods( param );

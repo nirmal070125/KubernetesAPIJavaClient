@@ -27,21 +27,19 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 
 /**
- * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/pod-schema.json
+ * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/examples/pod.json
  * @author github
  *
  */
 @XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Pod {
+public class Pod extends AbstractKubernetesModel {
 
-	private String kind;
 	@JsonProperty
 	private String id;
 	private String creationTimestamp;
 	private String selfLink;
 	private String resourceVersion;
-	private String apiVersion;
 	private State desiredState;
 	private State currentState;
 	private String status;
@@ -49,12 +47,10 @@ public class Pod {
 	private String code;
 	private Label labels;
 	
-	public String getKind() {
-		return kind;
+	public Pod() {
+	    super("Pod");
 	}
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
+
 	public String getId() {
 		return id;
 	}
@@ -91,12 +87,6 @@ public class Pod {
 	public void setResourceVersion(String resourceVersion) {
 		this.resourceVersion = resourceVersion;
 	}
-	public String getApiVersion() {
-		return apiVersion;
-	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
-	}
 	public Label getLabels() {
 		return labels;
 	}
@@ -123,10 +113,10 @@ public class Pod {
 	}
 	@Override
 	public String toString() {
-		return "Pod [kind=" + kind + ", id=" + id + ", creationTimestamp="
+		return "Pod [id=" + id + ", creationTimestamp="
 				+ creationTimestamp + ", selfLink=" + selfLink
-				+ ", resourceVersion=" + resourceVersion + ", apiVersion="
-				+ apiVersion + ", desiredState=" + desiredState
+				+ ", resourceVersion=" + resourceVersion
+				+ ", desiredState=" + desiredState
 				+ ", currentState=" + currentState + ", status=" + status
 				+ ", message=" + message + ", code=" + code + ", labels="
 				+ labels + "]";

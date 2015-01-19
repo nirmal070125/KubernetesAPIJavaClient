@@ -26,38 +26,48 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * @author github
  *
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Selector {
 
-	private String name;
+    private String name;
     private String component;
     private String provider;
 
-	public String getName() {
-		return name;
-	}
+    public Selector() {
+        this(null, null, null);
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Selector(String name) {
+        this(name, null, null);
+    }
 
-    public String getComponent()
-    {
+    public Selector(String name, String component, String provider) {
+        this.name = name;
+        this.component = component;
+        this.provider = provider;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getComponent() {
         return component;
     }
 
-    public void setComponent( String component )
-    {
+    public void setComponent(String component) {
         this.component = component;
     }
 
-    public String getProvider()
-    {
+    public String getProvider() {
         return provider;
     }
 
-    public void setProvider( String provider )
-    {
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 

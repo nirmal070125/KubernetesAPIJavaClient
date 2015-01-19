@@ -29,77 +29,77 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  *
  */
 @XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class ReplicationController {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ReplicationController extends AbstractKubernetesModel {
 
-    private String kind;
     private String id;
     private int resourceVersion;
     private String creationTimestamp;
     private String selfLink;
-    private String apiVersion;
     private Label labels;
     private State desiredState;
     private State currentState;
-	
-	public String getKind() {
-		return kind;
-	}
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getCreationTimestamp() {
-		return creationTimestamp;
-	}
-	public void setCreationTimestamp(String creationTimestamp) {
-		this.creationTimestamp = creationTimestamp;
-	}
-	public String getSelfLink() {
-		return selfLink;
-	}
-	public void setSelfLink(String selfLink) {
-		this.selfLink = selfLink;
-	}
-	public Label getLabels() {
-		return labels;
-	}
-	public void setLabels(Label labels) {
-		this.labels = labels;
-	}
-	public State getDesiredState() {
-		return desiredState;
-	}
-	public void setDesiredState(State desiredState) {
-		this.desiredState = desiredState;
-	}
+
+    public ReplicationController() {
+        super("ReplicationController");
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCreationTimestamp() {
+        return creationTimestamp;
+    }
+
+    public void setCreationTimestamp(String creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
+    }
+
+    public String getSelfLink() {
+        return selfLink;
+    }
+
+    public void setSelfLink(String selfLink) {
+        this.selfLink = selfLink;
+    }
+
+    public Label getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Label labels) {
+        this.labels = labels;
+    }
+
+    public State getDesiredState() {
+        return desiredState;
+    }
+
+    public void setDesiredState(State desiredState) {
+        this.desiredState = desiredState;
+    }
+
     public State getCurrentState() {
         return currentState;
     }
-	
-	@Override
-	public String toString() {
-		return "ReplicationController [kind=" + kind + ", id=" + id
-				+ ", creationTimestamp=" + creationTimestamp + ", selfLink="
-				+ selfLink + ", labels=" + labels + ", desiredState="
-				+ desiredState + "]";
-	}
-	public String getApiVersion() {
-		return apiVersion;
-	}
-	public void setApiVersion(String apiVersion) {
-		this.apiVersion = apiVersion;
-	}
+
     public int getResourceVersion() {
         return resourceVersion;
     }
+
     public void setResourceVersion(int resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
-	
+
+    @Override
+    public String toString() {
+        return "ReplicationController [id=" + id + ", creationTimestamp=" + creationTimestamp
+                + ", selfLink=" + selfLink + ", labels=" + labels + ", desiredState=" + desiredState + "]";
+    }
+
 }

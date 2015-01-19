@@ -12,8 +12,6 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine;
 
-import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
-
 public class RestFactory {
 
     private final ClassLoader classLoader;
@@ -26,23 +24,23 @@ public class RestFactory {
         this.classLoader = classLoader;
     }
 
-	public KubernetesAPI createAPI(URI uri, String userName, String password) {
+    public KubernetesAPI createAPI(URI uri, String userName, String password) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
-        httpClient.getCredentialsProvider().setCredentials( new AuthScope( uri.getHost(), uri.getPort() ),
-                                                            new UsernamePasswordCredentials( userName, password ) );
+        httpClient.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
+                new UsernamePasswordCredentials(userName, password));
 
-		ApacheHttpClient4Engine engine = new ApacheHttpClient4Engine(httpClient);
+        ApacheHttpClient4Engine engine = new ApacheHttpClient4Engine(httpClient);
         ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
-		client.register(JacksonJaxbJsonProvider.class);
-		ProxyBuilder<KubernetesAPI> proxyBuilder = client.target(uri).proxyBuilder(KubernetesAPI.class);
-		if (classLoader != null) {
-		    proxyBuilder = proxyBuilder.classloader(classLoader);
-		}
-		return proxyBuilder.build();
-	}
+        client.register(JacksonJaxbJsonProvider.class);
+        ProxyBuilder<KubernetesAPI> proxyBuilder = client.target(uri).proxyBuilder(KubernetesAPI.class);
+        if (classLoader != null) {
+            proxyBuilder = proxyBuilder.classloader(classLoader);
+        }
+        return proxyBuilder.build();
+    }
 
     public KubernetesAPI createAPI(String url, String userName, String password) throws URISyntaxException {
-		URI uri = new URI(url);
-		return createAPI(uri, userName, password);
-	}
+        URI uri = new URI(url);
+        return createAPI(uri, userName, password);
+    }
 }

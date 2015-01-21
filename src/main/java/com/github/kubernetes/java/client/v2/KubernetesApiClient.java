@@ -42,7 +42,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
         try {
             return api.getPod(podId);
         } catch (NotFoundException e) {
-            throw new KubernetesClientException( "Pod [" + podId + "] doesn't exist." );
+            throw new KubernetesClientException("Pod [" + podId + "] doesn't exist.");
         } catch (ClientErrorException e) {
             throw new KubernetesClientException(e);
         }
@@ -59,17 +59,15 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
     }
 
     public PodList getSelectedPods(List<Label> labels) throws KubernetesClientException {
-        Function<Label, String> f = new Function<Label, String>()
-        {
-            public String apply( Label l )
-            {
+        Function<Label, String> f = new Function<Label, String>() {
+            public String apply(Label l) {
                 return "name=" + l.getName();
             }
         };
         String param = Joiner.on(',').join(Lists.transform(labels, f));
 
         try {
-            return api.getSelectedPods( param );
+            return api.getSelectedPods(param);
         } catch (NotFoundException e) {
             return new PodList();
         } catch (ClientErrorException e) {
@@ -87,9 +85,9 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
     public void deletePod(String podId) throws KubernetesClientException {
         try {
-            api.deletePod( podId );
+            api.deletePod(podId);
         } catch (NotFoundException e) {
-            throw new KubernetesClientException( "Pod [" + podId + "] doesn't exist." );
+            throw new KubernetesClientException("Pod [" + podId + "] doesn't exist.");
         } catch (ClientErrorException e) {
             throw new KubernetesClientException(e);
         }
@@ -97,9 +95,9 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
     public ReplicationController getReplicationController(String controllerId) throws KubernetesClientException {
         try {
-            return api.getReplicationController( controllerId );
+            return api.getReplicationController(controllerId);
         } catch (NotFoundException e) {
-            throw new KubernetesClientException( "Replication Controller [" + controllerId + "] doesn't exist." );
+            throw new KubernetesClientException("Replication Controller [" + controllerId + "] doesn't exist.");
         } catch (ClientErrorException e) {
             throw new KubernetesClientException(e);
         }
@@ -117,17 +115,17 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
     public void createReplicationController(ReplicationController controller) throws KubernetesClientException {
         try {
-            api.createReplicationController( controller );
+            api.createReplicationController(controller);
         } catch (ClientErrorException e) {
             throw new KubernetesClientException(e);
         }
     }
 
     public void updateReplicationController(String controllerId, int replicas) throws KubernetesClientException {
-        ReplicationController controller = getReplicationController( controllerId );
-        controller.getDesiredState().setReplicas( replicas );
+        ReplicationController controller = getReplicationController(controllerId);
+        controller.getDesiredState().setReplicas(replicas);
         try {
-            api.updateReplicationController( controllerId, controller );
+            api.updateReplicationController(controllerId, controller);
         } catch (ClientErrorException e) {
             String msg = "Replication Controller [" + controllerId + "] update failed. Error: " + e.getMessage();
             throw new KubernetesClientException( msg, e );
@@ -136,9 +134,9 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
     public void deleteReplicationController(String controllerId) throws KubernetesClientException {
         try {
-            api.deleteReplicationController( controllerId );
+            api.deleteReplicationController(controllerId);
         } catch (NotFoundException e) {
-            throw new KubernetesClientException( "Replication Controller [" + controllerId + "] doesn't exist." );
+            throw new KubernetesClientException("Replication Controller [" + controllerId + "] doesn't exist.");
         } catch (ClientErrorException e) {
             throw new KubernetesClientException(e);
         }
@@ -148,7 +146,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
         try {
             return api.getService(serviceId);
         } catch (NotFoundException e) {
-            throw new KubernetesClientException( "Service [" + serviceId + "] doesn't exist." );
+            throw new KubernetesClientException("Service [" + serviceId + "] doesn't exist.");
         } catch (ClientErrorException e) {
             throw new KubernetesClientException(e);
         }
@@ -176,7 +174,7 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
         try {
             api.deleteService(serviceId);
         } catch (NotFoundException e) {
-            throw new KubernetesClientException( "Service [" + serviceId + "] doesn't exist." );
+            throw new KubernetesClientException("Service [" + serviceId + "] doesn't exist.");
         } catch (ClientErrorException e) {
             throw new KubernetesClientException(e);
         }

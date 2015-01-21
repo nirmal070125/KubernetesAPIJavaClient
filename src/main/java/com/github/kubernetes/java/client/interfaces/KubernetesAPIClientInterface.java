@@ -33,7 +33,7 @@ import com.github.kubernetes.java.client.model.ServiceList;
 
 public interface KubernetesAPIClientInterface {
 
-    public static final String VERSION = "v1beta1";
+    public static final String VERSION = "v1beta2";
 
 	/* Pod API */
 

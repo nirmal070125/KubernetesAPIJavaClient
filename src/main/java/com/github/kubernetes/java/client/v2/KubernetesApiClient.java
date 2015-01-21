@@ -7,6 +7,9 @@ import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.NotFoundException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.github.kubernetes.java.client.exceptions.KubernetesClientException;
 import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
 import com.github.kubernetes.java.client.model.Label;
@@ -22,6 +25,8 @@ import com.google.common.collect.Lists;
 
 public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
+    private static final Log LOG = LogFactory.getLog(KubernetesApiClient.class);
+
     private URI endpointURI;
     private KubernetesAPI api;
 
@@ -31,7 +36,13 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
     public KubernetesApiClient(String endpointUrl, String username, String password, RestFactory factory) {
         try {
-            endpointURI = new URI(endpointUrl);
+            if (endpointUrl.matches("/api/v1[a-z0-9]+")) {
+                LOG.warn("Deprecated: KubernetesApiClient endpointUrl should not include the /api/version section in "
+                        + endpointUrl);
+                endpointURI = new URI(endpointUrl);
+            } else {
+                endpointURI = new URI(endpointUrl + "/api/" + KubernetesAPIClientInterface.VERSION);
+            }
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -128,7 +139,17 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
             api.updateReplicationController(controllerId, controller);
         } catch (ClientErrorException e) {
             String msg = "Replication Controller [" + controllerId + "] update failed. Error: " + e.getMessage();
-            throw new KubernetesClientException( msg, e );
+            throw new KubernetesClientException(msg, e);
+        }
+    }
+
+    public void updateReplicationController(String controllerId, ReplicationController controller)
+            throws KubernetesClientException {
+        try {
+            api.updateReplicationController(controllerId, controller);
+        } catch (ClientErrorException e) {
+            String msg = "Replication Controller [" + controllerId + "] update failed. Error: " + e.getMessage();
+            throw new KubernetesClientException(msg, e);
         }
     }
 

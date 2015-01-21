@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Container {
@@ -71,6 +72,7 @@ public class Container {
         this.workingDir = workingDir;
     }
 
+    @JsonProperty
     public List<String> getCommand() {
         return command;
     }

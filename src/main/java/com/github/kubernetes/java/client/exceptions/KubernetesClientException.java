@@ -22,7 +22,7 @@ package com.github.kubernetes.java.client.exceptions;
 
 import javax.ws.rs.ClientErrorException;
 
-public class KubernetesClientException extends Exception {
+public class KubernetesClientException extends RuntimeException {
 
     private static final long serialVersionUID = -7521673271244696906L;
 

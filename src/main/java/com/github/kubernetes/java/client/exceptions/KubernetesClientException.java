@@ -20,18 +20,21 @@
  */
 package com.github.kubernetes.java.client.exceptions;
 
-import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.WebApplicationException;
 
 public class KubernetesClientException extends RuntimeException {
 
     private static final long serialVersionUID = -7521673271244696906L;
 
+    private Status status;
+
     public KubernetesClientException(String message, Exception exception) {
         super(message, exception);
+        this.setStatus(getResponse(exception));
     }
 
     public KubernetesClientException(Exception exception) {
-        super(buildMessage(exception), exception);
+        this(buildMessage(exception), exception);
     }
 
     public KubernetesClientException(String msg) {
@@ -39,8 +42,8 @@ public class KubernetesClientException extends RuntimeException {
     }
 
     private static Status getResponse(Throwable exception) {
-        if (exception instanceof ClientErrorException) {
-            ClientErrorException error = (ClientErrorException) exception;
+        if (exception instanceof WebApplicationException) {
+            WebApplicationException error = (WebApplicationException) exception;
             return error.getResponse().readEntity(Status.class);
         }
         return null;
@@ -51,7 +54,12 @@ public class KubernetesClientException extends RuntimeException {
         return response != null ? response.getMessage() : null;
     }
 
-    public Status getResponse() {
-        return getResponse(getCause());
+    public Status getStatus() {
+        return status;
     }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
 }

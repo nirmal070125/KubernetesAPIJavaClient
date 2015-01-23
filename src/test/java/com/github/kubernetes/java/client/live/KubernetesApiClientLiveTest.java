@@ -21,21 +21,22 @@
 package com.github.kubernetes.java.client.live;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.github.kubernetes.java.client.exceptions.KubernetesClientException;
+import com.github.kubernetes.java.client.exceptions.Status;
 import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
+import com.github.kubernetes.java.client.model.AbstractKubernetesModel;
 import com.github.kubernetes.java.client.model.Container;
 import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Manifest;
@@ -47,11 +48,15 @@ import com.github.kubernetes.java.client.model.Selector;
 import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
 import com.github.kubernetes.java.client.model.State;
+import com.github.kubernetes.java.client.v2.KubernetesApiClient;
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 
-public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
+@Category(com.github.kubernetes.java.client.LiveTests.class)
+public class KubernetesApiClientLiveTest {
 
-    private static final Log log = LogFactory.getLog(AbstractKubernetesApiClientLiveTest.class);
+    private static final Log log = LogFactory.getLog(KubernetesApiClientLiveTest.class);
+
     private String dockerImage;
     protected String endpoint;
     protected String username;
@@ -61,15 +66,23 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     protected ReplicationController contr;
     protected Service serv;
 
-    protected abstract KubernetesAPIClientInterface getClient();
+    private KubernetesAPIClientInterface client;
 
     protected Class getExceptionClass() {
         return KubernetesClientException.class;
     }
 
+    protected KubernetesAPIClientInterface getClient() {
+        if (client == null) {
+            client = new KubernetesApiClient(endpoint, username, password);
+        }
+        return client;
+    }
+
     @Before
     public void setUp() {
-        endpoint = System.getProperty("kubernetes.api.endpoint", "http://192.168.1.100:8080/api/" + KubernetesAPIClientInterface.VERSION + "/");
+        endpoint = System.getProperty("kubernetes.api.endpoint", "http://192.168.1.100:8080/api/"
+                + KubernetesAPIClientInterface.VERSION + "/");
         username = System.getProperty("kubernetes.api.username", "vagrant");
         password = System.getProperty("kubernetes.api.password", "vagrant");
         log.info("Provided Kubernetes endpoint using system property [kubernetes.api.endpoint] : " + endpoint);
@@ -86,21 +99,30 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     }
 
     @After
-    private void cleanup() {
-        try {
-            getClient().deletePod(pod.getId());
-        } catch (Exception e) {
-            // do nothing
-        }
-        try {
-            getClient().deleteReplicationController(contr.getId());
-        } catch (Exception e) {
-            // do nothing
-        }
-        try {
-            getClient().deleteService(serv.getId());
-        } catch (Exception e) {
-            // do nothing
+    public void cleanup() {
+        Function<AbstractKubernetesModel, Status> delete = new Function<AbstractKubernetesModel, Status>() {
+            public Status apply(AbstractKubernetesModel o) {
+                switch (o.getKind()) {
+                case POD:
+                    return getClient().deletePod(pod.getId());
+                case REPLICATIONCONTROLLER:
+                    return getClient().deleteReplicationController(contr.getId());
+                case SERVICE:
+                    return getClient().deleteService(serv.getId());
+                default:
+                    throw new IllegalArgumentException(o.toString());
+                }
+            }
+        };
+
+        for (AbstractKubernetesModel model : ImmutableList.of(pod, contr, serv)) {
+            try {
+                delete.apply(model);
+            } catch (KubernetesClientException e) {
+                if ((e.getStatus() == null) || (e.getStatus().getCode() != 404)) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -114,7 +136,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         Container c = new Container();
         c.setName("master");
         c.setImage(dockerImage);
-        c.setCommand(Collections.singletonList("tail -f /dev/null" ));
+        c.setCommand(Collections.singletonList("tail -f /dev/null"));
         Port p = new Port();
         p.setContainerPort(8379);
         p.setHostPort(8379);
@@ -179,7 +201,8 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         if (log.isDebugEnabled()) {
             log.debug("Creating a Pod " + pod);
         }
-        getClient().createPod(pod);
+        Pod createPod = getClient().createPod(pod);
+        assertEquals(pod.getId(), createPod.getId());
         assertNotNull(getClient().getPod(pod.getId()));
 
         // give 2s to download the image
@@ -197,13 +220,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
     @Test
     public void testGetNonExistantPod() throws Exception {
-        String bogusPodId = "non-existant";
-        try {
-            getClient().getPod(bogusPodId);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Pod [" + bogusPodId + "] doesn't exist.", e.getMessage());
-        }
+        assertNull(getClient().getPod("non-existant"));
     }
 
     @Test
@@ -236,6 +253,14 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     }
 
     @Test
+    public void testGetSelectedPodsEmpty() {
+        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels()));
+        assertNotNull(selectedPods);
+        assertNotNull(selectedPods.getItems());
+        assertEquals(0, selectedPods.getItems().size());
+    }
+
+    @Test
     public void testGetSelectedPodsWithNonExistantLabel() throws Exception {
         PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels(), new Label("no-match")));
         assertNotNull(selectedPods);
@@ -245,7 +270,7 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
 
     @Test
     public void testGetSelectedPodsWithEmptyLabel() throws Exception {
-        PodList selectedPods = getClient().getSelectedPods(Collections.<Label>emptyList());
+        PodList selectedPods = getClient().getSelectedPods(Collections.<Label> emptyList());
         PodList allPods = getClient().getAllPods();
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
@@ -259,26 +284,13 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         }
         getClient().createPod(pod);
         getClient().deletePod(pod.getId());
-        try {
-            getClient().getPod(pod.getId());
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-        }
+        assertNull(getClient().getPod(pod.getId()));
     }
 
-    @Test
+    @Test(expected = KubernetesClientException.class)
     public void testDeleteNonExistantPod() throws Exception {
         // delete a non-existing pod
-        try {
-            getClient().deletePod("xxxxxx");
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-        }
-
-        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels()));
-        assertNotNull(selectedPods);
-        assertNotNull(selectedPods.getItems());
-        assertEquals(0, selectedPods.getItems().size());
+        getClient().deletePod("xxxxxx");
     }
 
     @Test
@@ -313,16 +325,11 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
         assertThat(getClient().getAllReplicationControllers().getItems().size(), greaterThan(0));
     }
 
-    @Test
+    @Test(expected = KubernetesClientException.class)
     public void testUpdateReplicationControllerWithBadCount() throws Exception {
         // test incorrect replica count
         getClient().createReplicationController(contr);
-        try {
-            getClient().updateReplicationController(contr.getId(), -1);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals(true, e.getMessage().contains("update failed"));
-        }
+        getClient().updateReplicationController(contr.getId(), -1);
     }
 
     @Test
@@ -342,45 +349,30 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     public void testDeleteReplicationController() throws Exception {
         getClient().createReplicationController(contr);
         getClient().deleteReplicationController(contr.getId());
-        try {
-            getClient().getReplicationController(contr.getId());
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-        }
+        assertNull(getClient().getReplicationController(contr.getId()));
+    }
+
+    @Test(expected = KubernetesClientException.class)
+    public void testCreateInvalidReplicationController() throws Exception {
+        // create an invalid Controller
+        ReplicationController bogusContr = new ReplicationController();
+        bogusContr.setId("xxxxx");
+        getClient().createReplicationController(bogusContr);
     }
 
     @Test
-    public void testCreateInvalidReplicationController() throws Exception {
-        String bogusContrId = "github";
-        // create an invalid Controller
-        ReplicationController bogusContr = new ReplicationController();
-        bogusContr.setId(bogusContrId);
-        try {
-            getClient().createReplicationController(bogusContr);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-        }
+    public void testGetInvalidReplicationController() throws Exception {
+        assertNull(getClient().getReplicationController("xxxxx"));
+    }
 
-        try {
-            getClient().getReplicationController(bogusContrId);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Replication Controller [" + bogusContrId + "] doesn't exist.", e.getMessage());
-        }
+    @Test(expected = KubernetesClientException.class)
+    public void testUpdateInvalidReplicationController() throws Exception {
+        getClient().updateReplicationController("xxxxx", 3);
+    }
 
-        try {
-            getClient().updateReplicationController(bogusContrId, 3);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Replication Controller [" + bogusContrId + "] doesn't exist.", e.getMessage());
-        }
-
-        try {
-            getClient().deleteReplicationController(bogusContrId);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Replication Controller [" + bogusContrId + "] doesn't exist.", e.getMessage());
-        }
+    @Test(expected = KubernetesClientException.class)
+    public void testDeleteInvalidReplicationController() throws Exception {
+        getClient().deleteReplicationController("xxxxx");
     }
 
     @Test
@@ -414,38 +406,20 @@ public abstract class AbstractKubernetesApiClientLiveTest extends TestCase {
     @Test
     public void testDeleteService() throws Exception {
         getClient().createService(serv);
-        getClient().deleteService(serv.getId());
-        try {
-            getClient().getService(serv.getId());
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-        }
+        Status status = getClient().deleteService(serv.getId());
+        assertNull(getClient().getService(serv.getId()));
     }
 
-    @Test
+    @Test(expected = KubernetesClientException.class)
     public void testCreateInvalidService() throws Exception {
-        String bogusServId = "github";
         // create an invalid Service
         Service bogusServ = new Service();
-        bogusServ.setId(bogusServId);
-        try {
-            getClient().createService(bogusServ);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-        }
+        bogusServ.setId("xxxxxx");
+        getClient().createService(bogusServ);
+    }
 
-        try {
-            getClient().getService(bogusServId);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Service [" + bogusServId + "] doesn't exist.", e.getMessage());
-        }
-
-        try {
-            getClient().deleteService(bogusServId);
-        } catch (Exception e) {
-            assertThat(e, instanceOf(getExceptionClass()));
-            assertEquals("Service [" + bogusServId + "] doesn't exist.", e.getMessage());
-        }
+    @Test(expected = KubernetesClientException.class)
+    public void testDeleteInvalidService() throws Exception {
+        getClient().deleteService("xxxxx");
     }
 }

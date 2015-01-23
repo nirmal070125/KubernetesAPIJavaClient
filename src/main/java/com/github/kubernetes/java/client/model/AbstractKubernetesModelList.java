@@ -9,7 +9,7 @@ public abstract class AbstractKubernetesModelList<T> extends AbstractKubernetesM
 
     private List<T> items = new ArrayList<T>();
 
-    protected AbstractKubernetesModelList(String kind) {
+    protected AbstractKubernetesModelList(Kind kind) {
         super(kind);
     }
 

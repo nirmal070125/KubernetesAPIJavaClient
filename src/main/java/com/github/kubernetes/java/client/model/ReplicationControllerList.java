@@ -29,6 +29,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class ReplicationControllerList extends AbstractKubernetesModelList<ReplicationController> {
 
     public ReplicationControllerList() {
-        super("ReplicationControllerList");
+        super(Kind.REPLICATIONCONTROLLERLIST);
     }
 }

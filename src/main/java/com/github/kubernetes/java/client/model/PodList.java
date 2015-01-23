@@ -29,6 +29,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class PodList extends AbstractKubernetesModelList<Pod> {
 
     public PodList() {
-        super("PodList");
+        super(Kind.PODLIST);
     }
 }

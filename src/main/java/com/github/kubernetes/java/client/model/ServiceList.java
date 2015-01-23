@@ -29,7 +29,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class ServiceList extends AbstractKubernetesModelList<Service> {
 
     public ServiceList() {
-        super("ServiceList");
+        super(Kind.SERVICELIST);
     }
 
 }

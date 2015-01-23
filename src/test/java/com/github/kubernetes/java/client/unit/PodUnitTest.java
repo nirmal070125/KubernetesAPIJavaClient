@@ -71,7 +71,7 @@ public class PodUnitTest extends TestCase{
         pod.setCurrentState(currentState);
         
         assertEquals(podId, pod.getId());
-        assertEquals("Pod", pod.getKind());
+        assertEquals("Pod", pod.getKind().toString());
         assertEquals(l, pod.getLabels());
         assertEquals(currentState, pod.getCurrentState());
         assertEquals(selfLink, pod.getSelfLink());

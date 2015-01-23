@@ -22,44 +22,69 @@ package com.github.kubernetes.java.client.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Port {
 
-	private String name;
-	private String protocol;
-	private int containerPort;
-	private int hostPort;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getProtocol() {
-		return protocol;
-	}
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
-	public int getContainerPort() {
-		return containerPort;
-	}
-	public void setContainerPort(int containerPort) {
-		this.containerPort = containerPort;
-	}
-	public int getHostPort() {
-		return hostPort;
-	}
-	public void setHostPort(int hostPort) {
-		this.hostPort = hostPort;
-	}
-	@Override
-	public String toString() {
-		return "Port [name=" + name + ", protocol=" + protocol
-				+ ", containerPort=" + containerPort + ", hostPort=" + hostPort
-				+ "]";
-	}
-	
-	
+    private String name;
+    private String protocol = "TCP";
+    private int containerPort;
+    private int hostPort;
+    private String hostIp;
+
+    public Port() {
+    }
+
+    public Port(int containerPort) {
+        this.containerPort = containerPort;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * TCP or UDP
+     */
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public int getContainerPort() {
+        return containerPort;
+    }
+
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
+    }
+
+    public int getHostPort() {
+        return hostPort;
+    }
+
+    public void setHostPort(int hostPort) {
+        this.hostPort = hostPort;
+    }
+
+    public String getHostIp() {
+        return hostIp;
+    }
+
+    public void setHostIp(String hostIp) {
+        this.hostIp = hostIp;
+    }
+
+    @Override
+    public String toString() {
+        return "Port [name=" + name + ", protocol=" + protocol + ", containerPort=" + containerPort + ", hostPort="
+                + hostPort + ", hostIp=" + hostIp + "]";
+    }
+
 }

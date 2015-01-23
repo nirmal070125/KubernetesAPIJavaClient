@@ -43,7 +43,7 @@ public class Service extends AbstractKubernetesModel {
     private Label labels;
 
     public Service() {
-        super("Service");
+        super(Kind.SERVICE);
     }
 
     public String getId() {

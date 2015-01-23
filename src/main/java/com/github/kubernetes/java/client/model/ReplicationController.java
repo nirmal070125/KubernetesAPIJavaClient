@@ -41,7 +41,7 @@ public class ReplicationController extends AbstractKubernetesModel {
     private State currentState;
 
     public ReplicationController() {
-        super("ReplicationController");
+        super(Kind.REPLICATIONCONTROLLER);
     }
 
     public String getId() {

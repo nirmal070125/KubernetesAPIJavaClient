@@ -5,18 +5,18 @@ import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface
 
 public class AbstractKubernetesModel {
 
-    private String kind;
+    private Kind kind;
     private String apiVersion = KubernetesAPIClientInterface.VERSION;
 
-    protected AbstractKubernetesModel(String kind) {
+    protected AbstractKubernetesModel(Kind kind) {
         this.kind = kind;
     }
 
-    public String getKind() {
+    public Kind getKind() {
     	return kind;
     }
 
-    public void setKind(String kind) {
+    public void setKind(Kind kind) {
     	this.kind = kind;
     }
 

@@ -48,7 +48,7 @@ public class Pod extends AbstractKubernetesModel {
 	private Label labels;
 	
 	public Pod() {
-	    super("Pod");
+	    super(Kind.POD);
 	}
 
 	public String getId() {

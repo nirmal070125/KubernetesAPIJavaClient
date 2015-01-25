@@ -60,7 +60,7 @@ public class RestFactory {
         ApacheHttpClient4Engine engine = new ApacheHttpClient4Engine(httpclient, localcontext);
         ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
 
-        client.register(JacksonJaxbJsonProvider.class);
+        client.register(JacksonJaxbJsonProvider.class).register(JacksonConfig.class);
         ProxyBuilder<KubernetesAPI> proxyBuilder = client.target(uri).proxyBuilder(KubernetesAPI.class);
         if (classLoader != null) {
             proxyBuilder = proxyBuilder.classloader(classLoader);

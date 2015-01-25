@@ -160,7 +160,6 @@ public class KubernetesApiClientLiveTest {
         Pod podTemplate = new Pod();
         State podState = new State();
         Manifest manifest = new Manifest();
-        manifest.setVersion("v1beta1");
         manifest.setId(contr.getId());
         Container container = new Container();
         container.setName("github-php");

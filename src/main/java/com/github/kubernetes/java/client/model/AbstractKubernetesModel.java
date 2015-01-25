@@ -1,6 +1,6 @@
 package com.github.kubernetes.java.client.model;
 
-import java.util.Calendar;
+import org.joda.time.DateTime;
 
 import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
 
@@ -10,7 +10,7 @@ public class AbstractKubernetesModel {
     private String uid;
     private Kind kind;
     private String apiVersion = KubernetesAPIClientInterface.VERSION;
-    private Calendar creationTimestamp;
+    private DateTime creationTimestamp;
     private String namespace;
     private String selfLink;
     private int resourceVersion;
@@ -51,11 +51,11 @@ public class AbstractKubernetesModel {
         this.apiVersion = apiVersion;
     }
 
-    public Calendar getCreationTimestamp() {
+    public DateTime getCreationTimestamp() {
         return creationTimestamp;
     }
 
-    public void setCreationTimestamp(Calendar creationTimestamp) {
+    public void setCreationTimestamp(DateTime creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 

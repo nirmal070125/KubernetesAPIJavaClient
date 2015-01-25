@@ -20,52 +20,14 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-/**
- * @author github
- *
- */
-@XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ReplicationController extends AbstractKubernetesModel {
 
-    private String id;
-    private int resourceVersion;
-    private String creationTimestamp;
-    private String selfLink;
     private Label labels;
     private State desiredState;
     private State currentState;
 
     public ReplicationController() {
         super(Kind.REPLICATIONCONTROLLER);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCreationTimestamp() {
-        return creationTimestamp;
-    }
-
-    public void setCreationTimestamp(String creationTimestamp) {
-        this.creationTimestamp = creationTimestamp;
-    }
-
-    public String getSelfLink() {
-        return selfLink;
-    }
-
-    public void setSelfLink(String selfLink) {
-        this.selfLink = selfLink;
     }
 
     public Label getLabels() {
@@ -88,18 +50,10 @@ public class ReplicationController extends AbstractKubernetesModel {
         return currentState;
     }
 
-    public int getResourceVersion() {
-        return resourceVersion;
-    }
-
-    public void setResourceVersion(int resourceVersion) {
-        this.resourceVersion = resourceVersion;
-    }
-
     @Override
     public String toString() {
-        return "ReplicationController [id=" + id + ", creationTimestamp=" + creationTimestamp
-                + ", selfLink=" + selfLink + ", labels=" + labels + ", desiredState=" + desiredState + "]";
+        return "ReplicationController [id=" + getId() + ", selfLink=" + getSelfLink() + ", labels=" + labels
+                + ", desiredState=" + desiredState + "]";
     }
 
 }

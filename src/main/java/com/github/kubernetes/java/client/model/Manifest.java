@@ -24,15 +24,13 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
-
 /**
  * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/
  * manifest-schema.json
  */
 public class Manifest {
 
-    private String version = KubernetesAPIClientInterface.VERSION;
+    private String version;
     private String id;
     private List<Container> containers;
     private List<Volume> volumes;

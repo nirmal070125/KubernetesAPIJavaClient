@@ -23,7 +23,7 @@ package com.github.kubernetes.java.client.model;
 public class Port {
 
     private String name;
-    private String protocol = "TCP";
+    private String protocol;
     private int containerPort;
     private int hostPort;
     private String hostIp;

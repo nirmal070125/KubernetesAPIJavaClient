@@ -1,7 +1,5 @@
 package com.github.kubernetes.java.client.exceptions;
 
-import java.util.Calendar;
-
 import com.github.kubernetes.java.client.model.AbstractKubernetesModel;
 import com.github.kubernetes.java.client.model.Kind;
 import com.google.common.base.MoreObjects;

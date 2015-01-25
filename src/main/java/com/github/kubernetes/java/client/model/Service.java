@@ -33,7 +33,7 @@ public class Service extends AbstractKubernetesModel {
     private String containerPort;
     private Selector selector;
     private Label labels;
-    private String protocol = "TCP";
+    private String protocol;
     private InetAddress portalIP;
     private String sessionAffinity;
 

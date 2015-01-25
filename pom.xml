@@ -43,7 +43,7 @@
 	    <kubernetes.api.username>vagrant</kubernetes.api.username>
 	    <kubernetes.api.password>vagrant</kubernetes.api.password>
 	    <docker.image>busybox</docker.image>
-	    <resteasy.version>3.0.8.Final</resteasy.version>
+	    <resteasy.version>3.0.9.Final</resteasy.version>
   	</properties>
 
 	<dependencies>

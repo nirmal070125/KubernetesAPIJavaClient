@@ -20,114 +20,86 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-
-
 /**
- * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/examples/pod.json
- * @author github
- *
+ * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/examples/
+ * pod.json
  */
-@XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class Pod extends AbstractKubernetesModel {
 
-	@JsonProperty
-	private String id;
-	private String creationTimestamp;
-	private String selfLink;
-	private String resourceVersion;
-	private State desiredState;
-	private State currentState;
-	private String status;
-	private String message;
-	private String code;
-	private Label labels;
-	
-	public Pod() {
-	    super(Kind.POD);
-	}
+    private State desiredState;
+    private State currentState;
+    private String status;
+    private String message;
+    private String code;
+    private Label labels;
 
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getCreationTimestamp() {
-		return creationTimestamp;
-	}
-	public void setCreationTimestamp(String creationTimestamp) {
-		this.creationTimestamp = creationTimestamp;
-	}
-	public String getSelfLink() {
-		return selfLink;
-	}
-	public void setSelfLink(String selfLink) {
-		this.selfLink = selfLink;
-	}
-	public State getDesiredState() {
-		return desiredState;
-	}
-	public void setDesiredState(State desiredState) {
-		this.desiredState = desiredState;
-	}
-	public State getCurrentState() {
-		return currentState;
-	}
-	public void setCurrentState(State currentState) {
-		this.currentState = currentState;
-	}
-	public String getResourceVersion() {
-		return resourceVersion;
-	}
-	public void setResourceVersion(String resourceVersion) {
-		this.resourceVersion = resourceVersion;
-	}
-	public Label getLabels() {
-		return labels;
-	}
-	public void setLabels(Label labels) {
-		this.labels = labels;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	@Override
-	public String toString() {
-		return "Pod [id=" + id + ", creationTimestamp="
-				+ creationTimestamp + ", selfLink=" + selfLink
-				+ ", resourceVersion=" + resourceVersion
-				+ ", desiredState=" + desiredState
-				+ ", currentState=" + currentState + ", status=" + status
-				+ ", message=" + message + ", code=" + code + ", labels="
-				+ labels + "]";
-	}
+    public Pod() {
+        super(Kind.POD);
+    }
+
+    public State getDesiredState() {
+        return desiredState;
+    }
+
+    public void setDesiredState(State desiredState) {
+        this.desiredState = desiredState;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public Label getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Label labels) {
+        this.labels = labels;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return "Pod [id=" + getId() + ", selfLink=" + getSelfLink() + ", resourceVersion=" + getResourceVersion()
+                + ", desiredState=" + desiredState + ", currentState=" + currentState + ", status=" + status
+                + ", message=" + message + ", code=" + code + ", labels=" + labels + "]";
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -137,12 +109,12 @@ public class Pod extends AbstractKubernetesModel {
         if (getClass() != obj.getClass())
             return false;
         Pod other = (Pod) obj;
-        if (id == null) {
-            if (other.id != null)
+        if (getId() == null) {
+            if (other.getId() != null)
                 return false;
-        } else if (!id.equals(other.id))
+        } else if (!getId().equals(other.getId()))
             return false;
         return true;
     }
-	
+
 }

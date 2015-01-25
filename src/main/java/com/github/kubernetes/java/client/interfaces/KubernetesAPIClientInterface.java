@@ -114,7 +114,8 @@ public interface KubernetesAPIClientInterface {
      *            update the replicas count of the current controller.
      * @throws KubernetesClientException
      */
-    public ReplicationController updateReplicationController(String controllerId, int replicas) throws KubernetesClientException;
+    public ReplicationController updateReplicationController(String controllerId, int replicas)
+            throws KubernetesClientException;
 
     /**
      * Delete a Replication Controller.

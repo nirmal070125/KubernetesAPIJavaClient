@@ -20,38 +20,52 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class VolumeMount {
 
-	private String name;
-	private String mountPath;
-	private boolean readOnly;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getMountPath() {
-		return mountPath;
-	}
-	public void setMountPath(String mountPath) {
-		this.mountPath = mountPath;
-	}
-	public boolean isReadOnly() {
-		return readOnly;
-	}
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-	}
-	@Override
-	public String toString() {
-		return "VolumeMount [name=" + name + ", mountPath=" + mountPath
-				+ ", readOnly=" + readOnly + "]";
-	}
-	
-	
+    private String name;
+    private String mountPath;
+    private boolean readOnly = false;
+
+    public VolumeMount() {
+    }
+
+    public VolumeMount(String name, String mountPath) {
+        this(name, mountPath, false);
+    }
+
+    public VolumeMount(String name, String mountPath, boolean readOnly) {
+        this.name = name;
+        this.mountPath = mountPath;
+        this.readOnly = readOnly;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMountPath() {
+        return mountPath;
+    }
+
+    public void setMountPath(String mountPath) {
+        this.mountPath = mountPath;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeMount [name=" + name + ", mountPath=" + mountPath + ", readOnly=" + readOnly + "]";
+    }
+
 }

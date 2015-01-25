@@ -2,13 +2,10 @@ package com.github.kubernetes.java.client.exceptions;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 import com.github.kubernetes.java.client.model.AbstractKubernetesModel;
 import com.github.kubernetes.java.client.model.Kind;
 import com.google.common.base.MoreObjects;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class StatusDetails extends AbstractKubernetesModel {
     private String id;
     private List<StatusDetailsCause> causes;

@@ -20,6 +20,7 @@
  */
 package com.github.kubernetes.java.client.unit;
 
+import java.util.Calendar;
 import java.util.Collections;
 
 import junit.framework.TestCase;
@@ -28,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.github.kubernetes.java.client.model.AbstractKubernetesModel;
 import com.github.kubernetes.java.client.model.Container;
 import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Manifest;
@@ -45,7 +47,7 @@ public class PodUnitTest extends TestCase{
 	@Test
 	public void testPods() throws Exception { 
 	    String podId = "github-test-pod";
-	    String time = "2014/11/02";
+	    Calendar time = Calendar.getInstance();
 	    String selfLink = "link";
         Pod pod = new Pod();
         pod.setId(podId);

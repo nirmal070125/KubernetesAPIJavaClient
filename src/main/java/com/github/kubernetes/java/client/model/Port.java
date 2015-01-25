@@ -20,9 +20,6 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Port {
 
     private String name;

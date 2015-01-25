@@ -20,12 +20,11 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Label {
 
     private String name;
+    private String component;
+    private String provider;
 
     public Label() {
     }
@@ -40,6 +39,22 @@ public class Label {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     @Override

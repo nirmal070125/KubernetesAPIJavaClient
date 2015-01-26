@@ -135,8 +135,8 @@ public class KubernetesApiClientLiveTest {
 
     private Pod getPod() {
         Pod pod = new Pod();
-        pod.setId("github-test-pod");
-        pod.setLabels(new Label("test-pod"));
+        pod.setId("kubernetes-test-pod");
+        pod.setLabels(new Label("kubernetes-test-pod-label"));
         State desiredState = new State();
         Manifest m = new Manifest();
         m.setId(pod.getId());
@@ -156,12 +156,12 @@ public class KubernetesApiClientLiveTest {
 
     private ReplicationController getReplicationController() {
         ReplicationController contr = new ReplicationController();
-        contr.setId("githubController");
+        contr.setId("kubernetes-test-controller");
         State desiredState = new State();
         desiredState.setReplicas(2);
 
         Selector selector = new Selector();
-        selector.setName("test-replicationController");
+        selector.setName("kubernetes-test-controller-selector");
         desiredState.setReplicaSelector(selector);
 
         Pod podTemplate = new Pod();
@@ -169,7 +169,7 @@ public class KubernetesApiClientLiveTest {
         Manifest manifest = new Manifest();
         manifest.setId(contr.getId());
         Container container = new Container();
-        container.setName("github-php");
+        container.setName("kubernetes-test");
         container.setImage(dockerImage);
         Port p = new Port();
         p.setContainerPort(80);
@@ -187,13 +187,12 @@ public class KubernetesApiClientLiveTest {
     }
 
     private Service getService() {
-        String serviceId = "github-service";
         Service serv = new Service();
         serv.setContainerPort("8379");
         serv.setPort(5000);
-        serv.setId(serviceId);
-        serv.setLabels(new Label("test-service"));
-        serv.setName("github-service");
+        serv.setId("kubernetes-test-service");
+        serv.setLabels(new Label("kubernetes-test-service-label"));
+        serv.setName("kubernetes-test-service-name");
         Selector selector = new Selector();
         selector.setName(serv.getLabels().getName());
         serv.setSelector(selector);

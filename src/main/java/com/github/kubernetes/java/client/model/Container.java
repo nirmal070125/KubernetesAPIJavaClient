@@ -20,7 +20,6 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -104,12 +103,8 @@ public class Container {
     }
 
     @JsonIgnore
-    public void setPorts(int... ports) {
-        List<Port> newPorts = new ArrayList<Port>(ports.length);
-        for (int port : ports) {
-            newPorts.add(new Port(port));
-        }
-        this.ports = newPorts;
+    public void setPorts(Port... ports) {
+        this.ports = Arrays.asList(ports);
     }
 
     public List<EnvironmentVariable> getEnv() {

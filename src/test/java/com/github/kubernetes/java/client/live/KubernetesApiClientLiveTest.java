@@ -106,6 +106,13 @@ public class KubernetesApiClientLiveTest {
                 case POD:
                     return getClient().deletePod(pod.getId());
                 case REPLICATIONCONTROLLER:
+                    if (getClient().getReplicationController(contr.getId()) != null) {
+                        getClient().updateReplicationController(contr.getId(), 0);
+                    }
+                    PodList pods = getClient().getSelectedPods(Collections.singletonList(contr.getLabels()));
+                    for (Pod pod : pods.getItems()) {
+                        getClient().deletePod(pod.getId());
+                    }
                     return getClient().deleteReplicationController(contr.getId());
                 case SERVICE:
                     return getClient().deleteService(serv.getId());

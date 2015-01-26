@@ -1,11 +1,10 @@
 package com.github.kubernetes.java.client.model;
 
-import java.net.InetAddress;
 import java.util.Map;
 
 public class StateInfo {
     private int restartCount;
-    private InetAddress podIP;
+    private String podIP;
     private String image;
     private String containerID;
     private Map<String, Map<String, String>> state;
@@ -18,11 +17,11 @@ public class StateInfo {
         this.restartCount = restartCount;
     }
 
-    public InetAddress getPodIP() {
+    public String getPodIP() {
         return podIP;
     }
 
-    public void setPodIP(InetAddress podIP) {
+    public void setPodIP(String podIP) {
         this.podIP = podIP;
     }
 

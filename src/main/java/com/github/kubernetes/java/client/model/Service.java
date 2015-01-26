@@ -20,7 +20,6 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import java.net.InetAddress;
 
 /**
  * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/examples/
@@ -34,7 +33,7 @@ public class Service extends AbstractKubernetesModel {
     private Selector selector;
     private Label labels;
     private String protocol;
-    private InetAddress portalIP;
+    private String portalIP;
     private String sessionAffinity;
 
     public Service() {
@@ -89,11 +88,11 @@ public class Service extends AbstractKubernetesModel {
         this.protocol = protocol;
     }
 
-    public InetAddress getPortalIP() {
+    public String getPortalIP() {
         return portalIP;
     }
 
-    public void setPortalIP(InetAddress portalIP) {
+    public void setPortalIP(String portalIP) {
         this.portalIP = portalIP;
     }
 

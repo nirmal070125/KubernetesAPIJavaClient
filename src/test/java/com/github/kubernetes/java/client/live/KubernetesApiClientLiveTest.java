@@ -25,6 +25,11 @@ import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,6 +53,7 @@ import com.github.kubernetes.java.client.model.Selector;
 import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
 import com.github.kubernetes.java.client.model.State;
+import com.github.kubernetes.java.client.model.StateInfo;
 import com.github.kubernetes.java.client.v2.KubernetesApiClient;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
@@ -143,10 +149,9 @@ public class KubernetesApiClientLiveTest {
         Container c = new Container();
         c.setName("master");
         c.setImage(dockerImage);
-        c.setCommand(Collections.singletonList("tail -f /dev/null"));
+        c.setCommand("tail", "-f", "/dev/null");
         Port p = new Port();
         p.setContainerPort(8379);
-        p.setHostPort(8379);
         c.setPorts(Collections.singletonList(p));
         m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);
@@ -174,7 +179,7 @@ public class KubernetesApiClientLiveTest {
         Port p = new Port();
         p.setContainerPort(80);
         container.setPorts(Collections.singletonList(p));
-        container.setCommand(Collections.singletonList("tail -f /dev/null"));
+        container.setCommand("tail", "-f", "/dev/null");
         manifest.setContainers(Collections.singletonList(container));
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);
@@ -209,9 +214,32 @@ public class KubernetesApiClientLiveTest {
         Pod createPod = getClient().createPod(pod);
         assertEquals(pod.getId(), createPod.getId());
         assertNotNull(getClient().getPod(pod.getId()));
+        assertEquals("Waiting", createPod.getCurrentState().getStatus());
 
-        // give 2s to download the image
-        Thread.sleep(2000);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<Pod> future = executor.submit(new Callable<Pod>() {
+            public Pod call() throws Exception {
+                Pod newPod;
+                do {
+                    log.info("Waiting for Pod to be ready: " + pod.getId());
+                    Thread.sleep(1000);
+                    newPod = getClient().getPod(pod.getId());
+                    StateInfo info = newPod.getCurrentState().getMasterInfo();
+                    if (info.getState("waiting") != null) {
+                        throw new RuntimeException("Pod is waiting due to " + info.getState("waiting"));
+                    }
+                } while ("Waiting".equals(newPod.getCurrentState().getStatus()));
+                return newPod;
+            }
+        });
+
+        try {
+            createPod = future.get(90, TimeUnit.SECONDS);
+        } finally {
+            executor.shutdownNow();
+        }
+        assertNotNull(createPod.getCurrentState().getMasterInfo().getState("running"));
+        assertNotNull(createPod.getCurrentState().getNetInfo().getState("running"));
 
         // test recreation from same id
         try {

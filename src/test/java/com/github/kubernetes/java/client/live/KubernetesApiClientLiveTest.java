@@ -151,7 +151,7 @@ public class KubernetesApiClientLiveTest {
         c.setName("master");
         c.setImage(dockerImage);
         c.setCommand("tail", "-f", "/dev/null");
-        Port p = new Port(8379, new Random().nextInt((65535 - 49152) + 1) + 49152);
+        Port p = new Port(8379, new Random().nextInt((65535 - 49152) + 1) + 49152, "0.0.0.0");
         c.setPorts(Collections.singletonList(p));
         m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);

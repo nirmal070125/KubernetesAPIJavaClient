@@ -25,6 +25,7 @@ import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -150,8 +151,7 @@ public class KubernetesApiClientLiveTest {
         c.setName("master");
         c.setImage(dockerImage);
         c.setCommand("tail", "-f", "/dev/null");
-        Port p = new Port();
-        p.setContainerPort(8379);
+        Port p = new Port(8379, new Random().nextInt((65535 - 49152) + 1) + 49152);
         c.setPorts(Collections.singletonList(p));
         m.setContainers(Collections.singletonList(c));
         desiredState.setManifest(m);

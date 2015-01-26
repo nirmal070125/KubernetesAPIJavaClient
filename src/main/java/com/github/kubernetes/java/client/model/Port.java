@@ -31,8 +31,18 @@ public class Port {
     public Port() {
     }
 
-    public Port(int containerPort) {
+    /**
+     * Create a port binding with host and container ports.
+     * 
+     * Container port alone is useless and not bound
+     * https://github.com/GoogleCloudPlatform/kubernetes/blob/dd4524/pkg/kubelet/kubelet.go#L493
+     * 
+     * @param containerPort
+     * @param hostPort
+     */
+    public Port(int containerPort, int hostPort) {
         this.containerPort = containerPort;
+        this.hostPort = hostPort;
     }
 
     public String getName() {

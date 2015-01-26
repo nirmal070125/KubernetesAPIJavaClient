@@ -2,23 +2,27 @@ package com.github.kubernetes.java.client.exceptions;
 
 import java.util.List;
 
-import com.github.kubernetes.java.client.model.AbstractKubernetesModel;
-import com.github.kubernetes.java.client.model.Kind;
 import com.google.common.base.MoreObjects;
 
-public class StatusDetails extends AbstractKubernetesModel {
+public class StatusDetails {
     private String id;
+    private String kind;
     private List<StatusDetailsCause> causes;
 
-    public StatusDetails() {
-        super(Kind.STATUSDETAILS);
-    }
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public List<StatusDetailsCause> getCauses() {

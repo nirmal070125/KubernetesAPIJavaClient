@@ -26,7 +26,7 @@ public class Port {
     private String protocol;
     private int containerPort;
     private int hostPort;
-    private String hostIp;
+    private String hostIP;
 
     public Port() {
     }
@@ -35,7 +35,8 @@ public class Port {
      * Create a port binding with host and container ports.
      * 
      * Container port alone is useless and not bound
-     * https://github.com/GoogleCloudPlatform/kubernetes/blob/dd4524/pkg/kubelet/kubelet.go#L493
+     * https://github.com/GoogleCloudPlatform
+     * /kubernetes/blob/dd4524/pkg/kubelet/kubelet.go#L493
      * 
      * @param containerPort
      * @param hostPort
@@ -43,6 +44,11 @@ public class Port {
     public Port(int containerPort, int hostPort) {
         this.containerPort = containerPort;
         this.hostPort = hostPort;
+    }
+
+    public Port(int containerPort, int hostPort, String hostIP) {
+        this(containerPort, hostPort);
+        this.hostIP = hostIP;
     }
 
     public String getName() {
@@ -80,18 +86,18 @@ public class Port {
         this.hostPort = hostPort;
     }
 
-    public String getHostIp() {
-        return hostIp;
+    public String getHostIP() {
+        return hostIP;
     }
 
-    public void setHostIp(String hostIp) {
-        this.hostIp = hostIp;
+    public void setHostIP(String hostIP) {
+        this.hostIP = hostIP;
     }
 
     @Override
     public String toString() {
         return "Port [name=" + name + ", protocol=" + protocol + ", containerPort=" + containerPort + ", hostPort="
-                + hostPort + ", hostIp=" + hostIp + "]";
+                + hostPort + ", hostIp=" + hostIP + "]";
     }
 
 }

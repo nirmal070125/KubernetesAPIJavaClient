@@ -26,6 +26,18 @@ public abstract class AbstractKubernetesModelList<T> extends AbstractKubernetesM
         return getItems().iterator();
     }
 
+    public int size() {
+        return getItems().size();
+    }
+
+    public boolean isEmpty() {
+        return getItems().isEmpty();
+    }
+
+    public T get(int i) {
+        return getItems().get(i);
+    }
+
     @Override
     public String toString() {
         return getKind() + " [items=" + StringUtils.join(getItems(), ',') + "]";

@@ -20,6 +20,8 @@
  */
 package com.github.kubernetes.java.client.model;
 
+import java.util.Map;
+
 /**
  * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/examples/
  * pod.json
@@ -31,7 +33,7 @@ public class Pod extends AbstractKubernetesModel {
     private String status;
     private String message;
     private String code;
-    private Label labels;
+    private Map<String, String> labels;
 
     public Pod() {
         super(Kind.POD);
@@ -53,11 +55,11 @@ public class Pod extends AbstractKubernetesModel {
         this.currentState = currentState;
     }
 
-    public Label getLabels() {
+    public Map<String, String> getLabels() {
         return labels;
     }
 
-    public void setLabels(Label labels) {
+    public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 

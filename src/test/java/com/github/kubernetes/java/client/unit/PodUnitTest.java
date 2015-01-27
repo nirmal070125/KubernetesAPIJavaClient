@@ -30,31 +30,29 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import com.github.kubernetes.java.client.model.Container;
-import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Manifest;
 import com.github.kubernetes.java.client.model.Pod;
 import com.github.kubernetes.java.client.model.Port;
 import com.github.kubernetes.java.client.model.State;
+import com.google.common.collect.ImmutableMap;
 
 @Category(com.github.kubernetes.java.client.UnitTests.class)
-public class PodUnitTest extends TestCase{
+public class PodUnitTest extends TestCase {
 
-	@Before
-	public void setUp() {
-	}
-	
-	@Test
-	public void testPods() throws Exception { 
-	    String podId = "github-test-pod";
-	    DateTime time = new DateTime();
-	    String selfLink = "link";
+    @Before
+    public void setUp() {
+    }
+
+    @Test
+    public void testPods() throws Exception {
+        String podId = "github-test-pod";
+        DateTime time = new DateTime();
+        String selfLink = "link";
         Pod pod = new Pod();
         pod.setId(podId);
         pod.setCreationTimestamp(time);
         pod.setSelfLink(selfLink);
-        Label l = new Label();
-        l.setName("github");
-        pod.setLabels(l);
+        pod.setLabels(ImmutableMap.of("name", "github"));
         State desiredState = new State();
         Manifest m = new Manifest();
         m.setId(podId);
@@ -70,39 +68,39 @@ public class PodUnitTest extends TestCase{
         pod.setDesiredState(desiredState);
         State currentState = desiredState;
         pod.setCurrentState(currentState);
-        
+
         assertEquals(podId, pod.getId());
         assertEquals("Pod", pod.getKind().toString());
-        assertEquals(l, pod.getLabels());
+        assertEquals(ImmutableMap.of("name", "github"), pod.getLabels());
         assertEquals(currentState, pod.getCurrentState());
         assertEquals(selfLink, pod.getSelfLink());
         assertEquals(desiredState, pod.getDesiredState());
         assertEquals(time, pod.getCreationTimestamp());
-        
+
         assertEquals(true, pod.equals(pod));
-        
+
         Pod pod2 = new Pod();
         pod2.setId(podId);
-        
+
         assertEquals(true, pod.equals(pod2));
         assertEquals(true, pod.hashCode() == pod2.hashCode());
-        
+
         pod2.setId("aa");
         assertEquals(false, pod.equals(pod2));
-        
+
         pod2.setId(null);
         assertEquals(false, pod.equals(pod2));
-        
+
         assertEquals(false, pod.equals(null));
         assertEquals(false, pod.equals(desiredState));
-        
+
         pod.setId(null);
         pod2.setId(podId);
         assertEquals(false, pod.equals(pod2));
-        
+
         pod2.setId(null);
         assertEquals(true, pod.equals(pod2));
         assertEquals(true, pod.hashCode() == pod2.hashCode());
-        
-	}
+
+    }
 }

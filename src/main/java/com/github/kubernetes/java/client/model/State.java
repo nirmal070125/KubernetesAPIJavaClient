@@ -53,6 +53,9 @@ public class State {
         this.manifest = manifest;
     }
 
+    /**
+     * @return Unknown, Waiting, Running
+     */
     public String getStatus() {
         return status;
     }

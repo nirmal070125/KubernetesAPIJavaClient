@@ -57,7 +57,10 @@ import com.github.kubernetes.java.client.model.State;
 import com.github.kubernetes.java.client.model.StateInfo;
 import com.github.kubernetes.java.client.v2.KubernetesApiClient;
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 
 @Category(com.github.kubernetes.java.client.LiveTests.class)
 public class KubernetesApiClientLiveTest {
@@ -228,7 +231,7 @@ public class KubernetesApiClientLiveTest {
                     if (info.getState("waiting") != null) {
                         throw new RuntimeException("Pod is waiting due to " + info.getState("waiting"));
                     }
-                } while ("Waiting".equals(newPod.getCurrentState().getStatus()));
+                } while (!"Running".equals(newPod.getCurrentState().getStatus()));
                 return newPod;
             }
         });
@@ -334,8 +337,42 @@ public class KubernetesApiClientLiveTest {
         getClient().createReplicationController(contr);
         assertNotNull(getClient().getReplicationController(contr.getId()));
 
-        // wait 10s for Pods to be created
-        Thread.sleep(10000);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<PodList> future = executor.submit(new Callable<PodList>() {
+            public PodList call() throws Exception {
+                PodList pods;
+                do {
+                    log.info("Waiting for Pods to be ready");
+                    Thread.sleep(1000);
+                    pods = getClient().getSelectedPods(
+                            Collections.singletonList(new Label("kubernetes-test-controller-selector")));
+                    if (pods.isEmpty()) {
+                        continue;
+                    }
+
+                    StateInfo info = pods.get(0).getCurrentState().getInfo("kubernetes-test");
+                    if ((info != null) && info.getState("waiting") != null) {
+                        throw new RuntimeException("Pod is waiting due to " + info.getState("waiting"));
+                    }
+                } while (pods.isEmpty() || !FluentIterable.from(pods).allMatch(new Predicate<Pod>() {
+                    public boolean apply(Pod pod) {
+                        return "Running".equals(pod.getCurrentState().getStatus());
+                    }
+                }));
+                return pods;
+            }
+        });
+
+        PodList pods;
+        try {
+            pods = future.get(90, TimeUnit.SECONDS);
+        } finally {
+            executor.shutdownNow();
+        }
+        for (Pod pod : pods) {
+            assertNotNull(pod.getCurrentState().getInfo("kubernetes-test").getState("running"));
+            assertNotNull(pod.getCurrentState().getNetInfo().getState("running"));
+        }
 
         // test recreation using same id
         try {

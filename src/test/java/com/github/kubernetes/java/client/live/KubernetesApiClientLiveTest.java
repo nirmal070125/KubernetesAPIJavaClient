@@ -224,7 +224,7 @@ public class KubernetesApiClientLiveTest {
                     log.info("Waiting for Pod to be ready: " + pod.getId());
                     Thread.sleep(1000);
                     newPod = getClient().getPod(pod.getId());
-                    StateInfo info = newPod.getCurrentState().getMasterInfo();
+                    StateInfo info = newPod.getCurrentState().getInfo("master");
                     if (info.getState("waiting") != null) {
                         throw new RuntimeException("Pod is waiting due to " + info.getState("waiting"));
                     }
@@ -238,7 +238,7 @@ public class KubernetesApiClientLiveTest {
         } finally {
             executor.shutdownNow();
         }
-        assertNotNull(createPod.getCurrentState().getMasterInfo().getState("running"));
+        assertNotNull(createPod.getCurrentState().getInfo("master").getState("running"));
         assertNotNull(createPod.getCurrentState().getNetInfo().getState("running"));
 
         // test recreation from same id

@@ -20,6 +20,7 @@
  */
 package com.github.kubernetes.java.client.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,7 +36,7 @@ public class State {
     private Selector replicaSelector;
     private Pod podTemplate;
     private Policy restartPolicy;
-    private Map<String, StateInfo> info;
+    private Map<String, StateInfo> info = new HashMap<String, StateInfo>();
 
     public State() {
     }
@@ -126,11 +127,6 @@ public class State {
 
     public void setInfo(Map<String, StateInfo> info) {
         this.info = info;
-    }
-
-    @JsonIgnore
-    public StateInfo getMasterInfo() {
-        return info.get("master");
     }
 
     @JsonIgnore

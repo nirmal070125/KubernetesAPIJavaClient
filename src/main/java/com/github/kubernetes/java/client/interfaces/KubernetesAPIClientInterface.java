@@ -20,11 +20,10 @@
  */
 package com.github.kubernetes.java.client.interfaces;
 
-import java.util.List;
+import java.util.Map;
 
 import com.github.kubernetes.java.client.exceptions.KubernetesClientException;
 import com.github.kubernetes.java.client.exceptions.Status;
-import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Pod;
 import com.github.kubernetes.java.client.model.PodList;
 import com.github.kubernetes.java.client.model.ReplicationController;
@@ -172,5 +171,5 @@ public interface KubernetesAPIClientInterface {
      * @return Pods selected Pods by executing the label query.
      * @throws KubernetesClientException
      */
-    public PodList getSelectedPods(List<Label> labels) throws KubernetesClientException;
+    public PodList getSelectedPods(Map<String, String> labels) throws KubernetesClientException;
 }

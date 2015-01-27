@@ -44,7 +44,6 @@ import com.github.kubernetes.java.client.exceptions.Status;
 import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
 import com.github.kubernetes.java.client.model.AbstractKubernetesModel;
 import com.github.kubernetes.java.client.model.Container;
-import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Manifest;
 import com.github.kubernetes.java.client.model.Pod;
 import com.github.kubernetes.java.client.model.PodList;
@@ -60,7 +59,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterators;
+import com.google.common.collect.ImmutableMap;
 
 @Category(com.github.kubernetes.java.client.LiveTests.class)
 public class KubernetesApiClientLiveTest {
@@ -119,7 +118,7 @@ public class KubernetesApiClientLiveTest {
                     if (getClient().getReplicationController(contr.getId()) != null) {
                         getClient().updateReplicationController(contr.getId(), 0);
                     }
-                    PodList pods = getClient().getSelectedPods(Collections.singletonList(contr.getLabels()));
+                    PodList pods = getClient().getSelectedPods(contr.getLabels());
                     for (Pod pod : pods.getItems()) {
                         getClient().deletePod(pod.getId());
                     }
@@ -146,7 +145,7 @@ public class KubernetesApiClientLiveTest {
     private Pod getPod() {
         Pod pod = new Pod();
         pod.setId("kubernetes-test-pod");
-        pod.setLabels(new Label("kubernetes-test-pod-label"));
+        pod.setLabels(ImmutableMap.of("name", "kubernetes-test-pod-label", "label1", "value1"));
         State desiredState = new State();
         Manifest m = new Manifest();
         m.setId(pod.getId());
@@ -186,7 +185,7 @@ public class KubernetesApiClientLiveTest {
         manifest.setContainers(Collections.singletonList(container));
         podState.setManifest(manifest);
         podTemplate.setDesiredState(podState);
-        podTemplate.setLabels(new Label(selector.getName()));
+        podTemplate.setLabels(ImmutableMap.of("name", selector.getName()));
 
         desiredState.setPodTemplate(podTemplate);
         contr.setDesiredState(desiredState);
@@ -199,10 +198,10 @@ public class KubernetesApiClientLiveTest {
         serv.setContainerPort("8379");
         serv.setPort(5000);
         serv.setId("kubernetes-test-service");
-        serv.setLabels(new Label("kubernetes-test-service-label"));
+        serv.setLabels(ImmutableMap.of("name", "kubernetes-test-service-label"));
         serv.setName("kubernetes-test-service-name");
         Selector selector = new Selector();
-        selector.setName(serv.getLabels().getName());
+        selector.setName(serv.getLabels().get("name"));
         serv.setSelector(selector);
         return serv;
     }
@@ -282,7 +281,7 @@ public class KubernetesApiClientLiveTest {
     @Test
     public void testGetSelectedPods() throws Exception {
         getClient().createPod(pod);
-        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels()));
+        PodList selectedPods = getClient().getSelectedPods(pod.getLabels());
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(1, selectedPods.getItems().size());
@@ -290,7 +289,7 @@ public class KubernetesApiClientLiveTest {
 
     @Test
     public void testGetSelectedPodsEmpty() {
-        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels()));
+        PodList selectedPods = getClient().getSelectedPods(pod.getLabels());
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(0, selectedPods.getItems().size());
@@ -298,7 +297,7 @@ public class KubernetesApiClientLiveTest {
 
     @Test
     public void testGetSelectedPodsWithNonExistantLabel() throws Exception {
-        PodList selectedPods = getClient().getSelectedPods(ImmutableList.of(pod.getLabels(), new Label("no-match")));
+        PodList selectedPods = getClient().getSelectedPods(ImmutableMap.of("name", "no-match"));
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
         assertEquals(0, selectedPods.getItems().size());
@@ -306,7 +305,7 @@ public class KubernetesApiClientLiveTest {
 
     @Test
     public void testGetSelectedPodsWithEmptyLabel() throws Exception {
-        PodList selectedPods = getClient().getSelectedPods(Collections.<Label> emptyList());
+        PodList selectedPods = getClient().getSelectedPods(Collections.<String, String> emptyMap());
         PodList allPods = getClient().getAllPods();
         assertNotNull(selectedPods);
         assertNotNull(selectedPods.getItems());
@@ -344,8 +343,7 @@ public class KubernetesApiClientLiveTest {
                 do {
                     log.info("Waiting for Pods to be ready");
                     Thread.sleep(1000);
-                    pods = getClient().getSelectedPods(
-                            Collections.singletonList(new Label("kubernetes-test-controller-selector")));
+                    pods = getClient().getSelectedPods(ImmutableMap.of("name", "kubernetes-test-controller-selector"));
                     if (pods.isEmpty()) {
                         continue;
                     }
@@ -383,7 +381,7 @@ public class KubernetesApiClientLiveTest {
         }
         assertNotNull(getClient().getReplicationController(contr.getId()));
 
-        PodList podList = getClient().getSelectedPods(ImmutableList.of(contr.getLabels()));
+        PodList podList = getClient().getSelectedPods(contr.getLabels());
         assertNotNull(podList);
         assertNotNull(podList.getItems());
         assertEquals(contr.getDesiredState().getReplicas(), podList.getItems().size());
@@ -409,7 +407,7 @@ public class KubernetesApiClientLiveTest {
 
         Thread.sleep(10000);
 
-        PodList podList = getClient().getSelectedPods(ImmutableList.of(contr.getLabels()));
+        PodList podList = getClient().getSelectedPods(contr.getLabels());
         assertNotNull(podList);
         assertNotNull(podList.getItems());
         assertEquals(0, podList.getItems().size());

@@ -2,7 +2,7 @@ package com.github.kubernetes.java.client.v2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
@@ -13,16 +13,13 @@ import org.apache.commons.logging.LogFactory;
 import com.github.kubernetes.java.client.exceptions.KubernetesClientException;
 import com.github.kubernetes.java.client.exceptions.Status;
 import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
-import com.github.kubernetes.java.client.model.Label;
 import com.github.kubernetes.java.client.model.Pod;
 import com.github.kubernetes.java.client.model.PodList;
 import com.github.kubernetes.java.client.model.ReplicationController;
 import com.github.kubernetes.java.client.model.ReplicationControllerList;
 import com.github.kubernetes.java.client.model.Service;
 import com.github.kubernetes.java.client.model.ServiceList;
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 
 public class KubernetesApiClient implements KubernetesAPIClientInterface {
 
@@ -70,13 +67,8 @@ public class KubernetesApiClient implements KubernetesAPIClientInterface {
         }
     }
 
-    public PodList getSelectedPods(List<Label> labels) throws KubernetesClientException {
-        Function<Label, String> f = new Function<Label, String>() {
-            public String apply(Label l) {
-                return "name=" + l.getName();
-            }
-        };
-        String param = Joiner.on(',').join(Lists.transform(labels, f));
+    public PodList getSelectedPods(Map<String, String> labels) throws KubernetesClientException {
+        String param = Joiner.on(",").withKeyValueSeparator("=").join(labels);
 
         try {
             return api.getSelectedPods(param);

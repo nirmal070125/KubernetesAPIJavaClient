@@ -20,9 +20,11 @@
  */
 package com.github.kubernetes.java.client.model;
 
+import java.util.Map;
+
 public class ReplicationController extends AbstractKubernetesModel {
 
-    private Label labels;
+    private Map<String, String> labels;
     private State desiredState;
     private State currentState;
 
@@ -30,11 +32,11 @@ public class ReplicationController extends AbstractKubernetesModel {
         super(Kind.REPLICATIONCONTROLLER);
     }
 
-    public Label getLabels() {
+    public Map<String, String> getLabels() {
         return labels;
     }
 
-    public void setLabels(Label labels) {
+    public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 

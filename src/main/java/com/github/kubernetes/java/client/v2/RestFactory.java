@@ -21,14 +21,24 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 public class RestFactory {
 
-    private final ClassLoader classLoader;
+    private ClassLoader classLoader;
+    private int connectionPoolSize;
 
     public RestFactory() {
-        classLoader = null;
     }
 
     public RestFactory(ClassLoader classLoader) {
+        classLoader(classLoader);
+    }
+
+    public RestFactory classLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
+        return this;
+    }
+
+    public RestFactory connectionPoolSize(int connectionPoolSize) {
+        this.connectionPoolSize = connectionPoolSize;
+        return this;
     }
 
     public KubernetesAPI createAPI(URI uri, String userName, String password) {
@@ -58,7 +68,8 @@ public class RestFactory {
 
         // 4. Create client executor and proxy
         ApacheHttpClient4Engine engine = new ApacheHttpClient4Engine(httpclient, localcontext);
-        ResteasyClient client = new ResteasyClientBuilder().httpEngine(engine).build();
+        ResteasyClient client = new ResteasyClientBuilder().connectionPoolSize(connectionPoolSize).httpEngine(engine)
+                .build();
 
         client.register(JacksonJaxbJsonProvider.class).register(JacksonConfig.class);
         ProxyBuilder<KubernetesAPI> proxyBuilder = client.target(uri).proxyBuilder(KubernetesAPI.class);

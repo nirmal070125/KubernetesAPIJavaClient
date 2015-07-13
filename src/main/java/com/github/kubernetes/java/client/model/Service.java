@@ -38,12 +38,15 @@ public class Service extends AbstractKubernetesModel {
     private String selfLink;
     private String name;
     private int port;
-    private String containerPort;
+    private int containerPort;
+    private String type;
+    private int nodePort;
     private Selector selector;
     private Label labels;
 
     public Service() {
         super("Service");
+        type = "ClusterIP"
     }
 
     public String getId() {
@@ -94,12 +97,28 @@ public class Service extends AbstractKubernetesModel {
         this.port = port;
     }
 
-    public String getContainerPort() {
+    public int getContainerPort() {
         return containerPort;
     }
 
-    public void setContainerPort(String containerPort) {
+    public void setContainerPort(int containerPort) {
         this.containerPort = containerPort;
+    }
+    
+    public String getType() {
+        return type;
+    }
+
+    public void setId(String type) {
+        this.type = type;
+    }
+    
+    public int getNodePort() {
+        return nodePort;
+    }
+
+    public void setNodePort(int nodePort) {
+        this.nodePort = nodePort;
     }
 
     public Selector getSelector() {
@@ -113,7 +132,7 @@ public class Service extends AbstractKubernetesModel {
     @Override
     public String toString() {
         return "Service [id=" + id + ", creationTimestamp=" + creationTimestamp + ", selfLink=" + selfLink + ", name="
-                + name + ", port=" + port + ", containerPort=" + containerPort + ", selector=" + selector + ", labels="
+                + name + ", port=" + port + ", containerPort=" + containerPort + ", type=" + type + ", nodePort=" + nodePort + ", selector=" + selector + ", labels="
                 + labels + "]";
     }
 

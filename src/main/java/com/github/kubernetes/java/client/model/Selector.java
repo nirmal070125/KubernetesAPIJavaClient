@@ -20,13 +20,6 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-/**
- * @author github
- *
- */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Selector {
 
     private String name;

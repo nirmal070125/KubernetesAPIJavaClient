@@ -20,46 +20,84 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class Port {
 
-	private String name;
-	private String protocol;
-	private int containerPort;
-	private int hostPort;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getProtocol() {
-		return protocol;
-	}
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
-	public int getContainerPort() {
-		return containerPort;
-	}
-	public void setContainerPort(int containerPort) {
-		this.containerPort = containerPort;
-	}
-	public int getHostPort() {
-		return hostPort;
-	}
-	public void setHostPort(int hostPort) {
-		this.hostPort = hostPort;
-	}
-	@Override
-	public String toString() {
-		return "Port [name=" + name + ", protocol=" + protocol
-				+ ", containerPort=" + containerPort + ", hostPort=" + hostPort
-				+ "]";
-	}
-	
-	
+    private String name;
+    private String protocol;
+    private int containerPort;
+    private int hostPort;
+    private String hostIP;
+
+    public Port() {
+    }
+
+    /**
+     * Create a port binding with host and container ports.
+     * 
+     * Container port alone is useless and not bound
+     * https://github.com/GoogleCloudPlatform
+     * /kubernetes/blob/dd4524/pkg/kubelet/kubelet.go#L493
+     * 
+     * @param containerPort
+     * @param hostPort
+     */
+    public Port(int containerPort, int hostPort) {
+        this.containerPort = containerPort;
+        this.hostPort = hostPort;
+    }
+
+    public Port(int containerPort, int hostPort, String hostIP) {
+        this(containerPort, hostPort);
+        this.hostIP = hostIP;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * TCP or UDP
+     */
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public int getContainerPort() {
+        return containerPort;
+    }
+
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
+    }
+
+    public int getHostPort() {
+        return hostPort;
+    }
+
+    public void setHostPort(int hostPort) {
+        this.hostPort = hostPort;
+    }
+
+    public String getHostIP() {
+        return hostIP;
+    }
+
+    public void setHostIP(String hostIP) {
+        this.hostIP = hostIP;
+    }
+
+    @Override
+    public String toString() {
+        return "Port [name=" + name + ", protocol=" + protocol + ", containerPort=" + containerPort + ", hostPort="
+                + hostPort + ", hostIp=" + hostIP + "]";
+    }
+
 }

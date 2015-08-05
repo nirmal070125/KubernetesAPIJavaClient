@@ -20,23 +20,27 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class Policy {
 
-	private String type;
+    private String type;
 
-	public String getType() {
-		return type;
-	}
+    public Policy() {
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public Policy(String type) {
+        this.type = type;
+    }
 
-	@Override
-	public String toString() {
-		return "Policy [type=" + type + "]";
-	}
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Policy [type=" + type + "]";
+    }
 }

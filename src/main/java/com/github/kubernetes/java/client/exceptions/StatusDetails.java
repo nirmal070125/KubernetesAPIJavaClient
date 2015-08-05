@@ -2,13 +2,11 @@ package com.github.kubernetes.java.client.exceptions;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 import com.google.common.base.MoreObjects;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class StatusDetails {
-    private String id, kind;
+    private String id;
+    private String kind;
     private List<StatusDetailsCause> causes;
 
     public String getId() {
@@ -37,6 +35,6 @@ public class StatusDetails {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("kind", kind).add("causes", causes).toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("causes", causes).toString();
     }
 }

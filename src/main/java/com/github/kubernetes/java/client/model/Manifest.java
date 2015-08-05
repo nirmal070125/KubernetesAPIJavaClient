@@ -23,60 +23,80 @@ package com.github.kubernetes.java.client.model;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import com.github.kubernetes.java.client.interfaces.KubernetesAPIClientInterface;
 
 /**
- * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/manifest-schema.json
- * @author github
- *
+ * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/doc/
+ * manifest-schema.json
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class Manifest {
 
-	private String version = KubernetesAPIClientInterface.VERSION;
-	private String id;
-	private List<Container> containers;
-	private List<Volume> volumes;
+    private String version;
+    private String id;
+    private List<Container> containers;
+    private List<Volume> volumes;
+    private RestartPolicy restartPolicy;
+    private String dnsPolicy;
 
-	public Manifest() {
-	}
+    public Manifest() {
+    }
 
-	public Manifest(List<Container> containers, List<Volume> volumes) {
-            this.containers = containers;
-            this.volumes = volumes;
-        }
+    public Manifest(List<Container> containers, List<Volume> volumes) {
+        this.containers = containers;
+        this.volumes = volumes;
+    }
 
-        public String getVersion() {
-		return version;
-	}
-	public void setVersion(String version) {
-		this.version = version;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public List<Container> getContainers() {
-		return containers;
-	}
-	public void setContainers(List<Container> containers) {
-		this.containers = containers;
-	}
-	public List<Volume> getVolumes() {
-		return volumes;
-	}
-	public void setVolumes(List<Volume> volumes) {
-		this.volumes = volumes;
-	}
-	@Override
-	public String toString() {
-		return "Manifest [version=" + version + ", id=" + id + ", containers="
-				+ StringUtils.join(containers, ",") + ", volumes="
-				+ StringUtils.join(volumes, ",") + "]";
-	}
-	
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(List<Container> containers) {
+        this.containers = containers;
+    }
+
+    public List<Volume> getVolumes() {
+        return volumes;
+    }
+
+    public void setVolumes(List<Volume> volumes) {
+        this.volumes = volumes;
+    }
+
+    public RestartPolicy getRestartPolicy() {
+        return restartPolicy;
+    }
+
+    public void setRestartPolicy(RestartPolicy restartPolicy) {
+        this.restartPolicy = restartPolicy;
+    }
+
+    public String getDnsPolicy() {
+        return dnsPolicy;
+    }
+
+    public void setDnsPolicy(String dnsPolicy) {
+        this.dnsPolicy = dnsPolicy;
+    }
+
+    @Override
+    public String toString() {
+        return "Manifest [version=" + version + ", id=" + id + ", containers=" + StringUtils.join(containers, ",")
+                + ", volumes=" + StringUtils.join(volumes, ",") + "]";
+    }
+
 }

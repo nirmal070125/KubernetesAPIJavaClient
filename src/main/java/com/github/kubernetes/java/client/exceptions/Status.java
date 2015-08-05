@@ -1,21 +1,17 @@
 package com.github.kubernetes.java.client.exceptions;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
+import com.github.kubernetes.java.client.model.AbstractKubernetesModel;
+import com.github.kubernetes.java.client.model.Kind;
 import com.google.common.base.MoreObjects;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Status {
-    private String kind, status, message, reason;
+public class Status extends AbstractKubernetesModel {
+
+    private String status, message, reason;
     private int code;
     private StatusDetails details;
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
+    public Status() {
+        super(Kind.STATUS);
     }
 
     public String getStatus() {
@@ -60,8 +56,8 @@ public class Status {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("kind", kind).add("status", status).add("message", message)
-                .add("reason", reason).add("code", code).add("details", details).toString();
+        return MoreObjects.toStringHelper(this).add("status", status).add("message", message).add("reason", reason)
+                .add("code", code).add("details", details).toString();
     }
 
 }

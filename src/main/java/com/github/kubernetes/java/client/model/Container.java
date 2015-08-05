@@ -24,10 +24,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Container {
 
     private String name;
@@ -71,6 +71,7 @@ public class Container {
         this.workingDir = workingDir;
     }
 
+    @JsonProperty
     public List<String> getCommand() {
         return command;
     }
@@ -92,12 +93,18 @@ public class Container {
         this.volumeMounts = volumeMounts;
     }
 
+    @JsonProperty
     public List<Port> getPorts() {
         return ports;
     }
 
     public void setPorts(List<Port> ports) {
         this.ports = ports;
+    }
+
+    @JsonIgnore
+    public void setPorts(Port... ports) {
+        this.ports = Arrays.asList(ports);
     }
 
     public List<EnvironmentVariable> getEnv() {

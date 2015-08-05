@@ -20,16 +20,10 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-@XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceList extends AbstractKubernetesModelList<Service> {
 
     public ServiceList() {
-        super("ServiceList");
+        super(Kind.SERVICELIST);
     }
 
 }

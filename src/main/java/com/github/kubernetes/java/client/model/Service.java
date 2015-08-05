@@ -20,61 +20,32 @@
  */
 package com.github.kubernetes.java.client.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import java.util.Map;
 
 /**
- * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/examples/service.json
- * @author github
- *
+ * https://github.com/GoogleCloudPlatform/kubernetes/blob/master/api/examples/
+ * service.json
  */
-@XmlRootElement
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Service extends AbstractKubernetesModel {
 
-    private String id;
-    private String creationTimestamp;
-    private String selfLink;
     private String name;
     private int port;
     private String containerPort;
     private Selector selector;
-    private Label labels;
+    private Map<String, String> labels;
+    private String protocol;
+    private String portalIP;
+    private String sessionAffinity;
 
     public Service() {
-        super("Service");
+        super(Kind.SERVICE);
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCreationTimestamp() {
-        return creationTimestamp;
-    }
-
-    public void setCreationTimestamp(String creationTimestamp) {
-        this.creationTimestamp = creationTimestamp;
-    }
-
-    public String getSelfLink() {
-        return selfLink;
-    }
-
-    public void setSelfLink(String selfLink) {
-        this.selfLink = selfLink;
-    }
-
-    public Label getLabels() {
+    public Map<String, String> getLabels() {
         return labels;
     }
 
-    public void setLabels(Label labels) {
+    public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
@@ -110,11 +81,33 @@ public class Service extends AbstractKubernetesModel {
         this.selector = selector;
     }
 
-    @Override
-    public String toString() {
-        return "Service [id=" + id + ", creationTimestamp=" + creationTimestamp + ", selfLink=" + selfLink + ", name="
-                + name + ", port=" + port + ", containerPort=" + containerPort + ", selector=" + selector + ", labels="
-                + labels + "]";
+    public String getProtocol() {
+        return protocol;
     }
 
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public String getPortalIP() {
+        return portalIP;
+    }
+
+    public void setPortalIP(String portalIP) {
+        this.portalIP = portalIP;
+    }
+
+    public String getSessionAffinity() {
+        return sessionAffinity;
+    }
+
+    public void setSessionAffinity(String sessionAffinity) {
+        this.sessionAffinity = sessionAffinity;
+    }
+
+    @Override
+    public String toString() {
+        return "Service [id=" + getId() + ", selfLink=" + getSelfLink() + ", name=" + name + ", port=" + port
+                + ", containerPort=" + containerPort + ", selector=" + selector + ", labels=" + labels + "]";
+    }
 }
